@@ -7,37 +7,56 @@
 <style>
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(120deg, #0f0c29, #302b63, #24243e);
+    height: 100vh;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
+    background: linear-gradient(270deg, #0f0c29, #302b63, #24243e);
+    background-size: 600% 600%;
+    animation: bgAnimation 10s ease infinite;
+  }
+
+  @keyframes bgAnimation {
+    0% {background-position:0% 50%}
+    50% {background-position:100% 50%}
+    100% {background-position:0% 50%}
   }
 
   .panel, .keyScreen {
-    width: 350px;
-    background: rgba(30,30,30,0.95);
+    width: 380px;
+    background: rgba(20,20,20,0.95);
     border-radius: 15px;
     padding: 25px;
-    box-shadow: 0 0 25px #00ffcc;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 20px #00ffe5, 0 0 40px #0099ff;
   }
 
   h2 {
-    color: #00ffcc;
+    color: #00ffe5;
     margin-bottom: 20px;
+    text-shadow: 0 0 10px #00ffe5, 0 0 20px #0099ff;
+    animation: glowText 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glowText {
+    from {text-shadow: 0 0 5px #00ffe5;}
+    to {text-shadow: 0 0 20px #ff00ff;}
   }
 
   input[type="text"] {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border-radius: 8px;
-    border: none;
-    margin-bottom: 12px;
-    background: #222;
+    border: 2px solid #00ffe5;
+    margin-bottom: 15px;
+    background: #111;
     color: #fff;
     font-size: 16px;
+    outline: none;
+    text-align: center;
   }
 
   .btn {
@@ -48,83 +67,142 @@
     border-radius: 8px;
     font-weight: bold;
     color: #fff;
-    background: linear-gradient(45deg,#00ffcc,#0066ff);
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    background: #111;
+    border: 2px solid transparent;
+    transition: 0.3s;
+  }
+
+  .btn:before {
+    content: "";
+    position: absolute;
+    top: -2px; left: -2px; right: -2px; bottom: -2px;
+    background: linear-gradient(90deg, #ff00ff, #00ffe5, #0099ff, #ff00ff);
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    animation: glowing 8s linear infinite;
   }
 
   .btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,255,204,0.5);
+    transform: scale(1.05);
   }
 
   .btn.active {
-    background: linear-gradient(45deg,#ff00ff,#ff0066);
+    background: rgba(0,255,229,0.2);
+    border: 2px solid #00ffe5;
   }
 
-  .message {
-    font-weight: bold;
-    color: #00ffcc;
-    margin-bottom: 10px;
-    min-height: 20px;
+  @keyframes glowing {
+    0% {background-position: 0%;}
+    50% {background-position: 200%;}
+    100% {background-position: 0%;}
   }
 
   .server {
     margin-bottom: 15px;
     color: #ffcc00;
     font-weight: bold;
+    text-shadow: 0 0 10px #ffcc00;
+    animation: flicker 1.5s infinite alternate;
+  }
+
+  @keyframes flicker {
+    from {opacity: 1;}
+    to {opacity: 0.7;}
+  }
+
+  /* Popup LED */
+  .popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    display: none;
+  }
+  .popup-content {
+    background: #111;
+    color: #00ffe5;
+    padding: 20px 40px;
+    border-radius: 12px;
+    font-size: 20px;
+    box-shadow: 0 0 20px #00ffe5, 0 0 40px #ff00ff;
+    animation: bounceIn 0.5s ease;
+  }
+
+  @keyframes bounceIn {
+    0% {transform: scale(0.3); opacity: 0;}
+    50% {transform: scale(1.1);}
+    100% {transform: scale(1); opacity: 1;}
   }
 </style>
 </head>
 <body>
 
-<!-- Màn hình nhập key -->
+<!-- Nhập Key -->
 <div class="keyScreen" id="keyScreen">
   <h2>NHATQUI PANEL</h2>
   <input type="text" id="keyInput" placeholder="Nhập Key">
   <button class="btn" onclick="checkKey()">Xác Nhận Key</button>
-  <div class="message" id="message"></div>
 </div>
 
-<!-- Menu chính -->
+<!-- Menu -->
 <div class="panel" id="menuPanel" style="display:none;">
   <h2>NHATQUI CHEAT MENU</h2>
   <div class="server">Api Server 5.0.0 Dev NhismDepTrai</div>
   
-  <button class="btn" id="aimlockBtn" onclick="toggleFeature(this,'Aimlock')">Aimlock: OFF</button>
-  <button class="btn" id="aimbotBtn" onclick="toggleFeature(this,'Aimbot Tĩnh')">Aimbot Tĩnh: OFF</button>
-  <button class="btn" id="antiBtn" onclick="toggleFeature(this,'Antiband')">Antiband: OFF</button>
-  <button class="btn" id="nhayBtn" onclick="toggleFeature(this,'Nhạy Tâm')">Nhạy Tâm: OFF</button>
-  <button class="btn" id="fpsBtn" onclick="toggleFeature(this,'Fps Pro')">Fps Pro: OFF</button>
+  <button class="btn" onclick="toggleFeature(this,'Aimlock')">Aimlock: OFF</button>
+  <button class="btn" onclick="toggleFeature(this,'Aimbot Tĩnh')">Aimbot Tĩnh: OFF</button>
+  <button class="btn" onclick="toggleFeature(this,'Antiband')">Antiband: OFF</button>
+  <button class="btn" onclick="toggleFeature(this,'Nhạy Tâm')">Nhạy Tâm: OFF</button>
+  <button class="btn" onclick="toggleFeature(this,'Fps Pro')">Fps Pro: OFF</button>
+</div>
+
+<!-- Popup -->
+<div class="popup" id="popup">
+  <div class="popup-content" id="popupMsg">Thành Công!</div>
 </div>
 
 <script>
   const validKey = "NHATQUI-PANEL-ADHCUISBAQ";
   const keyScreen = document.getElementById('keyScreen');
   const menuPanel = document.getElementById('menuPanel');
+  const popup = document.getElementById('popup');
+  const popupMsg = document.getElementById('popupMsg');
+
+  function showPopup(msg, color="#00ffe5") {
+    popupMsg.textContent = msg;
+    popupMsg.style.color = color;
+    popup.style.display = "flex";
+    setTimeout(()=> popup.style.display="none", 1600);
+  }
 
   function checkKey() {
     const key = document.getElementById('keyInput').value;
-    const message = document.getElementById('message');
     if(key === validKey){
-      message.textContent = "Thành Công!";
-      message.style.color = "#00ffcc";
-      // Ẩn màn hình nhập key, hiện menu
+      showPopup("Thành Công!", "#00ffcc");
       setTimeout(()=>{
         keyScreen.style.display = "none";
         menuPanel.style.display = "block";
-      },800);
+      }, 1200);
     } else {
-      message.textContent = "Key Không Hợp Lệ!";
-      message.style.color = "#ff4d4d";
+      showPopup("Key Sai!", "#ff4444");
     }
   }
 
-  function toggleFeature(btn, feature) {
-    const isActive = btn.classList.toggle('active');
-    btn.textContent = feature + ": " + (isActive ? "ON" : "OFF");
+  function toggleFeature(btn, name){
+    btn.classList.toggle("active");
+    const state = btn.classList.contains("active") ? "ON" : "OFF";
+    btn.textContent = `${name}: ${state}`;
+    showPopup(`${name} ${state}`, state==="ON" ? "#00ffcc" : "#ff4444");
   }
 </script>
-
 </body>
 </html>
