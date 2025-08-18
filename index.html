@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NHATQUI PANEL PRO</title>
+<title>NHATQUI CHEAT PANEL</title>
 <style>
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -13,24 +13,20 @@
     align-items: center;
     height: 100vh;
     margin: 0;
-    overflow: hidden;
   }
 
-  .panel {
-    width: 350px;
+  .panel, .keyScreen {
+    width: 380px;
     background: rgba(30,30,30,0.95);
     border-radius: 15px;
     padding: 25px;
     box-shadow: 0 0 25px #00ffcc;
-    position: absolute;
-    cursor: grab;
+    text-align: center;
   }
 
-  .panel h2 {
-    text-align: center;
+  h2 {
     color: #00ffcc;
     margin-bottom: 20px;
-    font-weight: 700;
   }
 
   input[type="text"] {
@@ -42,15 +38,6 @@
     background: #222;
     color: #fff;
     font-size: 16px;
-  }
-
-  .message {
-    text-align: center;
-    margin-bottom: 15px;
-    font-weight: bold;
-    color: #00ffcc;
-    min-height: 20px;
-    transition: color 0.3s;
   }
 
   .btn {
@@ -74,28 +61,58 @@
   .btn.active {
     background: linear-gradient(45deg,#ff00ff,#ff0066);
   }
+
+  .message {
+    font-weight: bold;
+    color: #00ffcc;
+    margin-bottom: 10px;
+    min-height: 20px;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
 </style>
 </head>
 <body>
 
-<div class="panel" id="panel">
-  <h2>NHATQUI PANEL PRO</h2>
-
+<!-- Màn hình nhập key -->
+<div class="keyScreen" id="keyScreen">
+  <h2>NHATQUI PANEL</h2>
   <input type="text" id="keyInput" placeholder="Nhập Key">
   <button class="btn" onclick="checkKey()">Xác Nhận Key</button>
   <div class="message" id="message"></div>
+</div>
 
-  <button class="btn" id="dragBtn" onclick="toggleFeature(this,'Drag Config')">Drag Config</button>
-  <button class="btn" id="antiBtn" onclick="toggleFeature(this,'Antiband')">Antiband</button>
-  <button class="btn" id="aimbotBtn" onclick="toggleFeature(this,'Aimbot Tĩnh')">Aimbot Tĩnh</button>
-  <button class="btn" id="aimlockBtn" onclick="toggleFeature(this,'Aimlock Pro')">Aimlock Pro</button>
-  <button class="btn" id="speedBtn" onclick="toggleFeature(this,'Nhạy')">Nhạy</button>
-  <button class="btn" id="fpsBtn" onclick="toggleFeature(this,'Fps')">Fps</button>
-  <button class="btn" onclick="luaClose()">Lua Close</button>
+<!-- Menu chính -->
+<div class="panel" id="menuPanel" style="display:none;">
+  <h2>NHATQUI CHEAT MENU</h2>
+  <div class="feature-grid">
+    <button class="btn" id="feat1" onclick="toggleFeature(this,'Aimlock Pro')">Aimlock Pro</button>
+    <button class="btn" id="feat2" onclick="toggleFeature(this,'Aimbot Tĩnh')">Aimbot Tĩnh</button>
+    <button class="btn" id="feat3" onclick="toggleFeature(this,'Nhạy')">Nhạy</button>
+    <button class="btn" id="feat4" onclick="toggleFeature(this,'Fps Boost')">Fps Boost</button>
+    <button class="btn" id="feat5" onclick="toggleFeature(this,'Wallhack')">Wallhack</button>
+    <button class="btn" id="feat6" onclick="toggleFeature(this,'Speed Hack')">Speed Hack</button>
+    <button class="btn" id="feat7" onclick="toggleFeature(this,'No Recoil')">No Recoil</button>
+    <button class="btn" id="feat8" onclick="toggleFeature(this,'Headshot')">Headshot</button>
+    <button class="btn" id="feat9" onclick="toggleFeature(this,'Auto Loot')">Auto Loot</button>
+    <button class="btn" id="feat10" onclick="toggleFeature(this,'Auto Heal')">Auto Heal</button>
+    <button class="btn" id="feat11" onclick="toggleFeature(this,'Antiband')">Antiband</button>
+    <button class="btn" id="feat12" onclick="toggleFeature(this,'Drag Config')">Drag Config</button>
+    <button class="btn" id="feat13" onclick="toggleFeature(this,'Silent Aim')">Silent Aim</button>
+    <button class="btn" id="feat14" onclick="toggleFeature(this,'Radar ESP')">Radar ESP</button>
+    <button class="btn" id="feat15" onclick="toggleFeature(this,'Lua Close')">Lua Close</button>
+  </div>
 </div>
 
 <script>
   const validKey = "NHATQUI-PANEL-ADHCUISBAQ";
+  const keyScreen = document.getElementById('keyScreen');
+  const menuPanel = document.getElementById('menuPanel');
 
   function checkKey() {
     const key = document.getElementById('keyInput').value;
@@ -103,6 +120,9 @@
     if(key === validKey){
       message.textContent = "Thành Công!";
       message.style.color = "#00ffcc";
+      // Ẩn màn hình nhập key, hiện menu
+      keyScreen.style.display = "none";
+      menuPanel.style.display = "block";
     } else {
       message.textContent = "Key Không Hợp Lệ!";
       message.style.color = "#ff4d4d";
@@ -114,34 +134,6 @@
     const state = btn.classList.contains('active') ? "Bật" : "Tắt";
     alert(feature + " đã " + state + " (demo)!");
   }
-
-  function luaClose() {
-    alert("Lua Close đã được thực thi (demo)!");
-  }
-
-  // --- Kéo thả panel ---
-  const panel = document.getElementById('panel');
-  let isDragging = false;
-  let offsetX, offsetY;
-
-  panel.addEventListener('mousedown', e => {
-    isDragging = true;
-    offsetX = e.clientX - panel.offsetLeft;
-    offsetY = e.clientY - panel.offsetTop;
-    panel.style.cursor = 'grabbing';
-  });
-
-  document.addEventListener('mouseup', () => {
-    isDragging = false;
-    panel.style.cursor = 'grab';
-  });
-
-  document.addEventListener('mousemove', e => {
-    if(isDragging){
-      panel.style.left = (e.clientX - offsetX) + 'px';
-      panel.style.top = (e.clientY - offsetY) + 'px';
-    }
-  });
 </script>
 
 </body>
