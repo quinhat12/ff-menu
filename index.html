@@ -11,16 +11,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url("https://i.ibb.co/2Z7F2bb/gojo-anime.jpg") no-repeat center center/cover;
+    background: #000; /* nền đen */
     font-family: 'Segoe UI', sans-serif;
     overflow: hidden;
   }
+  /* LED nền động */
   body::before {
     content: "";
     position: absolute;
     top:0; left:0; right:0; bottom:0;
-    background: rgba(0,0,0,0.65);
+    background: linear-gradient(135deg, #ff00ff, #00ffe5, #0099ff, #ff00ff);
+    background-size: 400% 400%;
+    animation: ledBg 15s ease infinite;
     z-index: 0;
+  }
+  @keyframes ledBg {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
   }
   .panel, .keyScreen {
     width: 400px;
@@ -33,14 +41,21 @@
     box-shadow: 0 0 20px #00ffe5, 0 0 40px #ff00ff;
     animation: float 4s ease-in-out infinite;
   }
-  @keyframes float {0%{transform:translateY(0);}50%{transform:translateY(-8px);}100%{transform:translateY(0);}}
+  @keyframes float {
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-8px);}
+    100%{transform:translateY(0);}
+  }
   h2 {
     color: #00ffe5;
     margin-bottom: 20px;
     text-shadow: 0 0 15px #00ffe5, 0 0 30px #ff00ff;
     animation: glowText 2s ease-in-out infinite alternate;
   }
-  @keyframes glowText {from{text-shadow:0 0 10px #00ffe5;}to{text-shadow:0 0 25px #ff00ff;}}
+  @keyframes glowText {
+    from{text-shadow:0 0 10px #00ffe5;}
+    to{text-shadow:0 0 25px #ff00ff;}
+  }
   input[type="text"] {
     width: 100%;
     padding: 12px;
@@ -78,9 +93,21 @@
     filter: blur(6px);
     animation: glowing 6s linear infinite;
   }
-  .btn.active {background: rgba(0,255,229,0.2); border: 2px solid #00ffe5;}
-  @keyframes glowing {0%{background-position:0%;}50%{background-position:200%;}100%{background-position:0%;}}
-  .server {margin-bottom: 15px; color: #ffcc00; font-weight: bold; text-shadow: 0 0 10px #ffcc00;}
+  .btn.active {
+    background: rgba(0,255,229,0.2);
+    border: 2px solid #00ffe5;
+  }
+  @keyframes glowing {
+    0%{background-position:0%;}
+    50%{background-position:200%;}
+    100%{background-position:0%;}
+  }
+  .server {
+    margin-bottom: 15px;
+    color: #ffcc00;
+    font-weight: bold;
+    text-shadow: 0 0 10px #ffcc00;
+  }
   .logBox {
     margin-top: 15px;
     padding: 12px;
@@ -97,22 +124,13 @@
     animation: fadeIn 1s ease;
   }
   @keyframes fadeIn {from{opacity:0;}to{opacity:1;}}
-  .gojo {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 230px;
-    z-index: 1;
-    pointer-events: none;
-    animation: fadeIn 2s ease;
-  }
 </style>
 </head>
 <body>
 
 <!-- Nhập Key -->
 <div class="keyScreen" id="keyScreen">
-  <h2>NHATQUI GOJO PANEL</h2>
+  <h2>NHATQUI LED PANEL</h2>
   <input type="text" id="keyInput" placeholder="Nhập Key">
   <button class="btn" onclick="checkKey()">Xác Nhận Key</button>
 </div>
@@ -131,9 +149,6 @@
 
   <div class="logBox" id="logBox"></div>
 </div>
-
-<!-- Gojo Mascot -->
-<img src="https://i.ibb.co/kXmtPx2/gojo-satoru.png" class="gojo">
 
 <script>
   const validKey = "NHATQUI-GOJO-999";
