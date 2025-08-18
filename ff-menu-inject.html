@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>FF-Menu</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#0f1117; color:#e9eef5; margin:0; padding:20px; }
+    .container { max-width:400px; margin:auto; background:#171a21; padding:20px; border-radius:12px; }
+    h1 { font-size:20px; margin-bottom:15px; }
+    input, button { width:100%; padding:10px; margin:8px 0; border-radius:8px; border:none; font-size:14px; }
+    input { background:#0e1220; color:#fff; }
+    button { cursor:pointer; }
+    .btn-primary { background:#22c55e; color:#fff; font-weight:bold; }
+    .btn-inject { background:#3b82f6; color:#fff; font-weight:bold; display:none; }
+    .status { margin-top:10px; font-size:14px; }
+    .ok { color:#22c55e; }
+    .err { color:#ef4444; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>FF-Menu Panel</h1>
+    <input type="text" id="key" placeholder="Enter your KEY">
+    <button class="btn-primary" id="btnCheck">Verify</button>
+    <button class="btn-inject" id="btnInject">Inject</button>
+    <div class="status" id="status"></div>
+  </div>
+
+  <script>
+    const CORRECT_KEY = "NHATQUI-PanelMoreVN-ALkaqwB";
+    const keyInput = document.getElementById('key');
+    const btnCheck = document.getElementById('btnCheck');
+    const btnInject = document.getElementById('btnInject');
+    const status = document.getElementById('status');
+
+    btnCheck.addEventListener('click', () => {
+      if(keyInput.value.trim() === CORRECT_KEY){
+        status.innerHTML = "<span class='ok'>Success ✅</span>";
+        btnInject.style.display = "block";
+      } else {
+        status.innerHTML = "<span class='err'>Invalid Key ❌</span>";
+        btnInject.style.display = "none";
+      }
+    });
+
+    btnInject.addEventListener('click', () => {
+      status.innerHTML = "<span class='ok'>Inject Success ✅</span>";
+    });
+  </script>
+</body>
+</html>
