@@ -16,7 +16,7 @@
   }
 
   .panel, .keyScreen {
-    width: 380px;
+    width: 350px;
     background: rgba(30,30,30,0.95);
     border-radius: 15px;
     padding: 25px;
@@ -43,7 +43,7 @@
   .btn {
     width: 100%;
     padding: 12px;
-    margin: 6px 0;
+    margin: 8px 0;
     border: none;
     border-radius: 8px;
     font-weight: bold;
@@ -69,11 +69,10 @@
     min-height: 20px;
   }
 
-  .feature-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-top: 10px;
+  .server {
+    margin-bottom: 15px;
+    color: #ffcc00;
+    font-weight: bold;
   }
 </style>
 </head>
@@ -90,23 +89,13 @@
 <!-- Menu chính -->
 <div class="panel" id="menuPanel" style="display:none;">
   <h2>NHATQUI CHEAT MENU</h2>
-  <div class="feature-grid">
-    <button class="btn" id="feat1" onclick="toggleFeature(this,'Aimlock Pro')">Aimlock Pro</button>
-    <button class="btn" id="feat2" onclick="toggleFeature(this,'Aimbot Tĩnh')">Aimbot Tĩnh</button>
-    <button class="btn" id="feat3" onclick="toggleFeature(this,'Nhạy')">Nhạy</button>
-    <button class="btn" id="feat4" onclick="toggleFeature(this,'Fps Boost')">Fps Boost</button>
-    <button class="btn" id="feat5" onclick="toggleFeature(this,'Wallhack')">Wallhack</button>
-    <button class="btn" id="feat6" onclick="toggleFeature(this,'Speed Hack')">Speed Hack</button>
-    <button class="btn" id="feat7" onclick="toggleFeature(this,'No Recoil')">No Recoil</button>
-    <button class="btn" id="feat8" onclick="toggleFeature(this,'Headshot')">Headshot</button>
-    <button class="btn" id="feat9" onclick="toggleFeature(this,'Auto Loot')">Auto Loot</button>
-    <button class="btn" id="feat10" onclick="toggleFeature(this,'Auto Heal')">Auto Heal</button>
-    <button class="btn" id="feat11" onclick="toggleFeature(this,'Antiband')">Antiband</button>
-    <button class="btn" id="feat12" onclick="toggleFeature(this,'Drag Config')">Drag Config</button>
-    <button class="btn" id="feat13" onclick="toggleFeature(this,'Silent Aim')">Silent Aim</button>
-    <button class="btn" id="feat14" onclick="toggleFeature(this,'Radar ESP')">Radar ESP</button>
-    <button class="btn" id="feat15" onclick="toggleFeature(this,'Lua Close')">Lua Close</button>
-  </div>
+  <div class="server">Api Server 5.0.0 Dev NhismDepTrai</div>
+  
+  <button class="btn" id="aimlockBtn" onclick="toggleFeature(this,'Aimlock')">Aimlock: OFF</button>
+  <button class="btn" id="aimbotBtn" onclick="toggleFeature(this,'Aimbot Tĩnh')">Aimbot Tĩnh: OFF</button>
+  <button class="btn" id="antiBtn" onclick="toggleFeature(this,'Antiband')">Antiband: OFF</button>
+  <button class="btn" id="nhayBtn" onclick="toggleFeature(this,'Nhạy Tâm')">Nhạy Tâm: OFF</button>
+  <button class="btn" id="fpsBtn" onclick="toggleFeature(this,'Fps Pro')">Fps Pro: OFF</button>
 </div>
 
 <script>
@@ -121,8 +110,10 @@
       message.textContent = "Thành Công!";
       message.style.color = "#00ffcc";
       // Ẩn màn hình nhập key, hiện menu
-      keyScreen.style.display = "none";
-      menuPanel.style.display = "block";
+      setTimeout(()=>{
+        keyScreen.style.display = "none";
+        menuPanel.style.display = "block";
+      },800);
     } else {
       message.textContent = "Key Không Hợp Lệ!";
       message.style.color = "#ff4d4d";
@@ -130,9 +121,8 @@
   }
 
   function toggleFeature(btn, feature) {
-    btn.classList.toggle('active');
-    const state = btn.classList.contains('active') ? "Bật" : "Tắt";
-    alert(feature + " đã " + state + " (demo)!");
+    const isActive = btn.classList.toggle('active');
+    btn.textContent = feature + ": " + (isActive ? "ON" : "OFF");
   }
 </script>
 
