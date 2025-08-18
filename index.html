@@ -3,49 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NHATQUI CHEAT PANEL</title>
+<title>GOJO INJECTOR PANEL</title>
 <style>
   body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    height: 100vh;
     margin: 0;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(270deg, #0f0c29, #302b63, #24243e);
-    background-size: 600% 600%;
-    animation: bgAnimation 10s ease infinite;
+    background: url("https://i.ibb.co/2Z7F2bb/gojo-anime.jpg") no-repeat center center/cover;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
   }
-
-  @keyframes bgAnimation {
-    0% {background-position:0% 50%}
-    50% {background-position:100% 50%}
-    100% {background-position:0% 50%}
+  body::before {
+    content: "";
+    position: absolute;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.65);
+    z-index: 0;
   }
-
   .panel, .keyScreen {
-    width: 380px;
-    background: rgba(20,20,20,0.95);
+    width: 400px;
+    background: rgba(20,20,20,0.9);
     border-radius: 15px;
     padding: 25px;
     text-align: center;
     position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 20px #00ffe5, 0 0 40px #0099ff;
+    z-index: 1;
+    box-shadow: 0 0 20px #00ffe5, 0 0 40px #ff00ff;
+    animation: float 4s ease-in-out infinite;
   }
-
+  @keyframes float {0%{transform:translateY(0);}50%{transform:translateY(-8px);}100%{transform:translateY(0);}}
   h2 {
     color: #00ffe5;
     margin-bottom: 20px;
-    text-shadow: 0 0 10px #00ffe5, 0 0 20px #0099ff;
+    text-shadow: 0 0 15px #00ffe5, 0 0 30px #ff00ff;
     animation: glowText 2s ease-in-out infinite alternate;
   }
-
-  @keyframes glowText {
-    from {text-shadow: 0 0 5px #00ffe5;}
-    to {text-shadow: 0 0 20px #ff00ff;}
-  }
-
+  @keyframes glowText {from{text-shadow:0 0 10px #00ffe5;}to{text-shadow:0 0 25px #ff00ff;}}
   input[type="text"] {
     width: 100%;
     padding: 12px;
@@ -58,7 +53,6 @@
     outline: none;
     text-align: center;
   }
-
   .btn {
     width: 100%;
     padding: 12px;
@@ -73,9 +67,7 @@
     z-index: 1;
     background: #111;
     border: 2px solid transparent;
-    transition: 0.3s;
   }
-
   .btn:before {
     content: "";
     position: absolute;
@@ -83,64 +75,36 @@
     background: linear-gradient(90deg, #ff00ff, #00ffe5, #0099ff, #ff00ff);
     background-size: 400%;
     z-index: -1;
-    filter: blur(5px);
-    animation: glowing 8s linear infinite;
+    filter: blur(6px);
+    animation: glowing 6s linear infinite;
   }
-
-  .btn:hover {
-    transform: scale(1.05);
-  }
-
-  .btn.active {
-    background: rgba(0,255,229,0.2);
-    border: 2px solid #00ffe5;
-  }
-
-  @keyframes glowing {
-    0% {background-position: 0%;}
-    50% {background-position: 200%;}
-    100% {background-position: 0%;}
-  }
-
-  .server {
-    margin-bottom: 15px;
-    color: #ffcc00;
-    font-weight: bold;
-    text-shadow: 0 0 10px #ffcc00;
-    animation: flicker 1.5s infinite alternate;
-  }
-
-  @keyframes flicker {
-    from {opacity: 1;}
-    to {opacity: 0.7;}
-  }
-
-  /* Popup LED */
-  .popup {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+  .btn.active {background: rgba(0,255,229,0.2); border: 2px solid #00ffe5;}
+  @keyframes glowing {0%{background-position:0%;}50%{background-position:200%;}100%{background-position:0%;}}
+  .server {margin-bottom: 15px; color: #ffcc00; font-weight: bold; text-shadow: 0 0 10px #ffcc00;}
+  .logBox {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 8px;
     background: rgba(0,0,0,0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+    font-family: monospace;
+    font-size: 14px;
+    color: #0f0;
+    text-align: left;
+    max-height: 180px;
+    overflow-y: auto;
     display: none;
+    box-shadow: 0 0 15px #00ff90;
+    animation: fadeIn 1s ease;
   }
-  .popup-content {
-    background: #111;
-    color: #00ffe5;
-    padding: 20px 40px;
-    border-radius: 12px;
-    font-size: 20px;
-    box-shadow: 0 0 20px #00ffe5, 0 0 40px #ff00ff;
-    animation: bounceIn 0.5s ease;
-  }
-
-  @keyframes bounceIn {
-    0% {transform: scale(0.3); opacity: 0;}
-    50% {transform: scale(1.1);}
-    100% {transform: scale(1); opacity: 1;}
+  @keyframes fadeIn {from{opacity:0;}to{opacity:1;}}
+  .gojo {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 230px;
+    z-index: 1;
+    pointer-events: none;
+    animation: fadeIn 2s ease;
   }
 </style>
 </head>
@@ -148,52 +112,42 @@
 
 <!-- Nhập Key -->
 <div class="keyScreen" id="keyScreen">
-  <h2>NHATQUI PANEL</h2>
+  <h2>NHATQUI GOJO PANEL</h2>
   <input type="text" id="keyInput" placeholder="Nhập Key">
   <button class="btn" onclick="checkKey()">Xác Nhận Key</button>
 </div>
 
 <!-- Menu -->
 <div class="panel" id="menuPanel" style="display:none;">
-  <h2>NHATQUI CHEAT MENU</h2>
-  <div class="server">Api Server 5.0.0 Dev NhismDepTrai</div>
+  <h2>GOJO CHEAT MENU</h2>
+  <div class="server">Api Server 6.0.0 Dev NhismDepTrai</div>
   
   <button class="btn" onclick="toggleFeature(this,'Aimlock')">Aimlock: OFF</button>
   <button class="btn" onclick="toggleFeature(this,'Aimbot Tĩnh')">Aimbot Tĩnh: OFF</button>
   <button class="btn" onclick="toggleFeature(this,'Antiband')">Antiband: OFF</button>
   <button class="btn" onclick="toggleFeature(this,'Nhạy Tâm')">Nhạy Tâm: OFF</button>
   <button class="btn" onclick="toggleFeature(this,'Fps Pro')">Fps Pro: OFF</button>
+  <button class="btn" onclick="injectFF()">🚀 Injector Free Fire</button>
+
+  <div class="logBox" id="logBox"></div>
 </div>
 
-<!-- Popup -->
-<div class="popup" id="popup">
-  <div class="popup-content" id="popupMsg">Thành Công!</div>
-</div>
+<!-- Gojo Mascot -->
+<img src="https://i.ibb.co/kXmtPx2/gojo-satoru.png" class="gojo">
 
 <script>
-  const validKey = "NHATQUI-PANEL-ADHCUISBAQ";
+  const validKey = "NHATQUI-GOJO-999";
   const keyScreen = document.getElementById('keyScreen');
   const menuPanel = document.getElementById('menuPanel');
-  const popup = document.getElementById('popup');
-  const popupMsg = document.getElementById('popupMsg');
-
-  function showPopup(msg, color="#00ffe5") {
-    popupMsg.textContent = msg;
-    popupMsg.style.color = color;
-    popup.style.display = "flex";
-    setTimeout(()=> popup.style.display="none", 1600);
-  }
+  const logBox = document.getElementById('logBox');
 
   function checkKey() {
     const key = document.getElementById('keyInput').value;
     if(key === validKey){
-      showPopup("Thành Công!", "#00ffcc");
-      setTimeout(()=>{
-        keyScreen.style.display = "none";
-        menuPanel.style.display = "block";
-      }, 1200);
+      keyScreen.style.display = "none";
+      menuPanel.style.display = "block";
     } else {
-      showPopup("Key Sai!", "#ff4444");
+      alert("Key Sai!");
     }
   }
 
@@ -201,7 +155,30 @@
     btn.classList.toggle("active");
     const state = btn.classList.contains("active") ? "ON" : "OFF";
     btn.textContent = `${name}: ${state}`;
-    showPopup(`${name} ${state}`, state==="ON" ? "#00ffcc" : "#ff4444");
+  }
+
+  function injectFF(){
+    logBox.style.display = "block";
+    const logs = [
+      "[✔] Đang kết nối tới Client Free Fire...",
+      "[✔] Phiên bản Client: 19.9.1.0",
+      "[✔] Server: Vietnam (VN)",
+      "[✔] Inject thành công vào tiến trình Free Fire",
+      "[✔] Bật Module Antiband",
+      "[✔] Hệ thống Anticheat: Cao",
+      "[✔] Status: Injector thành công!"
+    ];
+    logBox.innerHTML = "";
+    let i = 0;
+    const interval = setInterval(()=>{
+      if(i < logs.length){
+        logBox.innerHTML += logs[i] + "<br>";
+        logBox.scrollTop = logBox.scrollHeight;
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    },800);
   }
 </script>
 </body>
