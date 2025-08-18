@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VNCHEATWARE INJECTOR PANEL</title>
+<title>VNWARE CHEAT PANEL</title>
 <style>
   body {
     margin: 0;
@@ -11,7 +11,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #000;
+    background: black;
     font-family: 'Segoe UI', sans-serif;
     overflow: hidden;
   }
@@ -19,29 +19,22 @@
     content: "";
     position: absolute;
     top:0; left:0; right:0; bottom:0;
-    background: linear-gradient(45deg,#ff00ff,#00ffe5,#0099ff,#ff00ff);
-    background-size: 400%;
-    animation: bgMove 10s linear infinite;
-    opacity: 0.15;
+    background: radial-gradient(circle, rgba(0,255,229,0.1) 0%, rgba(0,0,0,0.95) 80%);
     z-index: 0;
   }
-  @keyframes bgMove {
-    0%{background-position:0%;}
-    50%{background-position:200%;}
-    100%{background-position:0%;}
-  }
   .panel, .keyScreen {
-    width: 400px;
+    width: 320px;
     background: rgba(20,20,20,0.9);
     border-radius: 15px;
-    padding: 25px;
+    padding: 20px;
     text-align: center;
     position: relative;
     z-index: 1;
+    transform: scale(0.8); /* nhỏ lại 20% */
     box-shadow: 0 0 20px #00ffe5, 0 0 40px #ff00ff;
     animation: float 4s ease-in-out infinite;
   }
-  @keyframes float {0%{transform:translateY(0);}50%{transform:translateY(-8px);}100%{transform:translateY(0);}}
+  @keyframes float {0%{transform:scale(0.8) translateY(0);}50%{transform:scale(0.8) translateY(-8px);}100%{transform:scale(0.8) translateY(0);}}
   h2 {
     color: #00ffe5;
     margin-bottom: 20px;
@@ -105,43 +98,39 @@
     animation: fadeIn 1s ease;
   }
   @keyframes fadeIn {from{opacity:0;}to{opacity:1;}}
-
   /* Popup thông báo */
   .popup {
     position: fixed;
     top: 50%; left: 50%;
-    transform: translate(-50%, -50%) scale(0.7);
+    transform: translate(-50%, -50%);
     background: rgba(20,20,20,0.95);
-    color: #00ffe5;
     padding: 20px 40px;
     border-radius: 12px;
-    box-shadow: 0 0 25px #00ffe5, 0 0 50px #ff00ff;
     text-align: center;
-    font-weight: bold;
     font-size: 18px;
+    font-weight: bold;
+    color: #00ffe5;
     text-shadow: 0 0 15px #00ffe5, 0 0 30px #ff00ff;
-    z-index: 999;
-    opacity: 0;
-    animation: popIn 0.5s ease forwards;
+    box-shadow: 0 0 25px #00ffe5, 0 0 50px #ff00ff;
+    animation: popupAnim 0.5s ease;
+    z-index: 99;
   }
-  @keyframes popIn {
-    to {opacity: 1; transform: translate(-50%, -50%) scale(1);}
-  }
+  @keyframes popupAnim {from{opacity:0; transform:translate(-50%,-60%);}to{opacity:1; transform:translate(-50%,-50%);}}
 </style>
 </head>
 <body>
 
 <!-- Nhập Key -->
 <div class="keyScreen" id="keyScreen">
-  <h2>VNWARE PANEL</h2>
+  <h2>VNWARE CHEAT PANEL</h2>
   <input type="text" id="keyInput" placeholder="Nhập Key">
   <button class="btn" onclick="checkKey()">Xác Nhận Key</button>
 </div>
 
 <!-- Menu -->
 <div class="panel" id="menuPanel" style="display:none;">
-  <h2>WARE CHEAT MENU</h2>
-  <div class="server">Api Server 6.0.0 Dev NhismDepTrai</div>
+  <h2>VNWARE CHEAT MENU</h2>
+  <div class="server">Api Server 6.0.0 • VNWARE CHEAT</div>
   
   <button class="btn" onclick="toggleFeature(this,'Aimlock')">Aimlock: OFF</button>
   <button class="btn" onclick="toggleFeature(this,'Aimbot Tĩnh')">Aimbot Tĩnh: OFF</button>
@@ -154,29 +143,19 @@
 </div>
 
 <script>
-  const validKey = "NHATQUI-INJECTOR-1MOTH";
+  const validKey = "VNWARE-WARE-TOP";
   const keyScreen = document.getElementById('keyScreen');
   const menuPanel = document.getElementById('menuPanel');
   const logBox = document.getElementById('logBox');
 
-  function showPopup(msg, success=true){
-    const popup = document.createElement("div");
-    popup.className = "popup";
-    popup.style.color = success ? "#00ffe5" : "#ff4444";
-    popup.style.boxShadow = success ? "0 0 25px #00ffe5, 0 0 50px #ff00ff" : "0 0 25px #ff4444, 0 0 50px #ff0000";
-    popup.innerText = msg;
-    document.body.appendChild(popup);
-    setTimeout(()=>{ popup.remove(); }, 2500);
-  }
-
   function checkKey() {
     const key = document.getElementById('keyInput').value;
     if(key === validKey){
+      showPopup("✔ Key chính xác - Chào mừng đến VNWARE CHEAT!");
       keyScreen.style.display = "none";
       menuPanel.style.display = "block";
-      showPopup("✅ Key Hợp Lệ! Chào mừng đến VNCHEAT", true);
     } else {
-      showPopup("❌ Key Sai! Vui lòng thử lại", false);
+      showPopup("❌ Key sai, vui lòng thử lại!");
     }
   }
 
@@ -208,6 +187,14 @@
         clearInterval(interval);
       }
     },800);
+  }
+
+  function showPopup(msg){
+    const popup = document.createElement("div");
+    popup.className = "popup";
+    popup.innerText = msg;
+    document.body.appendChild(popup);
+    setTimeout(()=>{popup.remove();},3000);
   }
 </script>
 </body>
