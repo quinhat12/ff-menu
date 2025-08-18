@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NHATQUI PANEL PRO</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(120deg, #0f0c29, #302b63, #24243e);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .panel {
+    width: 350px;
+    background: rgba(30,30,30,0.95);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 0 25px #00ffcc;
+    position: absolute;
+    cursor: grab;
+  }
+
+  .panel h2 {
+    text-align: center;
+    color: #00ffcc;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 12px;
+    background: #222;
+    color: #fff;
+    font-size: 16px;
+  }
+
+  .message {
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #00ffcc;
+    min-height: 20px;
+    transition: color 0.3s;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 12px;
+    margin: 6px 0;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(45deg,#00ffcc,#0066ff);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,255,204,0.5);
+  }
+
+  .btn.active {
+    background: linear-gradient(45deg,#ff00ff,#ff0066);
+  }
+</style>
+</head>
+<body>
+
+<div class="panel" id="panel">
+  <h2>NHATQUI PANEL PRO</h2>
+
+  <input type="text" id="keyInput" placeholder="Nhập Key">
+  <button class="btn" onclick="checkKey()">Xác Nhận Key</button>
+  <div class="message" id="message"></div>
+
+  <button class="btn" id="dragBtn" onclick="toggleFeature(this,'Drag Config')">Drag Config</button>
+  <button class="btn" id="antiBtn" onclick="toggleFeature(this,'Antiband')">Antiband</button>
+  <button class="btn" id="aimbotBtn" onclick="toggleFeature(this,'Aimbot Tĩnh')">Aimbot Tĩnh</button>
+  <button class="btn" id="aimlockBtn" onclick="toggleFeature(this,'Aimlock Pro')">Aimlock Pro</button>
+  <button class="btn" id="speedBtn" onclick="toggleFeature(this,'Nhạy')">Nhạy</button>
+  <button class="btn" id="fpsBtn" onclick="toggleFeature(this,'Fps')">Fps</button>
+  <button class="btn" onclick="luaClose()">Lua Close</button>
+</div>
+
+<script>
+  const validKey = "NHATQUI-PANEL-ADHCUISBAQ";
+
+  function checkKey() {
+    const key = document.getElementById('keyInput').value;
+    const message = document.getElementById('message');
+    if(key === validKey){
+      message.textContent = "Thành Công!";
+      message.style.color = "#00ffcc";
+    } else {
+      message.textContent = "Key Không Hợp Lệ!";
+      message.style.color = "#ff4d4d";
+    }
+  }
+
+  function toggleFeature(btn, feature) {
+    btn.classList.toggle('active');
+    const state = btn.classList.contains('active') ? "Bật" : "Tắt";
+    alert(feature + " đã " + state + " (demo)!");
+  }
+
+  function luaClose() {
+    alert("Lua Close đã được thực thi (demo)!");
+  }
+
+  // --- Kéo thả panel ---
+  const panel = document.getElementById('panel');
+  let isDragging = false;
+  let offsetX, offsetY;
+
+  panel.addEventListener('mousedown', e => {
+    isDragging = true;
+    offsetX = e.clientX - panel.offsetLeft;
+    offsetY = e.clientY - panel.offsetTop;
+    panel.style.cursor = 'grabbing';
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+    panel.style.cursor = 'grab';
+  });
+
+  document.addEventListener('mousemove', e => {
+    if(isDragging){
+      panel.style.left = (e.clientX - offsetX) + 'px';
+      panel.style.top = (e.clientY - offsetY) + 'px';
+    }
+  });
+</script>
+
+</body>
+</html>
