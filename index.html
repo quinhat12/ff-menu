@@ -2,229 +2,132 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>VNWARE CHEAT</title>
+<title>VNWARE CHEAT Panel</title>
 <style>
 body {
-  background: #000;
-  margin: 0; font-family: Arial, sans-serif;
-  color: #0ff; text-align: center;
-  overflow: hidden;
-}
-
-/* Key nhập */
-#keyBox {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-  background: rgba(20,20,20,0.95);
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 25px #00ffe5, inset 0 0 15px #00ffe5;
-  animation: glowBox 2s infinite alternate;
-}
-#keyInput {
-  padding: 10px; border: none;
-  border-radius: 6px; width: 220px;
-  outline: none;
-  font-size: 14px;
-}
-#enterKeyBtn {
-  padding: 10px 20px; margin-top: 10px;
-  border: none; border-radius: 8px;
-  cursor: pointer; background: linear-gradient(90deg,#00ffe5,#0088ff);
-  color: #fff; font-weight: bold;
-}
-
-/* Panel chính */
-#panel {
-  display: none;
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%,-50%) scale(0.8);
-  background: rgba(15,15,15,0.95);
-  padding: 25px;
-  border-radius: 14px;
-  width: 400px;
-  box-shadow: 0 0 30px #00ffe5, inset 0 0 20px #00ffe5;
-  animation: glowBox 2s infinite alternate;
-}
-#panel h2 {
-  margin-top: 0;
+  background: #0a0a0a;
   color: #00ffe5;
-  text-shadow: 0 0 10px #00ffe5,0 0 20px #0088ff;
+  font-family: monospace;
+  text-align: center;
+  margin-top: 60px;
 }
-.btn {
-  display: block;
-  margin: 10px auto;
-  padding: 12px;
-  width: 80%;
+button {
+  padding: 10px 20px;
   border: none;
   border-radius: 8px;
-  background: linear-gradient(90deg,#00ffe5,#0088ff);
-  color: #fff;
-  font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 0 10px #00ffe5;
-  transition: 0.2s;
-}
-.btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px #00ffe5,0 0 30px #0088ff;
-}
-.btn.active {
-  background: #0f0;
-}
-
-/* Thông báo LED */
-.notify {
-  position: fixed;
-  top: 20px; left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,0.8);
-  padding: 12px 20px;
-  border-radius: 8px;
-  color: #00ffe5;
+  margin: 10px;
   font-weight: bold;
-  animation: glowText 1s infinite alternate;
-  z-index: 1000;
+  background: linear-gradient(90deg,#00ffe5,#0088ff);
+  color: white;
+  box-shadow: 0 0 10px #00ffe5;
+  transition: 0.3s;
 }
-
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #00ffe5;
+}
+.notify {
+  margin: 8px auto;
+  padding: 8px;
+  width: 65%;
+  border-radius: 6px;
+  background: rgba(0,255,229,0.08);
+  opacity: 0;
+  animation: fadeIn 1.2s forwards, glow 1.5s infinite alternate;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes glow {
+  from { box-shadow: 0 0 5px #00ffe5; }
+  to { box-shadow: 0 0 20px #00ffe5; }
+}
 /* Popup Anticheat */
 .anticheat-box {
   display: none;
   position: fixed;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(10,10,10,0.95);
-  border-radius: 12px;
+  background: rgba(15,15,15,0.95);
   padding: 20px;
-  text-align: center;
+  border-radius: 12px;
   color: #00ffe5;
-  box-shadow: 0 0 25px #00ffe5, inset 0 0 15px #00ffe5;
-  z-index: 999;
-  animation: glowBox 1.5s infinite alternate;
-}
-.anticheat-box p {
-  margin-bottom: 20px;
-  font-size: 18px;
-  text-shadow: 0 0 10px #00ffe5, 0 0 20px #0088ff;
-  animation: glowText 1s infinite alternate;
+  text-align: center;
+  box-shadow: 0 0 25px #00ffe5;
+  animation: fadeIn 0.8s forwards;
 }
 .anticheat-box button {
-  margin: 8px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  background: linear-gradient(90deg,#00ffe5,#0088ff);
-  color: #fff;
-  font-weight: bold;
-  box-shadow: 0 0 10px #00ffe5;
-  transition: 0.2s;
-}
-.anticheat-box button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px #00ffe5, 0 0 30px #0088ff;
-}
-
-/* Hiệu ứng LED */
-@keyframes glowBox {
-  from { box-shadow: 0 0 15px #00ffe5, inset 0 0 10px #0088ff; }
-  to   { box-shadow: 0 0 35px #00ffe5, inset 0 0 25px #0088ff; }
-}
-@keyframes glowText {
-  from { text-shadow: 0 0 10px #00ffe5, 0 0 20px #0088ff; }
-  to   { text-shadow: 0 0 20px #00ffe5, 0 0 40px #0088ff; }
+  margin: 10px;
 }
 </style>
 </head>
 <body>
-<div id="keyBox">
-  <h2>🔑 Enter Key</h2>
-  <input type="text" id="keyInput" placeholder="Nhập key...">
-  <br>
-  <button id="enterKeyBtn">Xác nhận</button>
-</div>
 
-<div id="panel">
-  <h2>VNWARE CHEAT PANEL</h2>
-  <button class="btn" id="aimlock">Aimlock</button>
-  <button class="btn" id="aimbot">Aimbot Tĩnh</button>
-  <button class="btn" id="antiband">Antiband</button>
-  <button class="btn" id="nhay">Nhạy Tâm</button>
-  <button class="btn" id="fps">Fps Pro</button>
-  <button class="btn" id="lua">Lua Console</button>
-  <button class="btn" id="injectBtn">Injector Free Fire</button>
-</div>
+<h2>VNWARE CHEAT - Injector Panel</h2>
+<button id="injectBtn">🚀 Inject Free Fire</button>
 
-<div class="anticheat-box" id="anticheatBox">
+<div id="logBox"></div>
+
+<!-- Popup Anticheat -->
+<div id="anticheatBox" class="anticheat-box">
   <p>⚠️ Muốn mở Anticheat 2.0.0 không?</p>
-  <button id="yesBtn">Yes</button>
-  <button id="closeBtn">Close</button>
+  <button id="yesAnticheat">Yes</button>
+  <button id="closeAnticheat">Close</button>
 </div>
 
 <script>
-const validKey = "VNWARE-WARE-TOP";
-document.getElementById("enterKeyBtn").onclick = ()=>{
-  const input = document.getElementById("keyInput").value;
-  if(input === validKey){
-    document.getElementById("keyBox").style.display="none";
-    document.getElementById("panel").style.display="block";
-    showNotify("✅ Key Accepted! Welcome to VNWARE CHEAT");
-  } else {
-    showNotify("❌ Invalid Key!");
-  }
-};
+const logs = [
+  "Initializing Injector...",
+  "Connecting to Free Fire client...",
+  "Loading Anticheat Module...",
+  "Anticheat 2.0.0 Verified ✅",
+  "Bypassing security layers...",
+  "Injecting DLL payload...",
+  "Establishing connection with game server...",
+  "Free Fire client detected version 19.9.1.0",
+  "Injection success ✔️",
+  "System ready! VNWARE CHEAT ONLINE 🚀"
+];
 
-function showNotify(msg){
+function showNotify(text){
+  const box = document.getElementById("logBox");
   let div = document.createElement("div");
-  div.className="notify";
-  div.innerText=msg;
-  document.body.appendChild(div);
-  setTimeout(()=>div.remove(),2500);
+  div.className = "notify";
+  div.innerText = text;
+  box.appendChild(div);
 }
 
-document.querySelectorAll(".btn").forEach(btn=>{
-  if(btn.id === "injectBtn"){
-    btn.addEventListener("click", ()=>{
-      btn.classList.add("active");
-      let logs = [
-        "🔌 Connecting to Free Fire client...",
-        "🔍 Checking version: 19.9.1.0",
-        "🛡️ Loading Anticheat Module...",
-        "⚙️ Bypassing security layer 1...",
-        "⚙️ Bypassing security layer 2...",
-        "📡 Connecting to VNWARE Server...",
-        "📂 Injecting cheat payload...",
-        "🔧 Optimizing memory hooks...",
-        "🎮 Syncing with Free Fire server...",
-        "✅ Injection Success! Free Fire Client Ready."
-      ];
-      logs.forEach((line, i)=>{
-        setTimeout(()=>{
-          showNotify(line);
-          if(line.includes("Anticheat Module")){
-            document.getElementById("anticheatBox").style.display="block";
-          }
-        }, i*800);
-      });
-      setTimeout(()=>btn.classList.remove("active"), logs.length*800 + 500);
-    });
-  } else {
-    btn.addEventListener("click", ()=>{
-      btn.classList.toggle("active");
-      let status = btn.classList.contains("active") ? "ON" : "OFF";
-      showNotify(`${btn.innerText} ${status} Success!`);
-    });
+document.getElementById("injectBtn").addEventListener("click", ()=>{
+  document.getElementById("logBox").innerHTML = "";
+  
+  logs.forEach((line,i)=>{
+    if(line.includes("Loading Anticheat Module...")){
+      setTimeout(()=>{
+        showNotify(line);
+        document.getElementById("anticheatBox").style.display = "block";
+      }, i*1500);
+    } else if(i < 3){
+      setTimeout(()=>showNotify(line), i*1500);
+    }
+  });
+});
+
+// Yes -> tiếp tục log
+document.getElementById("yesAnticheat").addEventListener("click", ()=>{
+  document.getElementById("anticheatBox").style.display = "none";
+  for(let j=3;j<logs.length;j++){
+    setTimeout(()=>showNotify(logs[j]), (j-2)*1500);
   }
 });
 
-document.getElementById("yesBtn").onclick = ()=>{
-  showNotify("🛡️ Anticheat 2.0.0 Enabled!");
-  document.getElementById("anticheatBox").style.display="none";
-};
-document.getElementById("closeBtn").onclick = ()=>{
-  showNotify("❌ Anticheat Cancelled");
-  document.getElementById("anticheatBox").style.display="none";
-};
+// Close -> hủy
+document.getElementById("closeAnticheat").addEventListener("click", ()=>{
+  document.getElementById("anticheatBox").style.display = "none";
+  showNotify("❌ Anticheat canceled!");
+});
 </script>
+
 </body>
 </html>
