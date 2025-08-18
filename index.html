@@ -1,201 +1,125 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VNWARE CHEAT PANEL</title>
-<style>
-  body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: black;
-    font-family: 'Segoe UI', sans-serif;
-    overflow: hidden;
-  }
-  body::before {
-    content: "";
-    position: absolute;
-    top:0; left:0; right:0; bottom:0;
-    background: radial-gradient(circle, rgba(0,255,229,0.1) 0%, rgba(0,0,0,0.95) 80%);
-    z-index: 0;
-  }
-  .panel, .keyScreen {
-    width: 320px;
-    background: rgba(20,20,20,0.9);
-    border-radius: 15px;
-    padding: 20px;
-    text-align: center;
-    position: relative;
-    z-index: 1;
-    transform: scale(0.8); /* nhỏ lại 20% */
-    box-shadow: 0 0 20px #00ffe5, 0 0 40px #ff00ff;
-    animation: float 4s ease-in-out infinite;
-  }
-  @keyframes float {0%{transform:scale(0.8) translateY(0);}50%{transform:scale(0.8) translateY(-8px);}100%{transform:scale(0.8) translateY(0);}}
-  h2 {
-    color: #00ffe5;
-    margin-bottom: 20px;
-    text-shadow: 0 0 15px #00ffe5, 0 0 30px #ff00ff;
-    animation: glowText 2s ease-in-out infinite alternate;
-  }
-  @keyframes glowText {from{text-shadow:0 0 10px #00ffe5;}to{text-shadow:0 0 25px #ff00ff;}}
-  input[type="text"] {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 2px solid #00ffe5;
-    margin-bottom: 15px;
-    background: #111;
-    color: #fff;
-    font-size: 16px;
-    outline: none;
-    text-align: center;
-  }
-  .btn {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    color: #fff;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    background: #111;
-    border: 2px solid transparent;
-  }
-  .btn:before {
-    content: "";
-    position: absolute;
-    top: -2px; left: -2px; right: -2px; bottom: -2px;
-    background: linear-gradient(90deg, #ff00ff, #00ffe5, #0099ff, #ff00ff);
-    background-size: 400%;
-    z-index: -1;
-    filter: blur(6px);
-    animation: glowing 6s linear infinite;
-  }
-  .btn.active {background: rgba(0,255,229,0.2); border: 2px solid #00ffe5;}
-  @keyframes glowing {0%{background-position:0%;}50%{background-position:200%;}100%{background-position:0%;}}
-  .server {margin-bottom: 15px; color: #ffcc00; font-weight: bold; text-shadow: 0 0 10px #ffcc00;}
-  .logBox {
-    margin-top: 15px;
-    padding: 12px;
-    border-radius: 8px;
-    background: rgba(0,0,0,0.7);
-    font-family: monospace;
-    font-size: 14px;
-    color: #0f0;
-    text-align: left;
-    max-height: 180px;
-    overflow-y: auto;
-    display: none;
-    box-shadow: 0 0 15px #00ff90;
-    animation: fadeIn 1s ease;
-  }
-  @keyframes fadeIn {from{opacity:0;}to{opacity:1;}}
-  /* Popup thông báo */
-  .popup {
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(20,20,20,0.95);
-    padding: 20px 40px;
-    border-radius: 12px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    color: #00ffe5;
-    text-shadow: 0 0 15px #00ffe5, 0 0 30px #ff00ff;
-    box-shadow: 0 0 25px #00ffe5, 0 0 50px #ff00ff;
-    animation: popupAnim 0.5s ease;
-    z-index: 99;
-  }
-  @keyframes popupAnim {from{opacity:0; transform:translate(-50%,-60%);}to{opacity:1; transform:translate(-50%,-50%);}}
-</style>
+  <meta charset="UTF-8">
+  <title>VNWARE CHEAT PANEL</title>
+  <style>
+    body{
+      margin:0;height:100vh;display:flex;justify-content:center;align-items:center;
+      background:linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#0f2027);
+      background-size:400% 400%;animation:gradient 12s ease infinite;font-family:Arial,sans-serif;
+    }
+    @keyframes gradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .panel{
+      width:380px;background:rgba(20,20,20,.95);border-radius:16px;padding:25px;text-align:center;color:#fff;
+      box-shadow:0 0 25px #00ffe5,0 0 50px #8000ff;animation:glow 2s infinite alternate;
+    }
+    @keyframes glow{from{box-shadow:0 0 25px #00ffe5,0 0 50px #8000ff}to{box-shadow:0 0 40px #ff00ff,0 0 70px #00ffe5}}
+    h2{margin-bottom:20px;font-size:22px;text-transform:uppercase;text-shadow:0 0 12px #00ffe5,0 0 24px #ff00ff}
+    input[type=text]{
+      width:calc(100% - 24px);padding:12px;border-radius:8px;border:2px solid #00ffe5;margin-bottom:15px;background:#111;color:#fff;
+      font-size:16px;outline:none;text-align:center;box-sizing:border-box;
+    }
+    button{
+      width:100%;padding:12px;border:none;border-radius:8px;background:linear-gradient(90deg,#00ffe5,#8000ff);
+      color:#fff;font-weight:bold;cursor:pointer;transition:transform .2s,box-shadow .2s;margin:8px 0;
+    }
+    button:hover{transform:scale(1.05);box-shadow:0 0 15px #00ffe5}
+    .hidden{display:none}
+    .feature-btn.active{background:linear-gradient(90deg,#12e2a3,#6f00ff);box-shadow:0 0 15px rgba(0,255,229,.4)}
+    /* LED popup */
+    .notify{
+      position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(15,15,15,.95);color:#fff;
+      padding:18px 25px;border-radius:10px;box-shadow:0 0 20px #00ffe5,0 0 35px #ff00ff;font-size:18px;text-align:center;z-index:1000;
+      animation:fadeIn .35s ease,fadeOut .4s ease 2.4s forwards;text-shadow:0 0 10px #00ffe5,0 0 20px #ff00ff;
+    }
+    @keyframes fadeIn{from{opacity:0;transform:translate(-50%,-60%)}to{opacity:1;transform:translate(-50%,-50%)}}
+    @keyframes fadeOut{from{opacity:1}to{opacity:0}}
+  </style>
 </head>
 <body>
+  <!-- Login -->
+  <div class="panel" id="loginPanel">
+    <h2>VNWARE CHEAT - Login</h2>
+    <input type="text" id="keyInput" placeholder="Nhập key...">
+    <button onclick="checkKey()">Xác nhận</button>
+  </div>
 
-<!-- Nhập Key -->
-<div class="keyScreen" id="keyScreen">
-  <h2>VNWARE CHEAT PANEL</h2>
-  <input type="text" id="keyInput" placeholder="Nhập Key">
-  <button class="btn" onclick="checkKey()">Xác Nhận Key</button>
-</div>
+  <!-- Menu -->
+  <div class="panel hidden" id="menuPanel">
+    <h2>VNWARE CHEAT PANEL<br>Api Server 5.0.0 Dev</h2>
 
-<!-- Menu -->
-<div class="panel" id="menuPanel" style="display:none;">
-  <h2>VNWARE CHEAT MENU</h2>
-  <div class="server">Api Server 6.0.0 • VNWARE CHEAT</div>
-  
-  <button class="btn" onclick="toggleFeature(this,'Aimlock')">Aimlock: OFF</button>
-  <button class="btn" onclick="toggleFeature(this,'Aimbot Tĩnh')">Aimbot Tĩnh: OFF</button>
-  <button class="btn" onclick="toggleFeature(this,'Antiband')">Antiband: OFF</button>
-  <button class="btn" onclick="toggleFeature(this,'Nhạy Tâm')">Nhạy Tâm: OFF</button>
-  <button class="btn" onclick="toggleFeature(this,'Fps Pro')">Fps Pro: OFF</button>
-  <button class="btn" onclick="injectFF()">🚀 Injector Free Fire</button>
+    <!-- Các nút chức năng: thêm data-label để hiện tiếng Anh -->
+    <button class="feature-btn" data-label="Aimlock Pro">⚡ Aimlock Pro</button>
+    <button class="feature-btn" data-label="Static Aimbot">🎯 Aimbot Tĩnh</button>
+    <button class="feature-btn" data-label="Antiband">🛡️ Antiband</button>
+    <button class="feature-btn" data-label="Aim Sensitivity">✨ Nhạy Tâm</button>
+    <button class="feature-btn" data-label="FPS Pro">🚀 Fps Pro</button>
 
-  <div class="logBox" id="logBox"></div>
-</div>
+    <button id="injectBtn" class="feature-btn" data-label="Injector Free Fire">🔌 Injector Free Fire</button>
+    <button id="luaBtn" class="feature-btn" data-label="Lua Console">🎮 Lua Console</button>
+  </div>
 
-<script>
-  const validKey = "VNWARE-WARE-TOP";
-  const keyScreen = document.getElementById('keyScreen');
-  const menuPanel = document.getElementById('menuPanel');
-  const logBox = document.getElementById('logBox');
+  <script>
+    const KEY = "VNWARE-WARE-TOP";
+    const loginPanel = document.getElementById("loginPanel");
+    const menuPanel  = document.getElementById("menuPanel");
 
-  function checkKey() {
-    const key = document.getElementById('keyInput').value;
-    if(key === validKey){
-      showPopup("✔ Key chính xác - Chào mừng đến VNWARE CHEAT!");
-      keyScreen.style.display = "none";
-      menuPanel.style.display = "block";
-    } else {
-      showPopup("❌ Key sai, vui lòng thử lại!");
+    function showNotify(text){
+      const el = document.createElement("div");
+      el.className = "notify";
+      el.textContent = text;
+      document.body.appendChild(el);
+      setTimeout(()=> el.remove(), 2800);
     }
-  }
 
-  function toggleFeature(btn, name){
-    btn.classList.toggle("active");
-    const state = btn.classList.contains("active") ? "ON" : "OFF";
-    btn.textContent = `${name}: ${state}`;
-  }
-
-  function injectFF(){
-    logBox.style.display = "block";
-    const logs = [
-      "[✔] Đang kết nối tới Client Free Fire...",
-      "[✔] Phiên bản Client: 19.9.1.0",
-      "[✔] Server: Vietnam (VN)",
-      "[✔] Inject thành công vào tiến trình Free Fire",
-      "[✔] Bật Module Antiband",
-      "[✔] Hệ thống Anticheat: Cao",
-      "[✔] Status: Injector thành công!"
-    ];
-    logBox.innerHTML = "";
-    let i = 0;
-    const interval = setInterval(()=>{
-      if(i < logs.length){
-        logBox.innerHTML += logs[i] + "<br>";
-        logBox.scrollTop = logBox.scrollHeight;
-        i++;
-      } else {
-        clearInterval(interval);
+    function checkKey(){
+      const key = document.getElementById("keyInput").value.trim();
+      if(key === KEY){
+        loginPanel.classList.add("hidden");
+        menuPanel.classList.remove("hidden");
+        showNotify("✅ Key verified — Welcome to VNWARE CHEAT");
+      }else{
+        showNotify("❌ Invalid key — please try again");
       }
-    },800);
-  }
+    }
 
-  function showPopup(msg){
-    const popup = document.createElement("div");
-    popup.className = "popup";
-    popup.innerText = msg;
-    document.body.appendChild(popup);
-    setTimeout(()=>{popup.remove();},3000);
-  }
-</script>
+    // Handler chung cho tất cả nút chức năng
+    function attachFeatureHandlers(){
+      document.querySelectorAll(".feature-btn").forEach(btn=>{
+        const label = btn.dataset.label || btn.textContent.trim();
+
+        // Injector: thông báo riêng + trạng thái
+        if(btn.id === "injectBtn"){
+          btn.addEventListener("click", ()=>{
+            btn.classList.add("active");
+            showNotify(`${label}: Injected Successfully — Success`);
+            // Có thể thêm log/giả lập tiến trình tại đây nếu muốn
+            setTimeout(()=>btn.classList.remove("active"), 1200);
+          });
+          return;
+        }
+
+        // Lua Console: thông báo riêng
+        if(btn.id === "luaBtn"){
+          btn.addEventListener("click", ()=>{
+            btn.classList.toggle("active");
+            const on = btn.classList.contains("active");
+            showNotify(`${label}: ${on ? "Opened — Success" : "Closed"}`);
+          });
+          return;
+        }
+
+        // Các chức năng còn lại: toggle ON/OFF + thông báo EN
+        btn.addEventListener("click", ()=>{
+          btn.classList.toggle("active");
+          const on = btn.classList.contains("active");
+          showNotify(`${label}: ${on ? "Enabled — Success" : "Disabled"}`);
+        });
+      });
+    }
+
+    attachFeatureHandlers();
+  </script>
 </body>
 </html>
