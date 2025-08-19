@@ -1,31 +1,172 @@
-<!-- Maintenance Alert -->
-<div id="maintenanceAlert">⚠️ MÁY CHỦ BẢO TRÌ, VUI LÒNG ĐỢI...!</div>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VNWARE CHEAT PANEL PRO</title>
 <style>
-#maintenanceAlert{
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  background:rgba(0,0,0,0.85);
-  padding:25px 50px;
-  border:3px solid #ff0000;
-  border-radius:15px;
-  text-align:center;
-  font-size:32px;
-  font-weight:bold;
-  color:#ff3300;
-  text-shadow:0 0 20px #ff3300,0 0 40px #ff9900;
-  z-index:9999;
-  animation:alertPulse 1s ease-in-out infinite alternate;
-}
-@keyframes alertPulse{
-  0%{box-shadow:0 0 20px #ff3300,0 0 40px #ff9900; transform:translate(-50%,-50%) scale(1);}
-  50%{box-shadow:0 0 35px #ff3300,0 0 70px #ff9900; transform:translate(-50%,-50%) scale(1.08);}
-  100%{box-shadow:0 0 20px #ff3300,0 0 40px #ff9900; transform:translate(-50%,-50%) scale(1);}
-}
+body {margin:0;height:100vh;background:#0c0c0c;overflow:hidden;font-family:'Orbitron', monospace;color:#0ff;}
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+/* Particles */
+.particle{position:fixed;top:0;left:0;width:4px;height:4px;border-radius:50%;background:#0ff;opacity:0.7;animation:move linear infinite;}
+@keyframes move{to{transform:translateY(110vh) translateX(50px);opacity:0;}}
+
+/* Overlay notification */
+#overlay{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,255,238,0.15);padding:25px 40px;border:2px solid #0ff;border-radius:12px;text-align:center;z-index:1000;box-shadow:0 0 20px #0ff,0 0 40px #00ffff;}
+#overlay h1{color:#0ff;font-size:24px;text-shadow:0 0 10px #0ff,0 0 20px #00ffff;animation:glow 1.5s ease-in-out infinite alternate;}
+@keyframes glow{0%{text-shadow:0 0 10px #0ff,0 0 20px #00ffff;}100%{text-shadow:0 0 25px #0ff,0 0 50px #00ffff;}}
+
+/* Key Form */
+#keyForm{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:rgba(0,0,0,0.85);}
+#keyInput{padding:12px;font-size:18px;border:2px solid #0ff;border-radius:8px;outline:none;background:#111;color:#0ff;text-align:center;}
+#submitKey{margin-top:12px;padding:10px 22px;font-size:16px;background:#0ff;border:none;border-radius:8px;cursor:pointer;font-weight:bold;color:#000;transition:0.3s;}
+#submitKey:hover{background:#0cc;color:#000;}
+
+/* Loading */
+#loading{display:none;height:100vh;justify-content:center;align-items:center;background:rgba(0,0,0,0.9);flex-direction:column;}
+.loading-box{background:#111;padding:20px;border-radius:10px;box-shadow:0 0 20px #0ff;text-align:center;width:240px;}
+.progress-bar{width:100%;height:16px;background:#222;border-radius:8px;overflow:hidden;margin-top:10px;}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#0ff,#00ffff);transition:width 0.1s linear;}
+.progress-text{margin-top:6px;font-size:14px;color:#0ff;}
+
+/* Injector log */
+#injectorLog{display:none;height:100vh;background:rgba(0,0,0,0.95);padding:20px;overflow-y:auto;font-size:14px;white-space:pre-line;color:#0ff;text-shadow:0 0 5px #0ff;}
+
+/* Panel */
+#panel{display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:75%;max-width:450px;background:rgba(10,10,10,0.95);border-radius:15px;padding:25px;box-shadow:0 0 20px #0ff,0 0 35px #00ffff;text-align:center;}
+#panel h2{margin-bottom:20px;text-shadow:0 0 10px #0ff,0 0 25px #00ffff;}
+.btn{width:100%;padding:12px;margin:8px 0;border:none;border-radius:10px;font-weight:bold;color:#fff;cursor:pointer;position:relative;overflow:hidden;background:#111;transition:0.3s;}
+.btn:before{content:"";position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;background:linear-gradient(90deg,#0ff,#00ffff,#0ff);background-size:400%;z-index:-1;filter:blur(6px);animation:glowing 6s linear infinite;}
+.btn.active{background:rgba(0,255,238,0.2);box-shadow:0 0 10px #0ff,0 0 20px #00ffff;}
+@keyframes glowing{0%{background-position:0%;}50%{background-position:200%;}100%{background-position:0%;}}
 </style>
+</head>
+<body>
+
+<!-- Overlay -->
+<div id="overlay"><h1>ACCESS GRANTED</h1></div>
+
+<!-- Key -->
+<div id="keyForm">
+<h2>🔐 Enter Key VNWARE CHEAT PRO</h2>
+<input type="text" id="keyInput" placeholder="Enter Key...">
+<button id="submitKey">Unlock</button>
+</div>
+
+<!-- Loading -->
+<div id="loading">
+<div class="loading-box">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">0%</div>
+</div>
+</div>
+
+<!-- Injector log -->
+<div id="injectorLog"></div>
+
+<!-- Panel -->
+<div id="panel">
+<h2>VNWARE CHEAT PANEL PRO</h2>
+<button class="btn" onclick="toggleFeature(this,'Aimlock')">Aimlock: OFF</button>
+<button class="btn" onclick="toggleFeature(this,'Aimbot Tĩnh')">Aimbot Tĩnh: OFF</button>
+<button class="btn" onclick="toggleFeature(this,'Antiband')">Antiband: OFF</button>
+<button class="btn" onclick="toggleFeature(this,'Nhạy Tâm')">Nhạy Tâm: OFF</button>
+<button class="btn" onclick="toggleFeature(this,'FPS Pro')">FPS Pro: OFF</button>
+<button class="btn" onclick="toggleFeature(this,'Speed Boost')">Speed Boost: OFF</button>
+<button class="btn" onclick="toggleFeature(this,'Server Info')">Server Info: OFF</button>
+<button class="btn" onclick="toggleFeature(this,'Lua Console')">Lua Console: OFF</button>
+</div>
 
 <script>
-// Nếu muốn, có thể giữ hiển thị liên tục, không cần ẩn
+const CORRECT_KEY="VNWARE-WARE-TOP";
+const keyForm=document.getElementById("keyForm");
+const keyInput=document.getElementById("keyInput");
+const loading=document.getElementById("loading");
+const progressFill=document.getElementById("progressFill");
+const progressText=document.getElementById("progressText");
+const injectorLog=document.getElementById("injectorLog");
+const panel=document.getElementById("panel");
+const overlay=document.getElementById("overlay");
+
+// Key check + loading
+document.getElementById("submitKey").addEventListener("click",()=>{
+  if(keyInput.value===CORRECT_KEY){
+    keyForm.style.display="none"; loading.style.display="flex";
+    let progress=0;
+    const interval=setInterval(()=>{
+      progress++; progressFill.style.width=progress+"%";
+      progressText.innerText=progress+"%";
+      if(progress>=100){ clearInterval(interval); loading.style.display="none"; showOverlay(); showInjectorLog(); }
+    },30);
+  }else{ alert("❌ Invalid Key!"); }
+});
+
+// Overlay notification
+function showOverlay(){
+  overlay.style.display="block";
+  setTimeout(()=>{overlay.style.display="none";},2000);
+}
+
+// Injector log
+function showInjectorLog(){
+  injectorLog.style.display="block";
+  const logs=[
+    "[INIT] VNWARE Injector v6.0.0 starting...",
+    "[CHECK] Free Fire Client Found (19.9.1.0)",
+    "[BYPASS] Anticheat Module Loaded",
+    "[MEMORY] Allocating secure memory space...",
+    "[HOOK] Aimlock Engine Injected...",
+    "[HOOK] Aimbot Tĩnh Injected...",
+    "[HOOK] FPS Optimizer Loaded",
+    "[HOOK] Speed Boost Module Injected",
+    "[HOOK] Antiband Shield Enabled",
+    "[SERVER] Server Info Retrieved",
+    "[HOOK] Lua Console Ready",
+    "[SUCCESS] Injection Completed!"
+  ];
+  let i=0;
+  function addLog(){
+    if(i<logs.length){
+      const line=document.createElement("div");
+      line.classList.add("log-line");
+      line.style.animationDelay=(i*0.5)+"s";
+      line.innerText=logs[i];
+      injectorLog.appendChild(line);
+      i++;
+      setTimeout(addLog,500);
+    }else{
+      setTimeout(()=>{ injectorLog.style.display="none"; panel.style.display="block"; },500);
+    }
+  }
+  addLog();
+}
+
+// Toggle features
+function toggleFeature(btn,name){
+  btn.classList.toggle("active");
+  const state=btn.classList.contains("active")?"ON":"OFF";
+  btn.textContent=name+": "+state;
+
+  const log=document.createElement("div");
+  log.classList.add("log-line");
+  log.innerText=`[ACTION] ${name} turned ${state}`;
+  injectorLog.appendChild(log);
+  injectorLog.scrollTop=injectorLog.scrollHeight;
+  injectorLog.style.display="block";
+  setTimeout(()=>{ injectorLog.style.display="none"; },1200);
+}
+
+// Snow/particles
+function createParticle(){
+  const p=document.createElement("div");
+  p.classList.add("particle");
+  p.style.left=Math.random()*window.innerWidth+"px";
+  p.style.width=p.style.height=(2+Math.random()*4)+"px";
+  p.style.animationDuration=(3+Math.random()*4)+"s";
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),7000);
+}
+setInterval(createParticle,120);
 </script>
+</body>
+</html>
