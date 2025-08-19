@@ -1,136 +1,34 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-<meta charset="UTF-8">
-<title>VNWARE CHEAT PANEL</title>
+<!-- Alert -->
+<div id="maintenanceAlert">⚠️ Máy Chủ Bảo Trì, Vui Lòng Đợi...!</div>
+
 <style>
-body {margin:0;height:100vh;background:#0f0f0f;overflow:hidden;font-family:monospace;color:#00ffea;}
-.snowflake{position:fixed;top:-10px;color:#fff;font-size:14px;opacity:0.7;animation:fall linear infinite;z-index:999;}
-@keyframes fall{to{transform:translateY(110vh);}}
-
-/* Key Form */
-#keyForm{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:rgba(0,0,0,0.8);}
-#keyInput{padding:10px;font-size:18px;border:2px solid #00ffea;border-radius:6px;outline:none;background:black;color:#00ffea;text-align:center;}
-#submitKey{margin-top:12px;padding:8px 18px;font-size:16px;background:#00ffea;border:none;border-radius:6px;cursor:pointer;font-weight:bold;color:#000;}
-
-/* Loading */
-#loading{display:none;height:100vh;justify-content:center;align-items:center;background:rgba(0,0,0,0.9);flex-direction:column;}
-.loading-box{background:#111;padding:15px;border-radius:8px;box-shadow:0 0 12px #00ffea;text-align:center;width:220px;}
-.progress-bar{width:100%;height:14px;background:#333;border-radius:8px;overflow:hidden;margin-top:8px;}
-.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#00ffea,#008cff);transition:width 0.1s linear;}
-.progress-text{margin-top:6px;font-size:14px;color:#00ffea;}
-
-/* Injector log */
-#injectorLog{display:none;height:100vh;background:rgba(0,0,0,0.95);padding:20px;overflow-y:auto;font-size:14px;white-space:pre-line;color:#00ffea;text-shadow:0 0 5px #00ffea;}
-.log-line{opacity:0;animation:typing 1s forwards;}
-@keyframes typing{from{opacity:0;}to{opacity:1;}}
-
-/* Panel */
-#panel{display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;background:rgba(20,20,20,0.95);border-radius:12px;padding:20px;box-shadow:0 0 15px #00ffea,0 0 25px #008cff;text-align:center;}
-#panel h2{margin-bottom:15px;text-shadow:0 0 8px #00ffea,0 0 16px #008cff;}
-.btn{width:100%;padding:10px;margin:6px 0;border:none;border-radius:8px;font-weight:bold;color:#fff;cursor:pointer;position:relative;overflow:hidden;background:#111;}
-.btn:before{content:"";position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;background:linear-gradient(90deg,#00ffea,#008cff,#00ffea);background-size:400%;z-index:-1;filter:blur(6px);animation:glowing 6s linear infinite;}
-.btn.active{background:rgba(0,255,229,0.2);}
-@keyframes glowing{0%{background-position:0%;}50%{background-position:200%;}100%{background-position:0%;}}
+#maintenanceAlert{
+  position:fixed;
+  top:40%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(0,0,0,0.85);
+  padding:20px 35px;
+  border:2px solid #ff0000;
+  border-radius:12px;
+  text-align:center;
+  font-size:22px;
+  font-weight:bold;
+  color:#ff3300;
+  text-shadow:0 0 10px #ff3300,0 0 20px #ff9900;
+  z-index:1000;
+  animation:alertPulse 1s ease-in-out infinite alternate;
+}
+@keyframes alertPulse{
+  0%{box-shadow:0 0 15px #ff3300,0 0 30px #ff9900; transform:translate(-50%,-50%) scale(1);}
+  50%{box-shadow:0 0 25px #ff3300,0 0 50px #ff9900; transform:translate(-50%,-50%) scale(1.05);}
+  100%{box-shadow:0 0 15px #ff3300,0 0 30px #ff9900; transform:translate(-50%,-50%) scale(1);}
+}
 </style>
-</head>
-<body>
-
-<!-- Key -->
-<div id="keyForm">
-<h2>🔐 Nhập Key VNWARE CHEAT</h2>
-<input type="text" id="keyInput" placeholder="Enter Key...">
-<button id="submitKey">Unlock</button>
-</div>
-
-<!-- Loading -->
-<div id="loading">
-<div class="loading-box">
-  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-  <div class="progress-text" id="progressText">0%</div>
-</div>
-</div>
-
-<!-- Injector log -->
-<div id="injectorLog"></div>
-
-<!-- Panel -->
-<div id="panel">
-<h2>VNWARE CHEAT PANEL</h2>
-<button class="btn" onclick="toggleFeature(this,'Speed Boost')">Speed Boost: OFF</button>
-<button class="btn" onclick="toggleFeature(this,'FPS Pro')">FPS Pro: OFF</button>
-<button class="btn" onclick="toggleFeature(this,'Server Info')">Server Info: OFF</button>
-</div>
 
 <script>
-const CORRECT_KEY="VNWARE-WARE-TOP";
-const keyForm=document.getElementById("keyForm");
-const keyInput=document.getElementById("keyInput");
-const loading=document.getElementById("loading");
-const progressFill=document.getElementById("progressFill");
-const progressText=document.getElementById("progressText");
-const injectorLog=document.getElementById("injectorLog");
-const panel=document.getElementById("panel");
-
-document.getElementById("submitKey").addEventListener("click",()=>{
-  if(keyInput.value===CORRECT_KEY){
-    keyForm.style.display="none"; loading.style.display="flex";
-    let progress=0;
-    const interval=setInterval(()=>{
-      progress++; progressFill.style.width=progress+"%";
-      progressText.innerText=progress+"%";
-      if(progress>=100){ clearInterval(interval); loading.style.display="none"; showInjectorLog(); }
-    },40);
-  }else{ alert("❌ Sai key!"); }
-});
-
-function showInjectorLog(){
-  injectorLog.style.display="block";
-  const logs=[
-    "[INIT] VNWARE Injector v5.0.0 starting...",
-    "[CHECK] Free Fire Client Found (19.9.1.0)",
-    "[BYPASS] Anticheat Module Loaded",
-    "[MEMORY] Allocating secure memory space...",
-    "[HOOK] Speed Boost Module Injected",
-    "[HOOK] FPS Optimizer Loaded",
-    "[SERVER] Server Info Retrieved",
-    "[SUCCESS] Injection Completed!"
-  ];
-  let i=0;
-  function addLog(){
-    if(i<logs.length){
-      const line=document.createElement("div");
-      line.classList.add("log-line");
-      line.style.animationDelay=(i*0.8)+"s";
-      line.innerText=logs[i];
-      injectorLog.appendChild(line);
-      i++;
-      setTimeout(addLog,800);
-    }else{
-      setTimeout(()=>{ injectorLog.style.display="none"; panel.style.display="block"; },800);
-    }
-  }
-  addLog();
-}
-
-function toggleFeature(btn,name){
-  btn.classList.toggle("active");
-  const state=btn.classList.contains("active")?"ON":"OFF";
-  btn.textContent=name+": "+state;
-}
-
-// Snow
-function createSnowflake(){
-  const snowflake=document.createElement("div");
-  snowflake.classList.add("snowflake"); snowflake.innerHTML="❄";
-  snowflake.style.left=Math.random()*window.innerWidth+"px";
-  snowflake.style.animationDuration=(3+Math.random()*5)+"s";
-  snowflake.style.opacity=Math.random();
-  document.body.appendChild(snowflake);
-  setTimeout(()=>snowflake.remove(),8000);
-}
-setInterval(createSnowflake,150);
+// Hiển thị alert trong 3 giây rồi ẩn
+setTimeout(()=>{
+  document.getElementById("maintenanceAlert").style.display="none";
+},3000);
 </script>
-</body>
-</html>
-</html>
