@@ -1,240 +1,371 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>VNWARE CHEAT PANEL</title>
-  <style>
-    body {
-      background: #000;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      overflow: hidden;
-      color: #fff;
-    }
-    /* Hiệu ứng LED */
-    .led-text {
-      font-size: 28px;
-      font-weight: bold;
-      text-align: center;
-      color: #0ff;
-      text-shadow:
-        0 0 5px #0ff,
-        0 0 10px #0ff,
-        0 0 20px #0ff,
-        0 0 40px #0ff;
-      animation: flicker 1.5s infinite alternate;
-    }
-    @keyframes flicker {
-      from { opacity: 1; }
-      to { opacity: 0.7; }
-    }
-    /* Container chính nhỏ lại 20% */
-    .panel {
-      transform: scale(0.8);
-      background: rgba(20,20,20,0.9);
-      padding: 20px;
-      border: 2px solid #0ff;
-      border-radius: 15px;
-      text-align: center;
-      width: 450px;
-      box-shadow: 0 0 30px #0ff;
-    }
-    .btn {
-      background: transparent;
-      border: 2px solid #0ff;
-      color: #0ff;
-      font-size: 16px;
-      padding: 10px;
-      margin: 8px;
-      width: 180px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-      text-shadow: 0 0 10px #0ff;
-    }
-    .btn:hover {
-      background: #0ff;
-      color: #000;
-      box-shadow: 0 0 20px #0ff;
-    }
-    #logBox {
-      margin-top: 15px;
-      text-align: left;
-      font-size: 14px;
-      max-height: 150px;
-      overflow-y: auto;
-      border-top: 1px solid #0ff;
-      padding-top: 10px;
-    }
-    /* Popup Anticheat */
-    .popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.95);
-      border: 2px solid #0ff;
-      border-radius: 10px;
-      padding: 20px;
-      color: #0ff;
-      text-align: center;
-      box-shadow: 0 0 30px #0ff;
-      z-index: 999;
-    }
-    .popup button {
-      margin: 10px;
-      padding: 8px 15px;
-      background: transparent;
-      border: 2px solid #0ff;
-      color: #0ff;
-      cursor: pointer;
-      border-radius: 6px;
-      text-shadow: 0 0 10px #0ff;
-    }
-    .popup button:hover {
-      background: #0ff;
-      color: #000;
-    }
-    /* Thông báo LED giữa màn hình */
-    .toast {
-      position: fixed;
-      top: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.85);
-      padding: 15px 25px;
-      border: 2px solid #0ff;
-      border-radius: 8px;
-      font-size: 18px;
-      text-shadow: 0 0 10px #0ff;
-      box-shadow: 0 0 25px #0ff;
-      animation: fadein 0.5s, fadeout 0.5s 2.5s;
-      z-index: 1000;
-    }
-    @keyframes fadein { from {opacity: 0;} to {opacity: 1;} }
-    @keyframes fadeout { from {opacity: 1;} to {opacity: 0;} }
-    /* Form nhập key */
-    #loginBox {
-      text-align: center;
-    }
-    #keyInput {
-      padding: 10px;
-      width: 250px;
-      border-radius: 8px;
-      border: 2px solid #0ff;
-      background: transparent;
-      color: #0ff;
-      font-size: 16px;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>VNWARE CHEAT PANEL</title>
+<style>
+  :root{
+    --led1:#00ffe5;
+    --led2:#0088ff;
+    --bg:#050507;
+  }
+
+  html,body{height:100%;margin:0;background:var(--bg);font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--led1);-webkit-font-smoothing:antialiased;}
+  .wrap{display:flex;align-items:center;justify-content:center;height:100%;position:relative;overflow:hidden;}
+
+  /* snow layer */
+  .snow-layer{position:fixed;inset:0;pointer-events:none;z-index:10;opacity:0.9}
+
+  /* panel scale */
+  .panel {
+    width:460px;
+    padding:22px;
+    border-radius:14px;
+    background: linear-gradient(180deg, rgba(8,8,10,0.95), rgba(12,12,14,0.95));
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 40px rgba(0,255,229,0.02);
+    transform: scale(0.8);
+    text-align:center;
+    z-index:50;
+  }
+
+  .led-title{
+    font-size:22px;font-weight:800;color:var(--led1);
+    text-shadow: 0 0 8px rgba(0,255,229,0.12), 0 0 20px rgba(0,136,255,0.06);
+    margin:0 0 14px;
+    animation: flicker 1.6s infinite alternate;
+  }
+  @keyframes flicker{from{opacity:1}to{opacity:0.78}}
+
+  /* key row */
+  #keyInput{
+    width:calc(100% - 28px);
+    padding:10px 12px;border-radius:8px;border:2px solid rgba(0,255,229,0.12);
+    background:rgba(0,0,0,0.4); color:var(--led1); font-size:15px; outline:none; box-sizing:border-box;
+  }
+  button.btn{
+    display:inline-block; width:190px; padding:10px 12px; margin:8px 6px; border-radius:8px;
+    border:2px solid rgba(0,255,229,0.08); background:linear-gradient(90deg, rgba(0,255,229,0.04), rgba(0,136,255,0.04));
+    color:var(--led1); font-weight:700; cursor:pointer; transition:all .18s ease; box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  }
+  button.btn:hover{ transform:translateY(-3px); box-shadow:0 12px 30px rgba(0,255,229,0.05); }
+
+  /* Wide button */
+  button.wide{ width:88%; margin-top:14px; display:block; }
+
+  /* loading screen */
+  #loadingScreen{
+    display:none; position:fixed; inset:0; background: linear-gradient(180deg, rgba(0,0,0,0.7), rgba(0,0,0,0.85));
+    z-index:200; align-items:center; justify-content:center; flex-direction:column;
+  }
+  .load-panel{
+    width:420px; padding:18px; border-radius:12px; background:rgba(6,6,8,0.96);
+    border:1px solid rgba(0,255,229,0.06); text-align:center; box-shadow: 0 0 40px rgba(0,255,229,0.03);
+  }
+  .progress-bar{ width:100%; height:12px; border-radius:8px; background: rgba(255,255,255,0.03); overflow:hidden; margin-top:12px; border:1px solid rgba(0,255,229,0.03); }
+  .progress-inner{ height:100%; width:0%; background: linear-gradient(90deg,var(--led1), var(--led2)); box-shadow:0 0 18px rgba(0,255,229,0.12); transition:width .04s linear; }
+  .percent{ margin-top:10px; font-weight:700; color:var(--led1); text-shadow:0 0 8px rgba(0,255,229,0.06); }
+
+  /* log box */
+  #logBox{ margin-top:14px; max-height:180px; overflow:auto; text-align:left; padding:8px; border-top:1px dashed rgba(0,255,229,0.04); box-sizing:border-box; }
+  .log-entry{ color:#cfeffb; font-size:13.5px; margin:8px 6px; opacity:0; animation: logFade .9s forwards; text-shadow: 0 0 6px rgba(0,255,229,0.04); }
+  @keyframes logFade{ from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none} }
+
+  /* toast center */
+  .toast{ position:fixed; top:16%; left:50%; transform:translateX(-50%); background: rgba(0,0,0,0.82);
+    color:var(--led1); padding:12px 20px; border-radius:10px; border:1px solid rgba(0,255,229,0.06); z-index:250; font-weight:700; box-shadow: 0 0 30px rgba(0,255,229,0.04);}
+  
+  /* confirm anticheat popup */
+  .confirm{
+    display:none; position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); z-index:260;
+    width:380px; padding:14px; border-radius:12px; background: linear-gradient(180deg, rgba(8,8,10,0.98), rgba(12,12,14,0.98));
+    border:1px solid rgba(0,255,229,0.06); text-align:center; box-shadow: 0 0 40px rgba(0,255,229,0.04);
+  }
+  .confirm h3{ margin:0 0 12px; color:var(--led1); }
+  .confirm .actions{ margin-top:8px; }
+
+  /* snowflakes */
+  .snowflake {
+    position: fixed;
+    top: -10px;
+    color: #fff;
+    user-select: none;
+    z-index:15;
+    opacity: 0.85;
+    pointer-events: none;
+    filter: blur(0.2px);
+  }
+
+  /* smaller screens */
+  @media(max-width:560px){
+    .panel{ transform:scale(0.68); width:360px; }
+    button.btn{ width:160px; }
+  }
+</style>
 </head>
 <body>
-  <!-- Nhập Key -->
-  <div id="loginBox" class="panel">
-    <div class="led-text">VNWARE CHEAT PANEL</div>
-    <input type="text" id="keyInput" placeholder="Enter Key...">
-    <br>
-    <button class="btn" onclick="checkKey()">Login</button>
+  <div class="wrap">
+    <!-- Login panel -->
+    <div id="loginPanel" class="panel" role="region" aria-label="Login panel">
+      <div class="led-title">VNWARE CHEAT PANEL</div>
+      <div style="margin-bottom:10px;color:rgba(200,255,250,0.06);font-size:13px;">Enter your key to unlock</div>
+      <input id="keyInput" type="text" placeholder="Enter key..." aria-label="key input" />
+      <br>
+      <button id="unlockBtn" class="btn wide">Unlock Panel</button>
+    </div>
+
+    <!-- Main panel (hidden until unlock) -->
+    <div id="mainPanel" class="panel" style="display:none;" role="region" aria-label="Main panel">
+      <div class="led-title">VNWARE CHEAT</div>
+
+      <div style="display:flex;justify-content:center;gap:6px;margin-bottom:6px;">
+        <button class="btn" onclick="featureClick('Aimlock')">Aimlock</button>
+        <button class="btn" onclick="featureClick('Static Aimbot')">Aimbot Tĩnh</button>
+      </div>
+      <div style="display:flex;justify-content:center;gap:6px;margin-bottom:6px;">
+        <button class="btn" onclick="featureClick('Antiband')">Antiband</button>
+        <button class="btn" onclick="featureClick('Aim Sensitivity')">Nhạy Tâm</button>
+      </div>
+      <div style="display:flex;justify-content:center;gap:6px;">
+        <button class="btn" onclick="featureClick('FPS Pro')">FPS Pro</button>
+        <button class="btn" onclick="featureClick('Lua Console')">Lua Console</button>
+      </div>
+
+      <button id="injectBtn" class="btn wide">🚀 Injector Free Fire</button>
+
+      <div id="logBox" aria-live="polite"></div>
+    </div>
   </div>
 
-  <!-- Panel chính -->
-  <div id="mainPanel" class="panel" style="display:none;">
-    <div class="led-text">VNWARE CHEAT</div>
-    <button class="btn" onclick="showToast('Aimlock Activated Successfully!')">Aimlock</button>
-    <button class="btn" onclick="showToast('Static Aimbot Enabled Successfully!')">Aimbot Tĩnh</button>
-    <button class="btn" onclick="showToast('Antiband Enabled Successfully!')">Antiband</button>
-    <button class="btn" onclick="showToast('Sensitivity Boosted Successfully!')">Nhạy Tâm</button>
-    <button class="btn" onclick="showToast('FPS Pro Mode Enabled!')">FPS Pro</button>
-    <button class="btn" onclick="showToast('Lua Console Opened Successfully!')">Lua Console</button>
-    <br><br>
-    <button class="btn" onclick="inject()">Injector Free Fire</button>
-    <div id="logBox"></div>
+  <!-- loading overlay -->
+  <div id="loadingScreen" style="display:none;align-items:center;justify-content:center;">
+    <div class="load-panel">
+      <div style="font-weight:800;color:var(--led1);font-size:18px;text-align:center;">Initializing VNWARE CHEAT...</div>
+      <div class="progress-bar" aria-hidden="true"><div id="progressInner" class="progress-inner"></div></div>
+      <div class="percent" id="percentText">0%</div>
+    </div>
   </div>
 
-  <!-- Popup Anticheat -->
-  <div id="popup" class="popup">
-    <div class="led-text" style="font-size:20px;">Muốn mở Anticheat 2.0.0?</div>
-    <button onclick="popupYes()">Yes</button>
-    <button onclick="popupClose()">Close</button>
+  <!-- anticheat confirm -->
+  <div id="confirmBox" class="confirm" role="dialog" aria-modal="true" aria-hidden="true">
+    <h3>⚠️ Muốn mở Anticheat 2.0.0 không?</h3>
+    <div class="actions">
+      <button id="confirmYes" class="btn">Yes</button>
+      <button id="confirmClose" class="btn">Close</button>
+    </div>
   </div>
 
-  <script>
-    const correctKey = "VNWARE-WARE-TOP";
+<script>
+/* =============================
+   Snowfall effect (white snow)
+   ============================= */
+(function createSnow(){
+  const flakes = 40; // number of flakes
+  for(let i=0;i<flakes;i++){
+    createFlake();
+  }
+  function createFlake(){
+    const flake = document.createElement('div');
+    flake.className = 'snowflake';
+    const size = rand(6,18); // px
+    flake.style.fontSize = size + 'px';
+    flake.style.left = rand(0,100) + '%';
+    flake.style.opacity = (Math.random()*0.6 + 0.4).toString();
+    flake.innerText = '❄'; // white snowflake char
+    document.body.appendChild(flake);
+    animateFlake(flake, size);
+  }
+  function animateFlake(el, size){
+    const duration = rand(8000,18000); // ms
+    const delay = rand(0,4000);
+    el.animate([
+      { transform: `translateY(-20px) translateX(0px)`, opacity: el.style.opacity },
+      { transform: `translateY(${window.innerHeight + 40}px) translateX(${rand(-100,100)}px)`, opacity: 0.2 }
+    ], { duration: duration, iterations: Infinity, delay: delay, easing: 'linear' });
+  }
+  function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+})();
 
-    function checkKey() {
-      let key = document.getElementById("keyInput").value;
-      if (key === correctKey) {
-        document.getElementById("loginBox").style.display = "none";
-        document.getElementById("mainPanel").style.display = "block";
-        showToast("Key Accepted! Welcome to VNWARE CHEAT");
-      } else {
-        showToast("Invalid Key!");
-      }
-    }
+/* =============================
+   Basic helpers & variables
+   ============================= */
+const KEY = "VNWARE-WARE-TOP";
+const unlockBtn = document.getElementById('unlockBtn');
+const keyInput = document.getElementById('keyInput');
+const loadingScreen = document.getElementById('loadingScreen');
+const progressInner = document.getElementById('progressInner');
+const percentText = document.getElementById('percentText');
+const loginPanel = document.getElementById('loginPanel');
+const mainPanel = document.getElementById('mainPanel');
+const logBox = document.getElementById('logBox');
+const injectBtn = document.getElementById('injectBtn');
+const confirmBox = document.getElementById('confirmBox');
+const confirmYes = document.getElementById('confirmYes');
+const confirmClose = document.getElementById('confirmClose');
 
-    function showToast(msg) {
-      let toast = document.createElement("div");
-      toast.className = "toast";
-      toast.innerText = msg;
-      document.body.appendChild(toast);
-      setTimeout(()=>{ toast.remove(); },3000);
-    }
+/* =============================
+   Sound: beep success using WebAudio
+   ============================= */
+function beep(freq=880, duration=140, type='sine'){
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = type;
+    o.frequency.value = freq;
+    o.connect(g); g.connect(ctx.destination);
+    g.gain.setValueAtTime(0.0001, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + 0.01);
+    o.start();
+    setTimeout(()=> {
+      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.02);
+      o.stop(ctx.currentTime + 0.03);
+      ctx.close();
+    }, duration);
+  }catch(e){ /* ignore on unsupported */ }
+}
 
-    let logs = [
-      "Initializing Injector...",
-      "Checking Game Client...",
-      "Connecting to Free Fire Server...",
-      "Loading Anticheat Module...",
-      "Bypassing Anticheat...",
-      "Injecting Core DLL...",
-      "Syncing with Game Memory...",
-      "Patching Client Security...",
-      "Finalizing Injection...",
-      "✅ Injected Successfully – Server Client Free Fire 19.9.1.0"
-    ];
-    let currentLog = 0;
+/* =============================
+   Unlock flow -> loading (0..100% step by step)
+   ============================= */
+function showToast(msg, timeout=2500){
+  const t = document.createElement('div');
+  t.className='toast';
+  t.innerText = msg;
+  document.body.appendChild(t);
+  setTimeout(()=> t.remove(), timeout);
+}
 
-    function inject() {
-      currentLog = 0;
-      document.getElementById("logBox").innerHTML = "";
-      runLog();
+function runLoadingThenOpenPanel(){
+  // show loading overlay
+  loadingScreen.style.display = 'flex';
+  progressInner.style.width = '0%';
+  percentText.innerText = '0%';
+  let p = 0;
+  const stepMs = 25; // 25ms per percent -> ~2.5s
+  const timer = setInterval(()=>{
+    p++;
+    progressInner.style.width = p + '%';
+    percentText.innerText = p + '%';
+    if(p >= 100){
+      clearInterval(timer);
+      // success beep + small delay then show panel
+      beep(1000,220,'sine');
+      setTimeout(()=>{
+        loadingScreen.style.display = 'none';
+        loginPanel.style.display = 'none';
+        mainPanel.style.display = 'block';
+        showToast('✅ Ready — VNWARE CHEAT Loaded', 2000);
+      }, 350);
     }
+  }, stepMs);
+}
 
-    function runLog() {
-      if (currentLog < logs.length) {
-        if (logs[currentLog] === "Loading Anticheat Module...") {
-          document.getElementById("popup").style.display = "block";
-        } else {
-          addLog(logs[currentLog]);
-          currentLog++;
-          setTimeout(runLog, 1000);
-        }
-      }
-    }
+/* Handle unlock */
+function attemptUnlock(){
+  const v = keyInput.value.trim();
+  if(v === KEY){
+    showToast('Key accepted — starting loader...', 1200);
+    // small delay then loading
+    setTimeout(()=> {
+      runLoadingThenOpenPanel();
+    }, 600);
+  } else {
+    showToast('❌ Invalid key — try again', 1600);
+  }
+}
+unlockBtn.addEventListener('click', attemptUnlock);
+keyInput.addEventListener('keydown', (e)=> { if(e.key === 'Enter') attemptUnlock(); });
 
-    function addLog(msg) {
-      let logBox = document.getElementById("logBox");
-      logBox.innerHTML += "<div class='led-text' style='font-size:14px;'>" + msg + "</div>";
-      logBox.scrollTop = logBox.scrollHeight;
-    }
+/* =============================
+   Features toasts
+   ============================= */
+function featureClick(name){
+  showToast(`${name}: Enabled — Success`, 1600);
+}
 
-    function popupYes() {
-      document.getElementById("popup").style.display = "none";
-      addLog(logs[currentLog]);
-      currentLog++;
-      setTimeout(runLog, 1000);
-    }
-    function popupClose() {
-      document.getElementById("popup").style.display = "none";
-      addLog("❌ Injection Stopped by User.");
-    }
-  </script>
+/* =============================
+   Injector logs + anticheat confirm
+   ============================= */
+const logs = [
+  "🔌 Initializing Injector...",
+  "🔍 Checking Game Client...",
+  "📡 Connecting to Free Fire Server...",
+  "🛡️ Loading Anticheat Module...",
+  "⚙️ Bypassing Anticheat...",
+  "📂 Injecting Core DLL...",
+  "🔧 Syncing with Game Memory...",
+  "🔐 Patching Client Security...",
+  "🔁 Finalizing Injection...",
+  "✅ Injected Successfully – Server Client Free Fire 19.9.1.0"
+];
+
+let currentIndex = 0;
+let runTimer = null;
+let isPausedForAnticheat = false;
+
+function addLog(line){
+  const d = document.createElement('div');
+  d.className = 'log-entry';
+  d.innerText = line;
+  logBox.appendChild(d);
+  logBox.scrollTop = logBox.scrollHeight;
+}
+
+// start injection
+function startInjection(){
+  currentIndex = 0;
+  logBox.innerHTML = '';
+  isPausedForAnticheat = false;
+  continueRun();
+}
+
+function continueRun(){
+  // ensure not running multiple timers
+  if(runTimer) { clearTimeout(runTimer); runTimer = null; }
+  if(currentIndex >= logs.length) return;
+  const line = logs[currentIndex];
+
+  // if anticheat line -> show confirm and pause
+  if(line.includes("Loading Anticheat Module")){
+    addLog(line); // show the anticheat loading line
+    isPausedForAnticheat = true;
+    // show confirm UI
+    confirmBox.style.display = 'block';
+    confirmBox.setAttribute('aria-hidden','false');
+    // do not increment currentIndex until user confirms
+    return;
+  }
+
+  // otherwise add and schedule next
+  addLog(line);
+  currentIndex++;
+  runTimer = setTimeout(continueRun, 900);
+}
+
+/* confirm handlers */
+confirmYes.addEventListener('click', ()=>{
+  confirmBox.style.display = 'none';
+  confirmBox.setAttribute('aria-hidden','true');
+  isPausedForAnticheat = false;
+  showToast('🛡️ Anticheat enabled — continuing...', 1200);
+  // move to next step after a short delay
+  currentIndex++;
+  runTimer = setTimeout(continueRun, 700);
+});
+confirmClose.addEventListener('click', ()=>{
+  confirmBox.style.display = 'none';
+  confirmBox.setAttribute('aria-hidden','true');
+  addLog('❌ Injection stopped by user.');
+  showToast('❌ Anticheat canceled', 1200);
+  // stop: do not increment currentIndex
+});
+
+/* attach inject btn */
+injectBtn.addEventListener('click', startInjection);
+
+/* Accessibility: focus input */
+keyInput.focus();
+</script>
 </body>
 </html>
