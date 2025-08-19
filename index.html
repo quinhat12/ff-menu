@@ -1,34 +1,31 @@
-<!-- Alert -->
-<div id="maintenanceAlert">⚠️ Máy Chủ Bảo Trì, Vui Lòng Đợi...!</div>
+<!-- Maintenance Alert -->
+<div id="maintenanceAlert">⚠️ MÁY CHỦ BẢO TRÌ, VUI LÒNG ĐỢI...!</div>
 
 <style>
 #maintenanceAlert{
   position:fixed;
-  top:40%;
+  top:50%;
   left:50%;
   transform:translate(-50%,-50%);
   background:rgba(0,0,0,0.85);
-  padding:20px 35px;
-  border:2px solid #ff0000;
-  border-radius:12px;
+  padding:25px 50px;
+  border:3px solid #ff0000;
+  border-radius:15px;
   text-align:center;
-  font-size:22px;
+  font-size:32px;
   font-weight:bold;
   color:#ff3300;
-  text-shadow:0 0 10px #ff3300,0 0 20px #ff9900;
-  z-index:1000;
+  text-shadow:0 0 20px #ff3300,0 0 40px #ff9900;
+  z-index:9999;
   animation:alertPulse 1s ease-in-out infinite alternate;
 }
 @keyframes alertPulse{
-  0%{box-shadow:0 0 15px #ff3300,0 0 30px #ff9900; transform:translate(-50%,-50%) scale(1);}
-  50%{box-shadow:0 0 25px #ff3300,0 0 50px #ff9900; transform:translate(-50%,-50%) scale(1.05);}
-  100%{box-shadow:0 0 15px #ff3300,0 0 30px #ff9900; transform:translate(-50%,-50%) scale(1);}
+  0%{box-shadow:0 0 20px #ff3300,0 0 40px #ff9900; transform:translate(-50%,-50%) scale(1);}
+  50%{box-shadow:0 0 35px #ff3300,0 0 70px #ff9900; transform:translate(-50%,-50%) scale(1.08);}
+  100%{box-shadow:0 0 20px #ff3300,0 0 40px #ff9900; transform:translate(-50%,-50%) scale(1);}
 }
 </style>
 
 <script>
-// Hiển thị alert trong 3 giây rồi ẩn
-setTimeout(()=>{
-  document.getElementById("maintenanceAlert").style.display="none";
-},3000);
+// Nếu muốn, có thể giữ hiển thị liên tục, không cần ẩn
 </script>
