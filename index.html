@@ -1,371 +1,218 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>VNWARE CHEAT PANEL</title>
-<style>
-  :root{
-    --led1:#00ffe5;
-    --led2:#0088ff;
-    --bg:#050507;
-  }
+  <meta charset="UTF-8">
+  <title>VNWARE CHEAT PANEL</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #0f0f0f;
+      overflow: hidden;
+      font-family: monospace;
+      color: #00ffea;
+    }
 
-  html,body{height:100%;margin:0;background:var(--bg);font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--led1);-webkit-font-smoothing:antialiased;}
-  .wrap{display:flex;align-items:center;justify-content:center;height:100%;position:relative;overflow:hidden;}
+    /* ❄️ Hiệu ứng tuyết */
+    .snowflake {
+      position: fixed;
+      top: -10px;
+      color: #fff;
+      font-size: 14px;
+      opacity: 0.7;
+      animation: fall linear infinite;
+      z-index: 999;
+    }
+    @keyframes fall {
+      to { transform: translateY(110vh); }
+    }
 
-  /* snow layer */
-  .snow-layer{position:fixed;inset:0;pointer-events:none;z-index:10;opacity:0.9}
+    /* Form nhập key */
+    #keyForm {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: rgba(0,0,0,0.8);
+    }
+    #keyInput {
+      padding: 10px;
+      font-size: 18px;
+      border: 2px solid #00ffea;
+      border-radius: 6px;
+      outline: none;
+      background: black;
+      color: #00ffea;
+      text-align: center;
+    }
+    #submitKey {
+      margin-top: 12px;
+      padding: 8px 18px;
+      font-size: 16px;
+      background: #00ffea;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #000;
+    }
 
-  /* panel scale */
-  .panel {
-    width:460px;
-    padding:22px;
-    border-radius:14px;
-    background: linear-gradient(180deg, rgba(8,8,10,0.95), rgba(12,12,14,0.95));
-    box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 40px rgba(0,255,229,0.02);
-    transform: scale(0.8);
-    text-align:center;
-    z-index:50;
-  }
+    /* 🔄 Loading box */
+    #loading {
+      display: none;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0,0,0,0.9);
+      flex-direction: column;
+    }
+    .loading-box {
+      background: #111;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 12px #00ffea;
+      text-align: center;
+      width: 220px;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 14px;
+      background: #333;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #00ffea, #008cff);
+      transition: width 0.1s linear;
+    }
+    .progress-text {
+      margin-top: 6px;
+      font-size: 14px;
+      color: #00ffea;
+    }
 
-  .led-title{
-    font-size:22px;font-weight:800;color:var(--led1);
-    text-shadow: 0 0 8px rgba(0,255,229,0.12), 0 0 20px rgba(0,136,255,0.06);
-    margin:0 0 14px;
-    animation: flicker 1.6s infinite alternate;
-  }
-  @keyframes flicker{from{opacity:1}to{opacity:0.78}}
-
-  /* key row */
-  #keyInput{
-    width:calc(100% - 28px);
-    padding:10px 12px;border-radius:8px;border:2px solid rgba(0,255,229,0.12);
-    background:rgba(0,0,0,0.4); color:var(--led1); font-size:15px; outline:none; box-sizing:border-box;
-  }
-  button.btn{
-    display:inline-block; width:190px; padding:10px 12px; margin:8px 6px; border-radius:8px;
-    border:2px solid rgba(0,255,229,0.08); background:linear-gradient(90deg, rgba(0,255,229,0.04), rgba(0,136,255,0.04));
-    color:var(--led1); font-weight:700; cursor:pointer; transition:all .18s ease; box-shadow: 0 6px 18px rgba(0,0,0,0.6);
-  }
-  button.btn:hover{ transform:translateY(-3px); box-shadow:0 12px 30px rgba(0,255,229,0.05); }
-
-  /* Wide button */
-  button.wide{ width:88%; margin-top:14px; display:block; }
-
-  /* loading screen */
-  #loadingScreen{
-    display:none; position:fixed; inset:0; background: linear-gradient(180deg, rgba(0,0,0,0.7), rgba(0,0,0,0.85));
-    z-index:200; align-items:center; justify-content:center; flex-direction:column;
-  }
-  .load-panel{
-    width:420px; padding:18px; border-radius:12px; background:rgba(6,6,8,0.96);
-    border:1px solid rgba(0,255,229,0.06); text-align:center; box-shadow: 0 0 40px rgba(0,255,229,0.03);
-  }
-  .progress-bar{ width:100%; height:12px; border-radius:8px; background: rgba(255,255,255,0.03); overflow:hidden; margin-top:12px; border:1px solid rgba(0,255,229,0.03); }
-  .progress-inner{ height:100%; width:0%; background: linear-gradient(90deg,var(--led1), var(--led2)); box-shadow:0 0 18px rgba(0,255,229,0.12); transition:width .04s linear; }
-  .percent{ margin-top:10px; font-weight:700; color:var(--led1); text-shadow:0 0 8px rgba(0,255,229,0.06); }
-
-  /* log box */
-  #logBox{ margin-top:14px; max-height:180px; overflow:auto; text-align:left; padding:8px; border-top:1px dashed rgba(0,255,229,0.04); box-sizing:border-box; }
-  .log-entry{ color:#cfeffb; font-size:13.5px; margin:8px 6px; opacity:0; animation: logFade .9s forwards; text-shadow: 0 0 6px rgba(0,255,229,0.04); }
-  @keyframes logFade{ from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none} }
-
-  /* toast center */
-  .toast{ position:fixed; top:16%; left:50%; transform:translateX(-50%); background: rgba(0,0,0,0.82);
-    color:var(--led1); padding:12px 20px; border-radius:10px; border:1px solid rgba(0,255,229,0.06); z-index:250; font-weight:700; box-shadow: 0 0 30px rgba(0,255,229,0.04);}
-  
-  /* confirm anticheat popup */
-  .confirm{
-    display:none; position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); z-index:260;
-    width:380px; padding:14px; border-radius:12px; background: linear-gradient(180deg, rgba(8,8,10,0.98), rgba(12,12,14,0.98));
-    border:1px solid rgba(0,255,229,0.06); text-align:center; box-shadow: 0 0 40px rgba(0,255,229,0.04);
-  }
-  .confirm h3{ margin:0 0 12px; color:var(--led1); }
-  .confirm .actions{ margin-top:8px; }
-
-  /* snowflakes */
-  .snowflake {
-    position: fixed;
-    top: -10px;
-    color: #fff;
-    user-select: none;
-    z-index:15;
-    opacity: 0.85;
-    pointer-events: none;
-    filter: blur(0.2px);
-  }
-
-  /* smaller screens */
-  @media(max-width:560px){
-    .panel{ transform:scale(0.68); width:360px; }
-    button.btn{ width:160px; }
-  }
-</style>
+    /* 🎮 Injector log */
+    #injectorLog {
+      display: none;
+      height: 100vh;
+      background: rgba(0,0,0,0.95);
+      padding: 20px;
+      overflow-y: auto;
+      font-size: 14px;
+      white-space: pre-line;
+      color: #00ffea;
+      text-shadow: 0 0 5px #00ffea;
+    }
+    .log-line {
+      opacity: 0;
+      animation: typing 1s forwards;
+    }
+    @keyframes typing {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
-  <div class="wrap">
-    <!-- Login panel -->
-    <div id="loginPanel" class="panel" role="region" aria-label="Login panel">
-      <div class="led-title">VNWARE CHEAT PANEL</div>
-      <div style="margin-bottom:10px;color:rgba(200,255,250,0.06);font-size:13px;">Enter your key to unlock</div>
-      <input id="keyInput" type="text" placeholder="Enter key..." aria-label="key input" />
-      <br>
-      <button id="unlockBtn" class="btn wide">Unlock Panel</button>
-    </div>
 
-    <!-- Main panel (hidden until unlock) -->
-    <div id="mainPanel" class="panel" style="display:none;" role="region" aria-label="Main panel">
-      <div class="led-title">VNWARE CHEAT</div>
+  <!-- Nhập key -->
+  <div id="keyForm">
+    <h2>🔐 Nhập Key VNWARE CHEAT</h2>
+    <input type="text" id="keyInput" placeholder="Enter Key...">
+    <button id="submitKey">Unlock</button>
+  </div>
 
-      <div style="display:flex;justify-content:center;gap:6px;margin-bottom:6px;">
-        <button class="btn" onclick="featureClick('Aimlock')">Aimlock</button>
-        <button class="btn" onclick="featureClick('Static Aimbot')">Aimbot Tĩnh</button>
+  <!-- Loading -->
+  <div id="loading">
+    <div class="loading-box">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
       </div>
-      <div style="display:flex;justify-content:center;gap:6px;margin-bottom:6px;">
-        <button class="btn" onclick="featureClick('Antiband')">Antiband</button>
-        <button class="btn" onclick="featureClick('Aim Sensitivity')">Nhạy Tâm</button>
-      </div>
-      <div style="display:flex;justify-content:center;gap:6px;">
-        <button class="btn" onclick="featureClick('FPS Pro')">FPS Pro</button>
-        <button class="btn" onclick="featureClick('Lua Console')">Lua Console</button>
-      </div>
-
-      <button id="injectBtn" class="btn wide">🚀 Injector Free Fire</button>
-
-      <div id="logBox" aria-live="polite"></div>
+      <div class="progress-text" id="progressText">0%</div>
     </div>
   </div>
 
-  <!-- loading overlay -->
-  <div id="loadingScreen" style="display:none;align-items:center;justify-content:center;">
-    <div class="load-panel">
-      <div style="font-weight:800;color:var(--led1);font-size:18px;text-align:center;">Initializing VNWARE CHEAT...</div>
-      <div class="progress-bar" aria-hidden="true"><div id="progressInner" class="progress-inner"></div></div>
-      <div class="percent" id="percentText">0%</div>
-    </div>
-  </div>
+  <!-- Injector Log -->
+  <div id="injectorLog"></div>
 
-  <!-- anticheat confirm -->
-  <div id="confirmBox" class="confirm" role="dialog" aria-modal="true" aria-hidden="true">
-    <h3>⚠️ Muốn mở Anticheat 2.0.0 không?</h3>
-    <div class="actions">
-      <button id="confirmYes" class="btn">Yes</button>
-      <button id="confirmClose" class="btn">Close</button>
-    </div>
-  </div>
+  <script>
+    const submitKey = document.getElementById("submitKey");
+    const keyInput = document.getElementById("keyInput");
+    const keyForm = document.getElementById("keyForm");
+    const loading = document.getElementById("loading");
+    const progressFill = document.getElementById("progressFill");
+    const progressText = document.getElementById("progressText");
+    const injectorLog = document.getElementById("injectorLog");
 
-<script>
-/* =============================
-   Snowfall effect (white snow)
-   ============================= */
-(function createSnow(){
-  const flakes = 40; // number of flakes
-  for(let i=0;i<flakes;i++){
-    createFlake();
-  }
-  function createFlake(){
-    const flake = document.createElement('div');
-    flake.className = 'snowflake';
-    const size = rand(6,18); // px
-    flake.style.fontSize = size + 'px';
-    flake.style.left = rand(0,100) + '%';
-    flake.style.opacity = (Math.random()*0.6 + 0.4).toString();
-    flake.innerText = '❄'; // white snowflake char
-    document.body.appendChild(flake);
-    animateFlake(flake, size);
-  }
-  function animateFlake(el, size){
-    const duration = rand(8000,18000); // ms
-    const delay = rand(0,4000);
-    el.animate([
-      { transform: `translateY(-20px) translateX(0px)`, opacity: el.style.opacity },
-      { transform: `translateY(${window.innerHeight + 40}px) translateX(${rand(-100,100)}px)`, opacity: 0.2 }
-    ], { duration: duration, iterations: Infinity, delay: delay, easing: 'linear' });
-  }
-  function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
-})();
+    const CORRECT_KEY = "VNWARE-WARE-TOP";
 
-/* =============================
-   Basic helpers & variables
-   ============================= */
-const KEY = "VNWARE-WARE-TOP";
-const unlockBtn = document.getElementById('unlockBtn');
-const keyInput = document.getElementById('keyInput');
-const loadingScreen = document.getElementById('loadingScreen');
-const progressInner = document.getElementById('progressInner');
-const percentText = document.getElementById('percentText');
-const loginPanel = document.getElementById('loginPanel');
-const mainPanel = document.getElementById('mainPanel');
-const logBox = document.getElementById('logBox');
-const injectBtn = document.getElementById('injectBtn');
-const confirmBox = document.getElementById('confirmBox');
-const confirmYes = document.getElementById('confirmYes');
-const confirmClose = document.getElementById('confirmClose');
+    submitKey.addEventListener("click", () => {
+      if (keyInput.value === CORRECT_KEY) {
+        keyForm.style.display = "none";
+        loading.style.display = "flex";
 
-/* =============================
-   Sound: beep success using WebAudio
-   ============================= */
-function beep(freq=880, duration=140, type='sine'){
-  try{
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.type = type;
-    o.frequency.value = freq;
-    o.connect(g); g.connect(ctx.destination);
-    g.gain.setValueAtTime(0.0001, ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + 0.01);
-    o.start();
-    setTimeout(()=> {
-      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.02);
-      o.stop(ctx.currentTime + 0.03);
-      ctx.close();
-    }, duration);
-  }catch(e){ /* ignore on unsupported */ }
-}
+        let progress = 0;
+        const interval = setInterval(() => {
+          progress++;
+          progressFill.style.width = progress + "%";
+          progressText.innerText = progress + "%";
+          if (progress >= 100) {
+            clearInterval(interval);
+            loading.style.display = "none";
+            showInjectorLog();
+          }
+        }, 50);
+      } else {
+        alert("❌ Sai key!");
+      }
+    });
 
-/* =============================
-   Unlock flow -> loading (0..100% step by step)
-   ============================= */
-function showToast(msg, timeout=2500){
-  const t = document.createElement('div');
-  t.className='toast';
-  t.innerText = msg;
-  document.body.appendChild(t);
-  setTimeout(()=> t.remove(), timeout);
-}
-
-function runLoadingThenOpenPanel(){
-  // show loading overlay
-  loadingScreen.style.display = 'flex';
-  progressInner.style.width = '0%';
-  percentText.innerText = '0%';
-  let p = 0;
-  const stepMs = 25; // 25ms per percent -> ~2.5s
-  const timer = setInterval(()=>{
-    p++;
-    progressInner.style.width = p + '%';
-    percentText.innerText = p + '%';
-    if(p >= 100){
-      clearInterval(timer);
-      // success beep + small delay then show panel
-      beep(1000,220,'sine');
-      setTimeout(()=>{
-        loadingScreen.style.display = 'none';
-        loginPanel.style.display = 'none';
-        mainPanel.style.display = 'block';
-        showToast('✅ Ready — VNWARE CHEAT Loaded', 2000);
-      }, 350);
+    // 🚀 Log injector gaming style
+    function showInjectorLog() {
+      injectorLog.style.display = "block";
+      const logs = [
+        "[INIT] Starting VNWARE Injector v5.0.0...",
+        "[CHECK] Free Fire Client Found (19.9.1.0)",
+        "[BYPASS] Anticheat Module Loaded ✔",
+        "[MEMORY] Allocating secure memory space...",
+        "[HOOK] Aimlock Engine Injected...",
+        "[HOOK] FPS Optimizer Loaded...",
+        "[HOOK] Sensitivity Manager Activated...",
+        "[SECURE] Antiband Shield Enabled...",
+        "[SERVER] Connecting to VNWARE API...",
+        "[SUCCESS] Injection Completed. Ready to Play ✅"
+      ];
+      let i = 0;
+      function addLog() {
+        if (i < logs.length) {
+          const line = document.createElement("div");
+          line.classList.add("log-line");
+          line.style.animationDelay = (i * 0.8) + "s";
+          line.innerText = logs[i];
+          injectorLog.appendChild(line);
+          i++;
+          setTimeout(addLog, 800);
+        }
+      }
+      addLog();
     }
-  }, stepMs);
-}
 
-/* Handle unlock */
-function attemptUnlock(){
-  const v = keyInput.value.trim();
-  if(v === KEY){
-    showToast('Key accepted — starting loader...', 1200);
-    // small delay then loading
-    setTimeout(()=> {
-      runLoadingThenOpenPanel();
-    }, 600);
-  } else {
-    showToast('❌ Invalid key — try again', 1600);
-  }
-}
-unlockBtn.addEventListener('click', attemptUnlock);
-keyInput.addEventListener('keydown', (e)=> { if(e.key === 'Enter') attemptUnlock(); });
-
-/* =============================
-   Features toasts
-   ============================= */
-function featureClick(name){
-  showToast(`${name}: Enabled — Success`, 1600);
-}
-
-/* =============================
-   Injector logs + anticheat confirm
-   ============================= */
-const logs = [
-  "🔌 Initializing Injector...",
-  "🔍 Checking Game Client...",
-  "📡 Connecting to Free Fire Server...",
-  "🛡️ Loading Anticheat Module...",
-  "⚙️ Bypassing Anticheat...",
-  "📂 Injecting Core DLL...",
-  "🔧 Syncing with Game Memory...",
-  "🔐 Patching Client Security...",
-  "🔁 Finalizing Injection...",
-  "✅ Injected Successfully – Server Client Free Fire 19.9.1.0"
-];
-
-let currentIndex = 0;
-let runTimer = null;
-let isPausedForAnticheat = false;
-
-function addLog(line){
-  const d = document.createElement('div');
-  d.className = 'log-entry';
-  d.innerText = line;
-  logBox.appendChild(d);
-  logBox.scrollTop = logBox.scrollHeight;
-}
-
-// start injection
-function startInjection(){
-  currentIndex = 0;
-  logBox.innerHTML = '';
-  isPausedForAnticheat = false;
-  continueRun();
-}
-
-function continueRun(){
-  // ensure not running multiple timers
-  if(runTimer) { clearTimeout(runTimer); runTimer = null; }
-  if(currentIndex >= logs.length) return;
-  const line = logs[currentIndex];
-
-  // if anticheat line -> show confirm and pause
-  if(line.includes("Loading Anticheat Module")){
-    addLog(line); // show the anticheat loading line
-    isPausedForAnticheat = true;
-    // show confirm UI
-    confirmBox.style.display = 'block';
-    confirmBox.setAttribute('aria-hidden','false');
-    // do not increment currentIndex until user confirms
-    return;
-  }
-
-  // otherwise add and schedule next
-  addLog(line);
-  currentIndex++;
-  runTimer = setTimeout(continueRun, 900);
-}
-
-/* confirm handlers */
-confirmYes.addEventListener('click', ()=>{
-  confirmBox.style.display = 'none';
-  confirmBox.setAttribute('aria-hidden','true');
-  isPausedForAnticheat = false;
-  showToast('🛡️ Anticheat enabled — continuing...', 1200);
-  // move to next step after a short delay
-  currentIndex++;
-  runTimer = setTimeout(continueRun, 700);
-});
-confirmClose.addEventListener('click', ()=>{
-  confirmBox.style.display = 'none';
-  confirmBox.setAttribute('aria-hidden','true');
-  addLog('❌ Injection stopped by user.');
-  showToast('❌ Anticheat canceled', 1200);
-  // stop: do not increment currentIndex
-});
-
-/* attach inject btn */
-injectBtn.addEventListener('click', startInjection);
-
-/* Accessibility: focus input */
-keyInput.focus();
-</script>
+    // ❄️ Snow effect
+    function createSnowflake() {
+      const snowflake = document.createElement("div");
+      snowflake.classList.add("snowflake");
+      snowflake.innerHTML = "❄";
+      snowflake.style.left = Math.random() * window.innerWidth + "px";
+      snowflake.style.animationDuration = (3 + Math.random() * 5) + "s";
+      snowflake.style.opacity = Math.random();
+      document.body.appendChild(snowflake);
+      setTimeout(() => snowflake.remove(), 8000);
+    }
+    setInterval(createSnowflake, 150);
+  </script>
 </body>
 </html>
