@@ -1,165 +1,166 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>FF Menu – LED RGB Panel</title>
+  <title>FF MENU PANEL</title>
   <style>
-    body, html { margin:0; padding:0; overflow:hidden; height:100%; background:#000; color:#fff; font-family:Arial; }
-    #particles { position:fixed; width:100%; height:100%; z-index:0; }
-    #app { position:relative; z-index:1; padding:20px; display:flex; height:100%; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* Sidebar LED */
-    .sidebar {
-      width:160px; 
-      background: linear-gradient(270deg, #ff0000, #00ffea, #7b00ff);
-      background-size: 600% 600%;
-      animation: sidebarRGB 8s ease infinite;
-      padding:20px; display:flex; flex-direction:column; gap:15px;
-      border-radius:12px;
-    }
-    @keyframes sidebarRGB {
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d0d0d;
+      color: #fff;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
     }
 
-    .sidebar button {
-      background:rgba(0,0,0,0.7); 
-      border:2px solid #fff; 
-      color:#fff;
-      padding:10px; cursor:pointer; border-radius:6px; 
-      transition:0.3s; font-weight:bold;
-      text-shadow:0 0 10px #0ff;
-    }
-    .sidebar button:hover { 
-      background:#fff; color:#000; 
-      box-shadow:0 0 20px #0ff, 0 0 40px #f0f;
-    }
-
-    /* Panel LED Border */
     .panel {
-      flex:1; padding:20px; margin-left:20px; overflow:auto;
-      border:4px solid; border-radius:12px;
-      border-image: linear-gradient(270deg, #ff0000, #00ffea, #7b00ff, #ff0000) 1;
-      animation: borderRGB 6s linear infinite;
-    }
-    @keyframes borderRGB {
-      0%{border-image-source:linear-gradient(270deg, #ff0000, #00ffea, #7b00ff, #ff0000);}
-      50%{border-image-source:linear-gradient(270deg, #00ffea, #7b00ff, #ff0000, #00ffea);}
-      100%{border-image-source:linear-gradient(270deg, #ff0000, #00ffea, #7b00ff, #ff0000);}
-    }
-
-    .hidden { display:none; }
-
-    /* Title Rainbow */
-    .rainbow-text {
-      font-size:28px; font-weight:bold;
-      background-image: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-size: 400% 100%;
-      animation: rainbow 6s linear infinite;
-    }
-    @keyframes rainbow {
-      0%{background-position:0%}
-      100%{background-position:100%}
+      width: 90%;
+      height: 90%;
+      display: flex;
+      flex-direction: column;
+      background: rgba(20,20,20,0.8);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
     }
 
-    /* Chart */
-    .chart { width:100%; height:200px; background:#111; border:2px solid #fff; margin-top:20px; border-radius:6px; }
+    .panel::before {
+      content: "";
+      position: absolute;
+      top: -2px; left: -2px; right: -2px; bottom: -2px;
+      background: linear-gradient(270deg, #ff005e, #00ffe7, #fffb00, #ff005e);
+      background-size: 600% 600%;
+      border-radius: 14px;
+      z-index: -1;
+      animation: led 8s linear infinite;
+    }
+    @keyframes led {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-    /* Music control */
-    #music-control { position:fixed; bottom:20px; right:20px; background:rgba(0,0,0,0.7);
-      padding:12px; border-radius:50%; cursor:pointer; border:2px solid #fff;
-      box-shadow:0 0 15px #0ff; }
-    #music-control:hover { box-shadow:0 0 25px #ff0; }
+    /* Header */
+    .header {
+      background: rgba(0,0,0,0.7);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .header h1 {
+      font-size: 22px;
+      color: #0ff;
+    }
+    .music-btn {
+      cursor: pointer;
+      padding: 6px 14px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      transition: 0.3s;
+    }
+    .music-btn:hover {
+      background: #0ff;
+      color: #000;
+    }
 
-    #fps { position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.7);
-      padding:5px 10px; border-radius:6px; border:1px solid #fff; }
+    /* Nội dung */
+    .content {
+      flex: 1;
+      display: flex;
+    }
+    .sidebar {
+      width: 220px;
+      background: rgba(0,0,0,0.6);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    .sidebar h2 {
+      margin-bottom: 20px;
+      font-size: 20px;
+      text-align: center;
+      color: #0ff;
+    }
+    .menu-btn {
+      margin: 10px 0;
+      padding: 12px;
+      text-align: center;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .menu-btn:hover {
+      background: #0ff;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .main {
+      flex: 1;
+      padding: 30px;
+      animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-  <canvas id="particles"></canvas>
-  <div id="app">
-    <div class="sidebar">
-      <button onclick="show('gaming')">🎮 GAMING</button>
-      <button onclick="show('visual')">📊 VISUALIZE</button>
-      <button onclick="show('contact')">📞 CONTACT</button>
+  <div class="panel">
+    <div class="header">
+      <h1>FF MENU PANEL</h1>
+      <div class="music-btn" onclick="toggleMusic()">Music: <span id="musicStatus">ON</span></div>
     </div>
-    <div class="panel">
-      <div id="gaming" class="section">
-        <h1 class="rainbow-text">GAMING MODE</h1>
-        <div><label>Aim Assist</label> <input type="checkbox" onclick="log('Aim Assist', this.checked)"></div>
-        <div><label>FPS Unlock</label> <input type="checkbox" onclick="log('FPS Unlock', this.checked)"></div>
-        <h3>Status Log:</h3>
-        <div id="statusLog">Waiting...</div>
+    <div class="content">
+      <div class="sidebar">
+        <h2>Menu</h2>
+        <div class="menu-btn" onclick="showTab('gaming')">Gaming Mode</div>
+        <div class="menu-btn" onclick="showTab('optimize')">Optimize</div>
+        <div class="menu-btn" onclick="showTab('lua')">Lua Console</div>
+        <div class="menu-btn" onclick="showTab('contact')">Contact</div>
       </div>
-      <div id="visual" class="section hidden">
-        <h1 class="rainbow-text">PERFORMANCE</h1>
-        <div id="fps">FPS: 0</div>
-        <canvas id="chart" class="chart"></canvas>
-      </div>
-      <div id="contact" class="section hidden">
-        <h1 class="rainbow-text">CONTACT</h1>
-        <p>Zalo: <b>0365829172</b></p>
+      <div class="main">
+        <div id="gaming" class="tab">🎮 <b>Gaming Mode</b><br> Bật chế độ tối ưu chơi game với hiệu ứng LED.</div>
+        <div id="optimize" class="tab hidden">⚡ <b>Optimize</b><br> Điều chỉnh độ nhạy & hiển thị thông số thiết bị.</div>
+        <div id="lua" class="tab hidden">💻 <b>Lua Console</b><br> Mở console để nhập lệnh script Lua.</div>
+        <div id="contact" class="tab hidden">📞 <b>Contact</b><br> Zalo: 0365829172<br> Dev:NhismDev & LuxeDev</div>
       </div>
     </div>
   </div>
 
-  <div id="music-control" onclick="toggleMusic()">🎶</div>
-  <iframe id="ytplayer" src="https://www.youtube.com/embed/fGZABHGAhnA?enablejsapi=1&autoplay=0&controls=0" class="hidden"></iframe>
+  <!-- Nhạc nền -->
+  <audio id="bgMusic" autoplay loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  </audio>
 
-<script src="https://cdn.jsdelivr.net/npm/tsparticles@2.8.0/tsparticles.bundle.min.js"></script>
-<script>
-  // Particle background
-  tsParticles.load("particles", {
-    fpsLimit: 60,
-    particles: { color: { value: "#ffffff" }, move: { enable: true, speed:1 }, number: { value: 100 }, size: { value: 3 } }
-  });
-
-  // Switch sections
-  function show(id){
-    document.querySelectorAll('.section').forEach(s=>s.classList.add('hidden'));
-    document.getElementById(id).classList.remove('hidden');
-  }
-
-  function log(name, state){
-    document.getElementById('statusLog').textContent = `${name}: ${state ? "ON" : "OFF"}`;
-  }
-
-  // FPS + Chart
-  const fpsEl = document.getElementById('fps');
-  const chart = document.getElementById('chart');
-  const ctx = chart.getContext('2d');
-  let data = [];
-  function updatePerformance(){
-    const fps = Math.floor(40 + Math.random()*40);
-    fpsEl.textContent = 'FPS: ' + fps;
-    data.push(fps);
-    if(data.length>50) data.shift();
-    drawChart();
-  }
-  function drawChart(){
-    ctx.clearRect(0,0,chart.width,chart.height);
-    ctx.strokeStyle = "#0ff"; ctx.beginPath();
-    data.forEach((v,i)=>ctx.lineTo(i*(chart.width/50), chart.height - (v/100*chart.height)));
-    ctx.stroke();
-  }
-  setInterval(updatePerformance,1000);
-
-  // Music control
-  let player;
-  window.onYouTubeIframeAPIReady = () => player = new YT.Player('ytplayer');
-  function toggleMusic(){
-    if(player && player.getPlayerState){
-      if(player.getPlayerState()===1) player.pauseVideo();
-      else player.playVideo();
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.tab').forEach(el => el.classList.add('hidden'));
+      document.getElementById(tabId).classList.remove('hidden');
     }
-  }
-  // Load YouTube API
-  let tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.head.appendChild(tag);
-</script>
+
+    let musicPlaying = true;
+    function toggleMusic() {
+      const audio = document.getElementById("bgMusic");
+      const status = document.getElementById("musicStatus");
+      if (musicPlaying) {
+        audio.pause();
+        status.textContent = "OFF";
+      } else {
+        audio.play();
+        status.textContent = "ON";
+      }
+      musicPlaying = !musicPlaying;
+    }
+  </script>
 </body>
 </html>
