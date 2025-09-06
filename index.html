@@ -2,182 +2,164 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>FF Menu</title>
+  <title>FF Menu – LED RGB Panel</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0d0d0d;
-      color: white;
-      display: flex;
-    }
+    body, html { margin:0; padding:0; overflow:hidden; height:100%; background:#000; color:#fff; font-family:Arial; }
+    #particles { position:fixed; width:100%; height:100%; z-index:0; }
+    #app { position:relative; z-index:1; padding:20px; display:flex; height:100%; }
 
+    /* Sidebar LED */
     .sidebar {
-      width: 120px;
-      background: linear-gradient(180deg, #200, #600);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 10px;
+      width:160px; 
+      background: linear-gradient(270deg, #ff0000, #00ffea, #7b00ff);
+      background-size: 600% 600%;
+      animation: sidebarRGB 8s ease infinite;
+      padding:20px; display:flex; flex-direction:column; gap:15px;
+      border-radius:12px;
+    }
+    @keyframes sidebarRGB {
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
     }
 
-    .logo {
-      font-size: 40px;
-      margin-bottom: 20px;
-      color: #f00;
-      animation: glow 1.5s infinite alternate;
+    .sidebar button {
+      background:rgba(0,0,0,0.7); 
+      border:2px solid #fff; 
+      color:#fff;
+      padding:10px; cursor:pointer; border-radius:6px; 
+      transition:0.3s; font-weight:bold;
+      text-shadow:0 0 10px #0ff;
+    }
+    .sidebar button:hover { 
+      background:#fff; color:#000; 
+      box-shadow:0 0 20px #0ff, 0 0 40px #f0f;
     }
 
-    .tab-button {
-      background: none;
-      border: 2px solid #f00;
-      color: white;
-      margin: 10px 0;
-      padding: 10px;
-      width: 100%;
-      cursor: pointer;
-      transition: 0.3s;
-      border-radius: 8px;
-    }
-    .tab-button:hover {
-      background: #f00;
-    }
-
+    /* Panel LED Border */
     .panel {
-      flex: 1;
-      padding: 20px;
+      flex:1; padding:20px; margin-left:20px; overflow:auto;
+      border:4px solid; border-radius:12px;
+      border-image: linear-gradient(270deg, #ff0000, #00ffea, #7b00ff, #ff0000) 1;
+      animation: borderRGB 6s linear infinite;
+    }
+    @keyframes borderRGB {
+      0%{border-image-source:linear-gradient(270deg, #ff0000, #00ffea, #7b00ff, #ff0000);}
+      50%{border-image-source:linear-gradient(270deg, #00ffea, #7b00ff, #ff0000, #00ffea);}
+      100%{border-image-source:linear-gradient(270deg, #ff0000, #00ffea, #7b00ff, #ff0000);}
     }
 
-    .tab-content {
-      display: none;
-      animation: fadeIn 0.5s;
+    .hidden { display:none; }
+
+    /* Title Rainbow */
+    .rainbow-text {
+      font-size:28px; font-weight:bold;
+      background-image: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 400% 100%;
+      animation: rainbow 6s linear infinite;
+    }
+    @keyframes rainbow {
+      0%{background-position:0%}
+      100%{background-position:100%}
     }
 
-    .toggle {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 15px 0;
-      background: rgba(255,0,0,0.1);
-      padding: 10px;
-      border-radius: 8px;
-    }
+    /* Chart */
+    .chart { width:100%; height:200px; background:#111; border:2px solid #fff; margin-top:20px; border-radius:6px; }
 
-    input[type="checkbox"] {
-      width: 40px;
-      height: 20px;
-    }
+    /* Music control */
+    #music-control { position:fixed; bottom:20px; right:20px; background:rgba(0,0,0,0.7);
+      padding:12px; border-radius:50%; cursor:pointer; border:2px solid #fff;
+      box-shadow:0 0 15px #0ff; }
+    #music-control:hover { box-shadow:0 0 25px #ff0; }
 
-    .glow-text {
-      color: #f00;
-      text-shadow: 0 0 5px #f00, 0 0 20px #f00;
-      animation: flicker 1.5s infinite;
-    }
-
-    @keyframes glow {
-      from { text-shadow: 0 0 5px #f00; }
-      to { text-shadow: 0 0 20px #ff0; }
-    }
-
-    @keyframes flicker {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    #fps { position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.7);
+      padding:5px 10px; border-radius:6px; border:1px solid #fff; }
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <div class="logo">⚡</div>
-    <button class="tab-button" data-tab="contact">CONTACT</button>
-    <button class="tab-button" data-tab="optimize">OPTIMIZE</button>
-    <button class="tab-button" data-tab="gaming">GAMING</button>
-    <button class="tab-button" data-tab="network">NETWORK</button>
-    <button class="tab-button" data-tab="display">DISPLAY</button>
-  </div>
-
-  <div class="panel">
-    <!-- CONTACT -->
-    <div id="contact" class="tab-content">
-      <h2>Liên hệ</h2>
-      <p>Zalo: <b>0365829172</b></p>
+  <canvas id="particles"></canvas>
+  <div id="app">
+    <div class="sidebar">
+      <button onclick="show('gaming')">🎮 GAMING</button>
+      <button onclick="show('visual')">📊 VISUALIZE</button>
+      <button onclick="show('contact')">📞 CONTACT</button>
     </div>
-
-    <!-- OPTIMIZE -->
-    <div id="optimize" class="tab-content">
-      <h2>Tùy chỉnh nhạy</h2>
-      <label>Độ nhạy: <span id="sensitivityValue">50</span></label>
-      <input type="range" min="1" max="100" value="50" id="sensitivity">
-    </div>
-
-    <!-- GAMING -->
-    <div id="gaming" class="tab-content">
-      <h2 class="glow-text">GAMING MODE</h2>
-      <div class="toggle">
-        <label>Aim Assist</label>
-        <input type="checkbox" onchange="logStatus('Aim Assist', this.checked)">
+    <div class="panel">
+      <div id="gaming" class="section">
+        <h1 class="rainbow-text">GAMING MODE</h1>
+        <div><label>Aim Assist</label> <input type="checkbox" onclick="log('Aim Assist', this.checked)"></div>
+        <div><label>FPS Unlock</label> <input type="checkbox" onclick="log('FPS Unlock', this.checked)"></div>
+        <h3>Status Log:</h3>
+        <div id="statusLog">Waiting...</div>
       </div>
-      <div class="toggle">
-        <label>FPS Unlock</label>
-        <input type="checkbox" onchange="logStatus('FPS Unlock', this.checked)">
+      <div id="visual" class="section hidden">
+        <h1 class="rainbow-text">PERFORMANCE</h1>
+        <div id="fps">FPS: 0</div>
+        <canvas id="chart" class="chart"></canvas>
       </div>
-      <div class="toggle">
-        <label>Tâm Ảo</label>
-        <input type="checkbox" onchange="logStatus('Tâm Ảo', this.checked)">
+      <div id="contact" class="section hidden">
+        <h1 class="rainbow-text">CONTACT</h1>
+        <p>Zalo: <b>0365829172</b></p>
       </div>
-      <div id="statusLog" style="margin-top:20px;background:#111;padding:10px;border-radius:6px;">Status: Waiting...</div>
-    </div>
-
-    <!-- NETWORK -->
-    <div id="network" class="tab-content">
-      <h2>Network</h2>
-      <p>Chức năng đang phát triển...</p>
-    </div>
-
-    <!-- DISPLAY -->
-    <div id="display" class="tab-content">
-      <h2>Thông tin thiết bị</h2>
-      <p><b>Thiết bị:</b> <span id="device"></span></p>
-      <p><b>Hệ điều hành:</b> <span id="os"></span></p>
-      <p><b>Độ phân giải:</b> <span id="resolution"></span></p>
     </div>
   </div>
 
+  <div id="music-control" onclick="toggleMusic()">🎶</div>
+  <iframe id="ytplayer" src="https://www.youtube.com/embed/fGZABHGAhnA?enablejsapi=1&autoplay=0&controls=0" class="hidden"></iframe>
+
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@2.8.0/tsparticles.bundle.min.js"></script>
 <script>
-  // Chuyển tab
-  const buttons = document.querySelectorAll(".tab-button");
-  const contents = document.querySelectorAll(".tab-content");
-  buttons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      contents.forEach(c => c.style.display = "none");
-      document.getElementById(btn.dataset.tab).style.display = "block";
-    });
+  // Particle background
+  tsParticles.load("particles", {
+    fpsLimit: 60,
+    particles: { color: { value: "#ffffff" }, move: { enable: true, speed:1 }, number: { value: 100 }, size: { value: 3 } }
   });
-  document.getElementById("contact").style.display = "block";
 
-  // Slider sensitivity
-  const sensitivity = document.getElementById("sensitivity");
-  const sensitivityValue = document.getElementById("sensitivityValue");
-  if(sensitivity){
-    sensitivity.addEventListener("input", () => {
-      sensitivityValue.textContent = sensitivity.value;
-    });
+  // Switch sections
+  function show(id){
+    document.querySelectorAll('.section').forEach(s=>s.classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
   }
 
-  // Status log gaming mode
-  function logStatus(name, state){
-    const log = document.getElementById("statusLog");
-    log.textContent = "✅ " + name + " : " + (state ? "ON" : "OFF");
+  function log(name, state){
+    document.getElementById('statusLog').textContent = `${name}: ${state ? "ON" : "OFF"}`;
   }
 
-  // Thông tin thiết bị
-  document.getElementById("device").textContent = navigator.userAgent;
-  document.getElementById("os").textContent = navigator.platform;
-  document.getElementById("resolution").textContent = window.screen.width + "x" + window.screen.height;
+  // FPS + Chart
+  const fpsEl = document.getElementById('fps');
+  const chart = document.getElementById('chart');
+  const ctx = chart.getContext('2d');
+  let data = [];
+  function updatePerformance(){
+    const fps = Math.floor(40 + Math.random()*40);
+    fpsEl.textContent = 'FPS: ' + fps;
+    data.push(fps);
+    if(data.length>50) data.shift();
+    drawChart();
+  }
+  function drawChart(){
+    ctx.clearRect(0,0,chart.width,chart.height);
+    ctx.strokeStyle = "#0ff"; ctx.beginPath();
+    data.forEach((v,i)=>ctx.lineTo(i*(chart.width/50), chart.height - (v/100*chart.height)));
+    ctx.stroke();
+  }
+  setInterval(updatePerformance,1000);
+
+  // Music control
+  let player;
+  window.onYouTubeIframeAPIReady = () => player = new YT.Player('ytplayer');
+  function toggleMusic(){
+    if(player && player.getPlayerState){
+      if(player.getPlayerState()===1) player.pauseVideo();
+      else player.playVideo();
+    }
+  }
+  // Load YouTube API
+  let tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.head.appendChild(tag);
 </script>
 </body>
 </html>
