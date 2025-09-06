@@ -2,194 +2,182 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>VNTOP Panel</title>
+  <title>FF Menu</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: black;
+      background: #0d0d0d;
       color: white;
-    }
-    .login-screen {
       display: flex;
-      height: 100vh;
-      align-items: center;
-      justify-content: center;
-      background: black;
-      flex-direction: column;
-    }
-    .login-box {
-      background: #111;
-      padding: 20px;
-      border: 2px solid red;
-      border-radius: 10px;
-      text-align: center;
-    }
-    .login-box input {
-      padding: 10px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 5px;
-      width: 200px;
-    }
-    .login-box button {
-      padding: 10px 20px;
-      border: none;
-      background: red;
-      color: white;
-      cursor: pointer;
-      border-radius: 5px;
     }
 
-    /* GUI chính */
-    .app {
-      display: none;
-      height: 100vh;
-      display: flex;
-    }
     .sidebar {
-      width: 150px;
-      background: #1a0000;
-      padding: 20px;
+      width: 120px;
+      background: linear-gradient(180deg, #200, #600);
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      align-items: center;
+      padding: 20px 10px;
     }
-    .sidebar button {
-      background: red;
-      border: none;
-      padding: 10px;
-      border-radius: 5px;
-      cursor: pointer;
+
+    .logo {
+      font-size: 40px;
+      margin-bottom: 20px;
+      color: #f00;
+      animation: glow 1.5s infinite alternate;
+    }
+
+    .tab-button {
+      background: none;
+      border: 2px solid #f00;
       color: white;
+      margin: 10px 0;
+      padding: 10px;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.3s;
+      border-radius: 8px;
     }
-    .main {
+    .tab-button:hover {
+      background: #f00;
+    }
+
+    .panel {
       flex: 1;
       padding: 20px;
-      background: #0d0d0d;
-    }
-    h2 {
-      color: red;
     }
 
-    /* Switch */
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 50px;
-      height: 24px;
-    }
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #444;
-      transition: .4s;
-      border-radius: 24px;
-    }
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 18px;
-      width: 18px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: .4s;
-      border-radius: 50%;
-    }
-    input:checked + .slider {
-      background-color: red;
-    }
-    input:checked + .slider:before {
-      transform: translateX(26px);
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.5s;
     }
 
-    .log {
-      margin-top: 20px;
+    .toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 15px 0;
+      background: rgba(255,0,0,0.1);
       padding: 10px;
-      background: #111;
-      border: 1px solid red;
-      border-radius: 5px;
-      height: 120px;
-      overflow-y: auto;
-      font-size: 14px;
+      border-radius: 8px;
+    }
+
+    input[type="checkbox"] {
+      width: 40px;
+      height: 20px;
+    }
+
+    .glow-text {
+      color: #f00;
+      text-shadow: 0 0 5px #f00, 0 0 20px #f00;
+      animation: flicker 1.5s infinite;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #f00; }
+      to { text-shadow: 0 0 20px #ff0; }
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
   </style>
 </head>
 <body>
-  <!-- Nhập key -->
-  <div class="login-screen" id="loginScreen">
-    <div class="login-box">
-      <h2>Nhập Key</h2>
-      <input type="password" id="keyInput" placeholder="Nhập key...">
-      <br>
-      <button onclick="checkKey()">Xác nhận</button>
-      <p id="loginMsg" style="color:red;"></p>
+  <div class="sidebar">
+    <div class="logo">⚡</div>
+    <button class="tab-button" data-tab="contact">CONTACT</button>
+    <button class="tab-button" data-tab="optimize">OPTIMIZE</button>
+    <button class="tab-button" data-tab="gaming">GAMING</button>
+    <button class="tab-button" data-tab="network">NETWORK</button>
+    <button class="tab-button" data-tab="display">DISPLAY</button>
+  </div>
+
+  <div class="panel">
+    <!-- CONTACT -->
+    <div id="contact" class="tab-content">
+      <h2>Liên hệ</h2>
+      <p>Zalo: <b>0365829172</b></p>
+    </div>
+
+    <!-- OPTIMIZE -->
+    <div id="optimize" class="tab-content">
+      <h2>Tùy chỉnh nhạy</h2>
+      <label>Độ nhạy: <span id="sensitivityValue">50</span></label>
+      <input type="range" min="1" max="100" value="50" id="sensitivity">
+    </div>
+
+    <!-- GAMING -->
+    <div id="gaming" class="tab-content">
+      <h2 class="glow-text">GAMING MODE</h2>
+      <div class="toggle">
+        <label>Aim Assist</label>
+        <input type="checkbox" onchange="logStatus('Aim Assist', this.checked)">
+      </div>
+      <div class="toggle">
+        <label>FPS Unlock</label>
+        <input type="checkbox" onchange="logStatus('FPS Unlock', this.checked)">
+      </div>
+      <div class="toggle">
+        <label>Tâm Ảo</label>
+        <input type="checkbox" onchange="logStatus('Tâm Ảo', this.checked)">
+      </div>
+      <div id="statusLog" style="margin-top:20px;background:#111;padding:10px;border-radius:6px;">Status: Waiting...</div>
+    </div>
+
+    <!-- NETWORK -->
+    <div id="network" class="tab-content">
+      <h2>Network</h2>
+      <p>Chức năng đang phát triển...</p>
+    </div>
+
+    <!-- DISPLAY -->
+    <div id="display" class="tab-content">
+      <h2>Thông tin thiết bị</h2>
+      <p><b>Thiết bị:</b> <span id="device"></span></p>
+      <p><b>Hệ điều hành:</b> <span id="os"></span></p>
+      <p><b>Độ phân giải:</b> <span id="resolution"></span></p>
     </div>
   </div>
 
-  <!-- Ứng dụng -->
-  <div class="app" id="app">
-    <div class="sidebar">
-      <button>Contact</button>
-      <button>Optimize</button>
-      <button style="background:#ff1a1a;">Gaming</button>
-      <button>Network</button>
-      <button>Display</button>
-    </div>
-    <div class="main">
-      <h2>GAMING MODE</h2>
-      <div>
-        Aim Assist
-        <label class="switch">
-          <input type="checkbox" onchange="logStatus('Aim Assist', this.checked)">
-          <span class="slider"></span>
-        </label>
-      </div>
-      <div>
-        FPS Unlock
-        <label class="switch">
-          <input type="checkbox" onchange="logStatus('FPS Unlock', this.checked)">
-          <span class="slider"></span>
-        </label>
-      </div>
-      <div>
-        Tâm Ảo
-        <label class="switch">
-          <input type="checkbox" onchange="logStatus('Tâm Ảo', this.checked)">
-          <span class="slider"></span>
-        </label>
-      </div>
+<script>
+  // Chuyển tab
+  const buttons = document.querySelectorAll(".tab-button");
+  const contents = document.querySelectorAll(".tab-content");
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      contents.forEach(c => c.style.display = "none");
+      document.getElementById(btn.dataset.tab).style.display = "block";
+    });
+  });
+  document.getElementById("contact").style.display = "block";
 
-      <div class="log" id="logBox">
-        <b>Log Status:</b><br>
-      </div>
-    </div>
-  </div>
+  // Slider sensitivity
+  const sensitivity = document.getElementById("sensitivity");
+  const sensitivityValue = document.getElementById("sensitivityValue");
+  if(sensitivity){
+    sensitivity.addEventListener("input", () => {
+      sensitivityValue.textContent = sensitivity.value;
+    });
+  }
 
-  <script>
-    function checkKey() {
-      const key = document.getElementById('keyInput').value;
-      if (key === "VNTOP") {
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('app').style.display = 'flex';
-      } else {
-        document.getElementById('loginMsg').innerText = "Sai key!";
-      }
-    }
+  // Status log gaming mode
+  function logStatus(name, state){
+    const log = document.getElementById("statusLog");
+    log.textContent = "✅ " + name + " : " + (state ? "ON" : "OFF");
+  }
 
-    function logStatus(feature, status) {
-      const logBox = document.getElementById("logBox");
-      const time = new Date().toLocaleTimeString();
-      logBox.innerHTML += `[${time}] ${feature}: ${status ? "ON" : "OFF"}<br>`;
-      logBox.scrollTop = logBox.scrollHeight;
-    }
-  </script>
+  // Thông tin thiết bị
+  document.getElementById("device").textContent = navigator.userAgent;
+  document.getElementById("os").textContent = navigator.platform;
+  document.getElementById("resolution").textContent = window.screen.width + "x" + window.screen.height;
+</script>
 </body>
 </html>
