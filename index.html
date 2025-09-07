@@ -1,166 +1,167 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>FF MENU PANEL</title>
+  <title>AKATSUKI MENU</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      background: #0d0d0d;
+      background: linear-gradient(180deg, #000, #021);
       color: #fff;
       display: flex;
-      height: 100vh;
       justify-content: center;
       align-items: center;
+      height: 100vh;
     }
 
-    .panel {
-      width: 90%;
-      height: 90%;
-      display: flex;
-      flex-direction: column;
-      background: rgba(20,20,20,0.8);
-      border-radius: 12px;
-      overflow: hidden;
-      position: relative;
+    .menu {
+      width: 360px;
+      background: rgba(0, 50, 0, 0.9);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 30px #00ff99;
+      animation: glow 2s infinite alternate;
     }
 
-    .panel::before {
-      content: "";
-      position: absolute;
-      top: -2px; left: -2px; right: -2px; bottom: -2px;
-      background: linear-gradient(270deg, #ff005e, #00ffe7, #fffb00, #ff005e);
-      background-size: 600% 600%;
-      border-radius: 14px;
-      z-index: -1;
-      animation: led 8s linear infinite;
-    }
-    @keyframes led {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    @keyframes glow {
+      from { box-shadow: 0 0 15px #00ff99; }
+      to   { box-shadow: 0 0 40px #00ffaa; }
     }
 
-    /* Header */
-    .header {
-      background: rgba(0,0,0,0.7);
-      padding: 12px 20px;
+    .title {
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #00ff99;
+      letter-spacing: 2px;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .section h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      color: #00ffaa;
+      border-bottom: 1px solid #00ff99;
+      padding-bottom: 5px;
+    }
+
+    .toggle {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-    .header h1 {
-      font-size: 22px;
-      color: #0ff;
-    }
-    .music-btn {
-      cursor: pointer;
-      padding: 6px 14px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 6px;
-      transition: 0.3s;
-    }
-    .music-btn:hover {
-      background: #0ff;
-      color: #000;
+      margin: 8px 0;
     }
 
-    /* Nội dung */
-    .content {
-      flex: 1;
-      display: flex;
-    }
-    .sidebar {
-      width: 220px;
-      background: rgba(0,0,0,0.6);
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      border-right: 1px solid rgba(255,255,255,0.1);
-    }
-    .sidebar h2 {
-      margin-bottom: 20px;
-      font-size: 20px;
-      text-align: center;
-      color: #0ff;
-    }
-    .menu-btn {
-      margin: 10px 0;
-      padding: 12px;
-      text-align: center;
-      background: rgba(255,255,255,0.05);
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .menu-btn:hover {
-      background: #0ff;
-      color: #000;
-      font-weight: bold;
+    .toggle label {
+      font-size: 14px;
     }
 
-    .main {
-      flex: 1;
-      padding: 30px;
-      animation: fadeIn 0.5s ease;
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
     }
-    .hidden { display: none; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #444;
+      border-radius: 24px;
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: .4s;
+    }
+
+    input:checked + .slider {
+      background-color: #00ff99;
+      box-shadow: 0 0 15px #00ffaa;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
   </style>
 </head>
 <body>
-  <div class="panel">
-    <div class="header">
-      <h1>FF MENU PANEL</h1>
-      <div class="music-btn" onclick="toggleMusic()">Music: <span id="musicStatus">ON</span></div>
-    </div>
-    <div class="content">
-      <div class="sidebar">
-        <h2>Menu</h2>
-        <div class="menu-btn" onclick="showTab('gaming')">Gaming Mode</div>
-        <div class="menu-btn" onclick="showTab('optimize')">Optimize</div>
-        <div class="menu-btn" onclick="showTab('lua')">Lua Console</div>
-        <div class="menu-btn" onclick="showTab('contact')">Contact</div>
+  <div class="menu">
+    <div class="title">AKATSUKI APK TEAM</div>
+
+    <div class="section">
+      <h3>Optimizer</h3>
+      <div class="toggle">
+        <label>Âm thanh ON</label>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
       </div>
-      <div class="main">
-        <div id="gaming" class="tab">🎮 <b>Gaming Mode</b><br> Bật chế độ tối ưu chơi game với hiệu ứng LED.</div>
-        <div id="optimize" class="tab hidden">⚡ <b>Optimize</b><br> Điều chỉnh độ nhạy & hiển thị thông số thiết bị.</div>
-        <div id="lua" class="tab hidden">💻 <b>Lua Console</b><br> Mở console để nhập lệnh script Lua.</div>
-        <div id="contact" class="tab hidden">📞 <b>Contact</b><br> Zalo: 0365829172<br> Dev:NhismDev & LuxeDev</div>
+      <div class="toggle">
+        <label>Sensitivity Boost</label>
+        <label class="switch">
+          <input type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Combat</h3>
+      <div class="toggle">
+        <label>AimLock</label>
+        <label class="switch">
+          <input type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle">
+        <label>Smooth View</label>
+        <label class="switch">
+          <input type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Display</h3>
+      <div class="toggle">
+        <label>UI Sounds</label>
+        <label class="switch">
+          <input type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle">
+        <label>FPS Unlock</label>
+        <label class="switch">
+          <input type="checkbox">
+          <span class="slider"></span>
+        </label>
       </div>
     </div>
   </div>
-
-  <!-- Nhạc nền -->
-  <audio id="bgMusic" autoplay loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-  </audio>
-
-  <script>
-    function showTab(tabId) {
-      document.querySelectorAll('.tab').forEach(el => el.classList.add('hidden'));
-      document.getElementById(tabId).classList.remove('hidden');
-    }
-
-    let musicPlaying = true;
-    function toggleMusic() {
-      const audio = document.getElementById("bgMusic");
-      const status = document.getElementById("musicStatus");
-      if (musicPlaying) {
-        audio.pause();
-        status.textContent = "OFF";
-      } else {
-        audio.play();
-        status.textContent = "ON";
-      }
-      musicPlaying = !musicPlaying;
-    }
-  </script>
 </body>
 </html>
