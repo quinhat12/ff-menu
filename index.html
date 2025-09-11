@@ -1,119 +1,206 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UCHIHA PANEL</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+    /* ===== RESET & FONT ===== */
+    * {margin:0; padding:0; box-sizing:border-box;}
     body {
-      margin: 0;
       font-family: 'Poppins', sans-serif;
       background: radial-gradient(circle at top, #0f0f0f, #000);
-      color: #fff;
+      color: white;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
 
-    .panel {
-      width: 380px;
-      padding: 20px;
-      background: rgba(10, 10, 10, 0.85);
-      border-radius: 20px;
-      box-shadow: 0 0 25px #ff0000aa, inset 0 0 10px #ff0000aa;
-      border: 2px solid #ff0000;
-      position: relative;
-      overflow: hidden;
+    /* ===== LOGIN ===== */
+    .login-container {
+      background: rgba(20,20,20,0.9);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0px 0px 25px #ff0000;
+      text-align: center;
     }
-
-    /* Uchiha Logo */
-    .logo {
-      display: flex;
-      justify-content: center;
+    .login-container img {
+      width: 120px;
       margin-bottom: 15px;
     }
-    .logo img {
-      width: 80px;
-      filter: drop-shadow(0 0 10px red);
-    }
-
-    .title {
-      text-align: center;
-      font-size: 22px;
-      font-weight: bold;
+    .login-container h2 {
+      color: #ff0000;
       margin-bottom: 20px;
-      color: #ff4d4d;
-      text-shadow: 0 0 15px #ff0000;
+      text-shadow: 0 0 12px #ff3333;
     }
-
-    .btn {
-      background: rgba(30,30,30,0.9);
-      border: 1px solid #ff0000;
+    .login-container input {
+      display: block;
+      margin: 12px auto;
       padding: 12px;
-      margin: 10px 0;
-      border-radius: 12px;
-      text-align: center;
-      font-size: 16px;
-      font-weight: 600;
+      width: 240px;
+      border: none;
+      border-radius: 8px;
+      background: #111;
+      color: #fff;
+      outline: none;
+    }
+    .login-container button {
+      padding: 12px 30px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #ff0000, #660000);
+      color: white;
+      font-weight: bold;
       cursor: pointer;
       transition: 0.3s;
-      box-shadow: 0 0 10px #ff000055;
     }
-    .btn:hover {
-      background: #ff0000;
-      color: #fff;
-      box-shadow: 0 0 25px #ff0000, 0 0 40px #ff3333;
-      transform: scale(1.05);
+    .login-container button:hover {
+      background: linear-gradient(90deg, #ff3333, #990000);
     }
 
-    /* Glow animation border */
-    .panel::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(#ff0000, transparent, #ff0000, transparent);
-      animation: rotate 6s linear infinite;
+    /* ===== PANEL ===== */
+    .panel {
+      display: none;
+      background: rgba(25,25,25,0.85);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 25px #ff0000;
+      width: 90%;
+      max-width: 900px;
+      text-align: center;
     }
-    .panel::after {
-      content: '';
-      position: absolute;
-      inset: 3px;
-      border-radius: 20px;
-      background: #111;
+    .panel h1 {
+      margin-bottom: 25px;
+      color: #ff0000;
+      text-shadow: 0 0 15px #ff3333;
     }
-    @keyframes rotate {
-      100% {
-        transform: rotate(360deg);
-      }
+    .functions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
     }
 
-    /* Put content above glowing bg */
-    .panel > * {
+    /* ===== SWITCH ===== */
+    .switch-container {
+      background: rgba(50,50,50,0.7);
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px #111;
+    }
+    .switch-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .switch {
       position: relative;
-      z-index: 2;
+      display: inline-block;
+      width: 60px;
+      height: 30px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #444;
+      transition: .4s;
+      border-radius: 30px;
+      box-shadow: 0 0 10px #ff0000;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 22px; width: 22px;
+      left: 4px; bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background: linear-gradient(90deg, #ff0000, #ff6600);
+      box-shadow: 0 0 20px #ff3333;
+    }
+    input:checked + .slider:before {
+      transform: translateX(30px);
     }
   </style>
 </head>
 <body>
-  <div class="panel">
-    <div class="logo">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/1/16/Uchiha_Symbol.svg" alt="Uchiha Logo">
-    </div>
-    <div class="title">UCHIHA PANEL</div>
-    <div class="btn">1. Optimizer</div>
-    <div class="btn">2. Sensitivity Boost</div>
-    <div class="btn">3. Touch Screen Fix</div>
-    <div class="btn">4. ANTIBAND</div>
-    <div class="btn">5. AimLock</div>
-    <div class="btn">6. Smooth View</div>
-    <div class="btn">7. Smoooth V10</div>
-    <div class="btn">8. DPI PRO</div>
-    <div class="btn">9. FPS Booster</div>
-    <div class="btn">10. Anti-Lag Mode</div>
+
+  <!-- LOGIN -->
+  <div class="login-container" id="loginBox">
+    <img src="uchiha_logo.png" alt="UCHIHA Logo">
+    <h2>UCHIHA PANEL</h2>
+    <input type="text" id="username" placeholder="Tài khoản">
+    <input type="password" id="password" placeholder="Mật khẩu">
+    <button onclick="login()">Đăng nhập</button>
   </div>
+
+  <!-- PANEL -->
+  <div class="panel" id="panelBox">
+    <h1>UCHIHA GAMING PANEL</h1>
+    <div class="functions">
+      <div class="switch-container"><div class="switch-label">Aimlock
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+      </div></div>
+
+      <div class="switch-container"><div class="switch-label">Aimbot Trick
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+      </div></div>
+
+      <div class="switch-container"><div class="switch-label">Sensitivity Boost
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+      </div></div>
+
+      <div class="switch-container"><div class="switch-label">FPS Unlock
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+      </div></div>
+
+      <div class="switch-container"><div class="switch-label">Display Optimize
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+      </div></div>
+
+      <div class="switch-container"><div class="switch-label">Anti-Lag
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+      </div></div>
+
+      <div class="switch-container"><div class="switch-label">Crosshair Mode
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+      </div></div>
+
+      <div class="switch-container"><div class="switch-label">Auto Headshot
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+      </div></div>
+
+      <div class="switch-container"><div class="switch-label">Recoil Control
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+      </div></div>
+
+      <div class="switch-container"><div class="switch-label">Stability Mode
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+      </div></div>
+    </div>
+  </div>
+
+  <script>
+    function login(){
+      let user = document.getElementById("username").value;
+      let pass = document.getElementById("password").value;
+      if(user === "uchiha" && pass === "madara"){
+        document.getElementById("loginBox").style.display="none";
+        document.getElementById("panelBox").style.display="block";
+      } else {
+        alert("Sai tài khoản hoặc mật khẩu!");
+      }
+    }
+  </script>
 </body>
 </html>
