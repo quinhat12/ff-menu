@@ -3,116 +3,131 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AKATSUKI IOS TEAM</title>
+  <title>AKATSUKI APK TEAM</title>
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+    body {
       font-family: Arial, sans-serif;
-      background-color: #000;
+      background: #000;
       color: #fff;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      justify-content: flex-start;
+      overflow-x: hidden;
     }
 
-    .container {
-      background: #0d0d0d;
-      border-radius: 15px;
-      padding: 25px;
-      width: 90%;
-      max-width: 380px;
-      box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
-      text-align: center;
+    /* hiệu ứng hạt */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: url('https://i.ibb.co/zxYQY0f/particles.gif') repeat;
+      background-size: cover;
+      opacity: 0.2;
+      z-index: -1;
     }
 
-    .logo {
-      width: 70px;
-      height: 70px;
-      background: #1c1c1c;
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 20px;
+    }
+
+    .header img {
+      width: 55px;
+      height: 55px;
       border-radius: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0 auto 10px;
-      font-size: 12px;
-      color: #ccc;
+      border: 2px solid #00ff80;
     }
 
-    h1 {
+    .header .title {
       font-size: 18px;
-      margin: 10px 0;
-      color: #fff;
+      font-weight: bold;
     }
 
-    .desc {
+    .header .slogan {
       font-size: 13px;
       color: #aaa;
-      margin-bottom: 20px;
+      margin-top: 3px;
     }
 
-    .form-group {
-      margin-bottom: 20px;
-      text-align: left;
+    .card {
+      width: 95%;
+      max-width: 450px;
+      background: linear-gradient(145deg, #0d1a0d, #000);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 0 30px rgba(0, 255, 128, 0.3);
+      margin-bottom: 15px;
     }
 
-    .form-group label {
-      display: block;
-      font-size: 14px;
-      margin-bottom: 6px;
+    .card h2 {
+      font-size: 18px;
+      margin-bottom: 5px;
     }
 
-    .password-wrapper {
-      position: relative;
+    .card p {
+      font-size: 13px;
+      color: #bbb;
+      margin-bottom: 15px;
+    }
+
+    .input-box {
       display: flex;
       align-items: center;
+      background: #111;
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 15px;
     }
 
-    .password-wrapper input {
-      width: 100%;
-      padding: 12px;
-      padding-right: 40px;
-      border-radius: 10px;
+    .input-box input {
+      flex: 1;
+      background: transparent;
       border: none;
       outline: none;
-      font-size: 14px;
-      background: #1c1c1c;
       color: #fff;
+      font-size: 14px;
     }
 
-    .password-wrapper .toggle-password {
-      position: absolute;
-      right: 12px;
+    .input-box span {
       cursor: pointer;
+      margin-left: 8px;
       color: #aaa;
+      display: flex;
+      align-items: center;
     }
 
     .btn {
-      background: #00ff80;
-      border: none;
-      border-radius: 10px;
+      width: 100%;
       padding: 12px;
       font-size: 16px;
       font-weight: bold;
-      width: 100%;
-      cursor: pointer;
+      border: none;
+      border-radius: 12px;
+      background: #00ff80;
       color: #000;
-      margin-top: 10px;
+      cursor: pointer;
       transition: 0.3s;
     }
-
     .btn:hover {
       background: #00cc66;
     }
 
     .note {
-      font-size: 12px;
-      color: #aaa;
-      margin-top: 15px;
+      font-size: 13px;
+      color: #bbb;
+      margin-top: 10px;
       line-height: 1.5;
     }
-
     .note a {
       color: #00ff80;
       text-decoration: none;
@@ -120,61 +135,50 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="logo">imgbb.com</div>
-    <h1>AKATSUKI IOS TEAM</h1>
-    <div class="desc">Tốc độ · An toàn · Ổn định</div>
+  <!-- Header -->
+  <div class="header">
+    <img src="https://i.ibb.co/3Yf2LbN/sample-logo.jpg" alt="Logo">
+    <div>
+      <div class="title">AKATSUKI APK TEAM</div>
+      <div class="slogan">Tốc độ · An toàn · Ổn định</div>
+    </div>
+  </div>
 
-    <div class="form-group">
-      <label for="key">Đăng nhập key</label>
-      <div class="password-wrapper">
-        <input type="password" id="key" placeholder="Nhập key của bạn...">
-        <span class="toggle-password" onclick="togglePassword()">
-          <!-- con mắt SVG -->
-          <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" 
-               width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 
-                     8 5.5S16 8 16 8z"/>
-            <path d="M8 5.5a2.5 2.5 0 1 1 0 5 
-                     2.5 2.5 0 0 1 0-5z"/>
-          </svg>
-        </span>
-      </div>
+  <!-- Card -->
+  <div class="card">
+    <h2>Đăng nhập key</h2>
+    <p>Nhập key đã được cấp để tiếp tục</p>
+
+    <div class="input-box">
+      <input type="password" id="key" placeholder="Nhập key của bạn...">
+      <span onclick="pasteKey()">📋</span>
+      <span onclick="togglePassword()">👁</span>
     </div>
 
     <button class="btn">Đăng nhập</button>
 
     <div class="note">
-      Ghi chú<br>
+      <b>Ghi chú</b><br>
       Không chia sẻ key. Hệ thống sẽ khoá khi phát hiện sử dụng bất thường hoặc phát tán công khai.<br>
       • Chạm giữ vào ô nhập để dán key từ clipboard.<br><br>
       Bằng việc đăng nhập bạn đồng ý với 
-      <a href="#">Điều khoản</a> & <a href="#">Chính sách bảo mật</a>.
+      <a href="#">Điều khoản</a> & 
+      <a href="#">Chính sách bảo mật</a>.
     </div>
   </div>
 
   <script>
     function togglePassword() {
-      const passField = document.getElementById("key");
-      const eyeIcon = document.getElementById("eyeIcon");
+      const field = document.getElementById("key");
+      field.type = field.type === "password" ? "text" : "password";
+    }
 
-      if (passField.type === "password") {
-        passField.type = "text";
-        // Mắt mở
-        eyeIcon.innerHTML = `<path d="M16 8s-3-5.5-8-5.5S0 8 
-                              0 8s3 5.5 8 5.5S16 8 16 8z"/>
-                             <path d="M8 5.5a2.5 2.5 0 1 1 0 5 
-                              2.5 2.5 0 0 1 0-5z"/>`;
-      } else {
-        passField.type = "password";
-        // Mắt gạch chéo
-        eyeIcon.innerHTML = `<path d="M13.359 11.238l2.147 
-                              2.146-.708.708-2.147-2.146A8.944 
-                              8.944 0 0 1 8 13.5c-5 
-                              0-8-5.5-8-5.5a17.87 17.87 
-                              0 0 1 3.232-3.356L1.646 
-                              3.354l.708-.708 11.005 
-                              11.004z"/>`;
+    async function pasteKey() {
+      try {
+        const text = await navigator.clipboard.readText();
+        document.getElementById("key").value = text;
+      } catch (err) {
+        alert("Trình duyệt không hỗ trợ dán từ clipboard!");
       }
     }
   </script>
