@@ -188,7 +188,9 @@
           status.style.color = "lime";
 
           // 👉 Redirect sang app chính (nếu có)
-          // window.location.href = "app.html";
+          setTimeout(() => {
+  window.location.href = "panel.html";
+}, 1500);
         })
         .catch(err => {
           status.innerHTML = "Lỗi tải key list!";
