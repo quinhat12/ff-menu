@@ -297,9 +297,13 @@
     <!-- Footer -->
     <div class="footer">
       <div class="footer-top">
-        <div class="boost-bar">CPU — Ultra Boost</div>
-        <button id="adminBtn" class="admin-btn">Admin</button>
-      </div>
+        <div class="boost-bar" id="cpuBtn">CPU — Ultra Boost</div>
+
+<script>
+  document.getElementById("cpuBtn").addEventListener("click", () => {
+    window.location.href = "cpu.html";
+  });
+</script>
       <div class="footer-bottom">
         <button id="logoutBtn" class="admin-btn">Đăng xuất</button>
         <button id="resetBtn" class="admin-btn">Reset</button>
