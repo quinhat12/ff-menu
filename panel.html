@@ -13,13 +13,13 @@
       overflow-x: hidden;
     }
 
-    /* Canvas nền hacker */
+    /* Canvas nền particles */
     #matrix {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       z-index: -1;
-      background: black;
+      background: #001a00;
     }
 
     .container {
@@ -27,7 +27,7 @@
       margin: 20px auto;
       padding: 20px;
       position: relative;
-      z-index: 1; /* nổi lên trên hiệu ứng */
+      z-index: 1;
     }
 
     /* HEADER */
@@ -95,7 +95,7 @@
       border-radius: 15px;
       padding: 15px;
       margin: 15px 0;
-      box-shadow: 0 0 15px rgba(0,255,100,0.3);
+      box-shadow: 0 0 15px rgba(0,255,100,0.2);
     }
 
     .card h3 {
@@ -188,19 +188,27 @@
     /* FOOTER */
     .footer {
       margin-top: 20px;
-      text-align: center;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
     }
 
     .boost-bar {
+      flex: 1;
       background: #004400;
       padding: 10px;
       border-radius: 12px;
       font-weight: bold;
+      text-align: center;
       box-shadow: 0 0 10px #0f0;
     }
 
     .admin-btn {
-      margin-left: 10px;
       padding: 8px 12px;
       background: #111;
       color: #fff;
@@ -208,10 +216,16 @@
       border: 1px solid #0f0;
       cursor: pointer;
     }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
   </style>
 </head>
 <body>
-  <!-- Nền hacker -->
+  <!-- Nền particles -->
   <canvas id="matrix"></canvas>
 
   <div class="container">
@@ -230,7 +244,7 @@
 
     <!-- Optimizer -->
     <div class="card">
-      <h3>Optimizer <span>Âm thanh: ON</span></h3>
+      <h3>Optimizer <span>Âm thanh: OFF</span></h3>
       <div class="item">
         <div class="item-left">
           <div class="icon">IG</div>
@@ -269,7 +283,7 @@
             <div class="desc">Tắt/bật âm thanh</div>
           </div>
         </div>
-        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
       </div>
     </div>
 
@@ -324,93 +338,97 @@
 
     <!-- Footer -->
     <div class="footer">
-      <div class="boost-bar">CPU — Ultra Boost</div>
-      <button class="admin-btn">Admin</button>
+      <div class="footer-top">
+        <div class="boost-bar">CPU — Ultra Boost</div>
+        <button class="admin-btn">Admin</button>
+      </div>
+      <div class="footer-bottom">
+        <button class="admin-btn">Đăng xuất</button>
+        <button class="admin-btn">Reset</button>
+      </div>
     </div>
   </div>
 
-  <!-- Hiệu ứng hacker -->
   <!-- Hiệu ứng particles xanh neon -->
-<script>
-  const canvas = document.getElementById("matrix");
-  const ctx = canvas.getContext("2d");
+  <script>
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
 
-  canvas.height = window.innerHeight;
-  canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
 
-  const particles = [];
-  const numParticles = 80;
+    const particles = [];
+    const numParticles = 80;
 
-  class Particle {
-    constructor() {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
-      this.radius = 2 + Math.random() * 2;
-      this.dx = (Math.random() - 0.5) * 1.5; // tốc độ ngang
-      this.dy = (Math.random() - 0.5) * 1.5; // tốc độ dọc
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.radius = 2 + Math.random() * 2;
+        this.dx = (Math.random() - 0.5) * 1.5;
+        this.dy = (Math.random() - 0.5) * 1.5;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "#00ff99";
+        ctx.shadowColor = "#00ff99";
+        ctx.shadowBlur = 15;
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      update() {
+        this.x += this.dx;
+        this.y += this.dy;
+
+        if (this.x < 0 || this.x > canvas.width) this.dx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.dy *= -1;
+
+        this.draw();
+      }
     }
 
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = "#00ff99";
-      ctx.shadowColor = "#00ff99";
-      ctx.shadowBlur = 15;
-      ctx.fill();
-      ctx.closePath();
-    }
-
-    update() {
-      this.x += this.dx;
-      this.y += this.dy;
-
-      if (this.x < 0 || this.x > canvas.width) this.dx *= -1;
-      if (this.y < 0 || this.y > canvas.height) this.dy *= -1;
-
-      this.draw();
-    }
-  }
-
-  function connect() {
-    for (let a = 0; a < particles.length; a++) {
-      for (let b = a; b < particles.length; b++) {
-        const dx = particles[a].x - particles[b].x;
-        const dy = particles[a].y - particles[b].y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < 120) {
-          ctx.beginPath();
-          ctx.strokeStyle = "rgba(0,255,153,0.2)";
-          ctx.lineWidth = 1;
-          ctx.moveTo(particles[a].x, particles[a].y);
-          ctx.lineTo(particles[b].x, particles[b].y);
-          ctx.stroke();
-          ctx.closePath();
+    function connect() {
+      for (let a = 0; a < particles.length; a++) {
+        for (let b = a; b < particles.length; b++) {
+          const dx = particles[a].x - particles[b].x;
+          const dy = particles[a].y - particles[b].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 120) {
+            ctx.beginPath();
+            ctx.strokeStyle = "rgba(0,255,153,0.2)";
+            ctx.lineWidth = 1;
+            ctx.moveTo(particles[a].x, particles[a].y);
+            ctx.lineTo(particles[b].x, particles[b].y);
+            ctx.stroke();
+            ctx.closePath();
+          }
         }
       }
     }
-  }
 
-  function init() {
-    for (let i = 0; i < numParticles; i++) {
-      particles.push(new Particle());
+    function init() {
+      for (let i = 0; i < numParticles; i++) {
+        particles.push(new Particle());
+      }
     }
-  }
 
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => p.update());
-    connect();
-    requestAnimationFrame(animate);
-  }
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => p.update());
+      connect();
+      requestAnimationFrame(animate);
+    }
 
-  init();
-  animate();
+    init();
+    animate();
 
-  // Cập nhật lại khi resize
-  window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  });
-</script>
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
 </body>
 </html>
