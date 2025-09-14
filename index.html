@@ -209,6 +209,36 @@
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     });
-  </script>
-</body>
-</html>
+  <script>
+  async function login() {
+    const key = document.getElementById("keyInput").value.trim();
+    const status = document.getElementById("status");
+
+    if (!key) {
+      status.style.color = "orange";
+      status.textContent = "⚠️ Vui lòng nhập key";
+      return;
+    }
+
+    try {
+      // API backend của bạn, ví dụ: https://your-api.com/check-key/
+      const res = await fetch(`https://your-api.com/check-key/${key}`);
+      const data = await res.json();
+
+      if (data.valid) {
+        status.style.color = "lightgreen";
+        status.textContent = "✅ " + data.message + " (Hết hạn: " + data.expires + ")";
+        // Chuyển hướng nếu cần
+        setTimeout(() => {
+          window.location.href = "https://your-site.com/home";
+        }, 1500);
+      } else {
+        status.style.color = "red";
+        status.textContent = "❌ " + data.message;
+      }
+    } catch (e) {
+      status.style.color = "orange";
+      status.textContent = "🚫 Lỗi kết nối server!";
+    }
+  }
+</script>
