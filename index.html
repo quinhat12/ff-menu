@@ -138,12 +138,72 @@
       </div>
 
       <div class="login-box">
+  <div class="login-box">
   <h2>Đăng nhập key</h2>
-  <p style="color:#bbb;">ADMIN : NhismDev</p>
-  <input id="keyInput" class="input-key" type="text" placeholder="Nhập key của bạn...">
+  <p class="admin">ADMIN : NhismDev</p>
+
+  <input id="keyInput" type="text" placeholder="Nhập key của bạn..." class="input-key">
+
   <button class="btn-login" onclick="login()">Đăng nhập</button>
+
   <div id="status" class="status"></div>
 </div>
+
+<style>
+.login-box {
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+  margin: 20px auto;
+  max-width: 350px;
+}
+
+.login-box h2 {
+  color: #fff;
+  margin-bottom: 5px;
+}
+
+.login-box .admin {
+  margin: 0 0 15px 0;
+  color: #aaa;
+  font-size: 14px;
+  text-align: center;
+}
+
+.input-key {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  background: #111;
+  color: #fff;
+  outline: none;
+}
+
+.btn-login {
+  width: 100%;
+  padding: 12px;
+  background: #00ff66;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-login:hover {
+  background: #00cc55;
+}
+
+.status {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #ff4444; /* lỗi -> đỏ */
+}
+</style>
 
       <div class="note">
         <p><b>Ghi chú:</b></p>
