@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>OBITO IOS TEAM - Panel</title>
   <style>
     body {
@@ -49,16 +49,8 @@
       margin-right: 10px;
     }
 
-    .team-info h1 {
-      font-size: 18px;
-      margin: 0;
-    }
-
-    .team-info p {
-      margin: 0;
-      font-size: 12px;
-      color: #aaa;
-    }
+    .team-info h1 { font-size: 18px; margin: 0; }
+    .team-info p { margin: 0; font-size: 12px; color: #aaa; }
 
     .badge {
       background: #00ff66;
@@ -115,112 +107,77 @@
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
-    .item:last-child {
-      border-bottom: none;
-    }
-
-    .item-left {
-      display: flex;
-      align-items: center;
-    }
+    .item:last-child { border-bottom: none; }
+    .item-left { display:flex; align-items:center; }
 
     .icon {
-      width: 35px;
-      height: 35px;
-      border-radius: 10px;
-      background: #111;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 10px;
-      font-size: 12px;
-      font-weight: bold;
-      color: #0f0;
-      box-shadow: 0 0 8px #0f0;
+      width: 35px; height: 35px; border-radius: 10px;
+      background: #111; display:flex; align-items:center;
+      justify-content:center; margin-right:10px; font-size:12px;
+      font-weight:bold; color:#0f0; box-shadow: 0 0 8px #0f0;
     }
 
-    .label {
-      font-size: 14px;
-    }
-
-    .desc {
-      font-size: 11px;
-      color: #888;
-    }
+    .label { font-size:14px; }
+    .desc  { font-size:11px; color:#888; }
 
     /* TOGGLE */
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 46px;
-      height: 24px;
-    }
-
-    .switch input {display:none;}
-
+    .switch { position: relative; display: inline-block; width: 46px; height: 24px; }
+    .switch input { display:none; }
     .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #555;
-      transition: .3s;
-      border-radius: 24px;
+      position: absolute; cursor: pointer; top:0; left:0; right:0; bottom:0;
+      background-color:#555; transition:.3s; border-radius:24px;
     }
-
     .slider:before {
-      position: absolute;
-      content: "";
-      height: 18px; width: 18px;
-      left: 3px; bottom: 3px;
-      background-color: white;
-      transition: .3s;
-      border-radius: 50%;
+      position:absolute; content:""; height:18px; width:18px;
+      left:3px; bottom:3px; background-color:white; transition:.3s; border-radius:50%;
     }
-
-    input:checked + .slider {
-      background-color: #00ff66;
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(22px);
-    }
+    input:checked + .slider { background-color:#00ff66; }
+    input:checked + .slider:before { transform: translateX(22px); }
 
     /* FOOTER */
-    .footer {
-      margin-top: 20px;
-    }
-
+    .footer { margin-top:20px; }
     .footer-top {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 15px;
+      display:flex; justify-content:center; align-items:center; gap:10px; margin-bottom:15px;
     }
-
     .boost-bar {
-      flex: 1;
-      background: #004400;
-      padding: 10px;
-      border-radius: 12px;
-      font-weight: bold;
-      text-align: center;
-      box-shadow: 0 0 10px #0f0;
+      flex:1; background:#004400; padding:10px; border-radius:12px;
+      font-weight:bold; text-align:center; box-shadow:0 0 10px #0f0;
     }
-
     .admin-btn {
-      padding: 8px 12px;
-      background: #111;
-      color: #fff;
-      border-radius: 8px;
-      border: 1px solid #0f0;
-      cursor: pointer;
+      padding:8px 12px; background:#111; color:#fff; border-radius:8px; border:1px solid #0f0; cursor:pointer;
+    }
+    .footer-bottom { display:flex; justify-content:center; gap:10px; }
+
+    /* --- LOGIN MODAL (xuất khi Đăng xuất) --- */
+    .modal {
+      position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.6); z-index: 3; opacity: 0; visibility: hidden;
+      transition: opacity .25s ease;
+    }
+    .modal.show { opacity: 1; visibility: visible; }
+    .login-box-modal {
+      width: 360px; background: rgba(0,0,0,0.95); border-radius: 12px;
+      border: 1px solid rgba(0,255,100,0.18); padding: 18px; box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    }
+    .login-box-modal h2 { margin:0 0 8px; color:#00ff99; }
+    .login-box-modal p.admin { margin:0 0 12px; color:#aaa; font-size:13px; }
+    .login-box-modal input[type="text"] {
+      width:100%; padding:10px; border-radius:8px; border: none; outline:none;
+      background:#0b0b0b; color:#fff; margin-bottom:10px;
+    }
+    .login-box-modal .status { font-size:13px; min-height:18px; margin-bottom:10px; color:#fff; }
+    .modal-actions { display:flex; gap:8px; justify-content:flex-end; }
+    .btn-primary {
+      background: #00ff66; color: #000; border: none; padding:8px 12px; border-radius:8px; font-weight:bold; cursor:pointer;
+    }
+    .btn-secondary {
+      background: transparent; color:#fff; border: 1px solid rgba(255,255,255,0.12); padding:8px 12px; border-radius:8px; cursor:pointer;
     }
 
-    .footer-bottom {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
+    /* small responsive */
+    @media (max-width:520px){
+      .container{ padding:14px; margin:12px; max-width: 94%; }
+      .login-box-modal{ width: 92%; }
     }
   </style>
 </head>
@@ -228,6 +185,7 @@
   <!-- Nền particles -->
   <canvas id="matrix"></canvas>
 
+  <!-- MAIN PANEL -->
   <div class="container">
     <!-- Header -->
     <div class="header">
@@ -340,26 +298,45 @@
     <div class="footer">
       <div class="footer-top">
         <div class="boost-bar">CPU — Ultra Boost</div>
-        <button class="admin-btn">Admin</button>
+        <button id="adminBtn" class="admin-btn">Admin</button>
       </div>
       <div class="footer-bottom">
-        <button class="admin-btn">Đăng xuất</button>
-        <button class="admin-btn">Reset</button>
+        <button id="logoutBtn" class="admin-btn">Đăng xuất</button>
+        <button id="resetBtn" class="admin-btn">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN MODAL (xuất khi bấm Đăng xuất) -->
+  <div id="loginModal" class="modal" aria-hidden="true">
+    <div class="login-box-modal" role="dialog" aria-modal="true">
+      <h2>Đăng nhập key</h2>
+      <p class="admin">Vui lòng nhập key để tiếp tục</p>
+
+      <input id="modalKeyInput" type="text" placeholder="Nhập key..." />
+      <div id="modalStatus" class="status"></div>
+
+      <div class="modal-actions">
+        <button id="modalCancel" class="btn-secondary">Hủy</button>
+        <button id="modalLoginBtn" class="btn-primary">Đăng nhập</button>
       </div>
     </div>
   </div>
 
   <!-- Hiệu ứng particles xanh neon -->
   <script>
+    /* ====== particles background (giữ nguyên) ====== */
     const canvas = document.getElementById("matrix");
     const ctx = canvas.getContext("2d");
-
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
+    function resizeCanvas(){
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
 
     const particles = [];
     const numParticles = 80;
-
     class Particle {
       constructor() {
         this.x = Math.random() * canvas.width;
@@ -368,37 +345,32 @@
         this.dx = (Math.random() - 0.5) * 1.5;
         this.dy = (Math.random() - 0.5) * 1.5;
       }
-
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fillStyle = "#00ff99";
         ctx.shadowColor = "#00ff99";
-        ctx.shadowBlur = 15;
+        ctx.shadowBlur = 12;
         ctx.fill();
         ctx.closePath();
       }
-
       update() {
         this.x += this.dx;
         this.y += this.dy;
-
         if (this.x < 0 || this.x > canvas.width) this.dx *= -1;
         if (this.y < 0 || this.y > canvas.height) this.dy *= -1;
-
         this.draw();
       }
     }
-
     function connect() {
       for (let a = 0; a < particles.length; a++) {
         for (let b = a; b < particles.length; b++) {
           const dx = particles[a].x - particles[b].x;
           const dy = particles[a].y - particles[b].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < 120) {
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 120) {
             ctx.beginPath();
-            ctx.strokeStyle = "rgba(0,255,153,0.2)";
+            ctx.strokeStyle = "rgba(0,255,153,0.16)";
             ctx.lineWidth = 1;
             ctx.moveTo(particles[a].x, particles[a].y);
             ctx.lineTo(particles[b].x, particles[b].y);
@@ -408,27 +380,102 @@
         }
       }
     }
-
-    function init() {
-      for (let i = 0; i < numParticles; i++) {
-        particles.push(new Particle());
-      }
+    function initParticles() {
+      particles.length = 0;
+      for (let i=0;i<numParticles;i++) particles.push(new Particle());
     }
-
     function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0,0,canvas.width,canvas.height);
       particles.forEach(p => p.update());
       connect();
       requestAnimationFrame(animate);
     }
-
-    init();
+    initParticles();
     animate();
 
-    window.addEventListener("resize", () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    /* ====== Logout / Modal logic ====== */
+    const logoutBtn = document.getElementById('logoutBtn');
+    const loginModal = document.getElementById('loginModal');
+    const modalCancel = document.getElementById('modalCancel');
+    const modalLoginBtn = document.getElementById('modalLoginBtn');
+    const modalKeyInput = document.getElementById('modalKeyInput');
+    const modalStatus = document.getElementById('modalStatus');
+    const resetBtn = document.getElementById('resetBtn');
+
+    // Show modal when bấm Đăng xuất
+    logoutBtn.addEventListener('click', () => {
+      modalStatus.textContent = '';
+      modalKeyInput.value = '';
+      loginModal.classList.add('show');
+      modalKeyInput.focus();
     });
+
+    // Hủy
+    modalCancel.addEventListener('click', () => {
+      loginModal.classList.remove('show');
+    });
+
+    // Enter để submit
+    modalKeyInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') modalLogin();
+    });
+
+    // Login button trong modal
+    modalLoginBtn.addEventListener('click', modalLogin);
+
+    function modalLogin() {
+      const key = modalKeyInput.value.trim();
+      if (!key) {
+        modalStatus.textContent = '⚠️ Vui lòng nhập key!';
+        modalStatus.style.color = 'orange';
+        return;
+      }
+
+      modalStatus.textContent = 'Đang kiểm tra key...';
+      modalStatus.style.color = '#fff';
+
+      // Sử dụng same raw GitHub JSON
+      fetch('https://raw.githubusercontent.com/quinhat12/ff-menu/main/keys.json')
+        .then(res => {
+          if (!res.ok) throw new Error('network');
+          return res.json();
+        })
+        .then(keys => {
+          if (!keys[key]) {
+            modalStatus.textContent = '❌ Key không tồn tại!';
+            modalStatus.style.color = 'red';
+            return;
+          }
+          const today = new Date();
+          const expire = new Date(keys[key].expires);
+          if (today > expire) {
+            modalStatus.textContent = '⏳ Key đã hết hạn!';
+            modalStatus.style.color = 'red';
+            return;
+          }
+          // Key hợp lệ
+          modalStatus.textContent = '✅ Key hợp lệ! Đăng nhập thành công.';
+          modalStatus.style.color = 'lime';
+
+          // Đóng modal (nhỏ delay để user thấy thông báo)
+          setTimeout(() => {
+            loginModal.classList.remove('show');
+            modalStatus.textContent = '';
+            modalKeyInput.value = '';
+          }, 700);
+        })
+        .catch(err => {
+          modalStatus.textContent = '❌ Lỗi tải key list!';
+          modalStatus.style.color = 'red';
+        });
+    }
+
+    // Reset: load lại trang (hoặc có thể reset các toggle)
+    resetBtn.addEventListener('click', () => {
+      // reset tất cả checkbox về unchecked
+      document.querySelectorAll('.switch input[type="checkbox"]').forEach(cb => cb.checked = false);
+    });
+
   </script>
 </body>
 </html>
