@@ -148,95 +148,43 @@
       </div>
     </div>
   </div>
+ function login() {
+  const key = document.getElementById("keyInput").value.trim();
+  const status = document.getElementById("status");
 
-  <script>
-    // Hiệu ứng hạt rơi
-    const canvas = document.getElementById("particles");
-    const ctx = canvas.getContext("2d");
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const particlesArray = [];
-    const colors = ["#00ff99", "#00ff66", "#00ffcc"];
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 3 + 1;
-        this.speedY = Math.random() * 1 + 0.3;
-        this.color = colors[Math.floor(Math.random() * colors.length)];
-      }
-
-      update() {
-        this.y += this.speedY;
-        if (this.y > canvas.height) {
-          this.y = 0;
-          this.x = Math.random() * canvas.width;
-        }
-      }
-
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.fill();
-      }
-    }
-
-    function init() {
-      for (let i = 0; i < 100; i++) {
-        particlesArray.push(new Particle());
-      }
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particlesArray.forEach(particle => {
-        particle.update();
-        particle.draw();
-      });
-      requestAnimationFrame(animate);
-    }
-
-    init();
-    animate();
-
-    window.addEventListener("resize", () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
-  <script>
-  async function login() {
-    const key = document.getElementById("keyInput").value.trim();
-    const status = document.getElementById("status");
-
-    if (!key) {
-      status.style.color = "orange";
-      status.textContent = "⚠️ Vui lòng nhập key";
-      return;
-    }
-
-    try {
-      // API backend của bạn, ví dụ: https://your-api.com/check-key/
-      const res = await fetch(`https://your-api.com/check-key/${key}`);
-      const data = await res.json();
-
-      if (data.valid) {
-        status.style.color = "lightgreen";
-        status.textContent = "✅ " + data.message + " (Hết hạn: " + data.expires + ")";
-        // Chuyển hướng nếu cần
-        setTimeout(() => {
-          window.location.href = "https://your-site.com/home";
-        }, 1500);
-      } else {
-        status.style.color = "red";
-        status.textContent = "❌ " + data.message;
-      }
-    } catch (e) {
-      status.style.color = "orange";
-      status.textContent = "🚫 Lỗi kết nối server!";
-    }
+  if (!key) {
+    status.innerHTML = "⚠️ Vui lòng nhập key!";
+    status.style.color = "orange";
+    return;
   }
-</script>
+
+  // Link raw JSON trên GitHub (dùng raw.githubusercontent.com)
+  fetch("https://raw.githubusercontent.com/USERNAME/REPO/main/keys.json")
+    .then(res => res.json())
+    .then(keys => {
+      if (!keys[key]) {
+        status.innerHTML = "❌ Key không tồn tại!";
+        status.style.color = "red";
+        return;
+      }
+
+      const today = new Date();
+      const expire = new Date(keys[key].expires);
+
+      if (today > expire) {
+        status.innerHTML = "⚠️ Key đã hết hạn!";
+        status.style.color = "red";
+        return;
+      }
+
+      status.innerHTML = "✅ Key hợp lệ! (HSD: " + keys[key].expires + ")";
+      status.style.color = "lime";
+
+      // 👉 Ở đây có thể redirect sang app chính
+      // window.location.href = "app.html";
+    })
+    .catch(err => {
+      status.innerHTML = "❌ Lỗi tải key list!";
+      status.style.color = "red";
+    });
+}
