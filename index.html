@@ -137,10 +137,13 @@
         </div>
       </div>
 
-      <h2>Đăng nhập key</h2>
-      <p>ADMIN : NhismDev</p>
-      <input type="text" placeholder="Nhập key của bạn...">
-      <button>Đăng nhập</button>
+      <div class="login-box">
+  <h2>Đăng nhập key</h2>
+  <p style="color:#bbb;">ADMIN : NhismDev</p>
+  <input id="keyInput" class="input-key" type="text" placeholder="Nhập key của bạn...">
+  <button class="btn-login" onclick="login()">Đăng nhập</button>
+  <div id="status" class="status"></div>
+</div>
 
       <div class="note">
         <p><b>Ghi chú:</b></p>
