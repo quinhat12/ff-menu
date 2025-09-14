@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AKATSUKI APK TEAM</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: Arial, sans-serif;
       background: #000;
@@ -19,18 +15,15 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      overflow-x: hidden;
+      overflow: hidden;
+      position: relative;
     }
 
-    /* hiệu ứng hạt */
-    body::before {
-      content: "";
+    /* Canvas hiệu ứng hạt */
+    #particles {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: url('https://i.ibb.co/zxYQY0f/particles.gif') repeat;
-      background-size: cover;
-      opacity: 0.2;
       z-index: -1;
     }
 
@@ -40,101 +33,58 @@
       gap: 10px;
       margin: 20px;
     }
-
     .header img {
-      width: 55px;
-      height: 55px;
+      width: 55px; height: 55px;
       border-radius: 12px;
       border: 2px solid #00ff80;
     }
-
-    .header .title {
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    .header .slogan {
-      font-size: 13px;
-      color: #aaa;
-      margin-top: 3px;
-    }
+    .header .title { font-size: 18px; font-weight: bold; }
+    .header .slogan { font-size: 13px; color: #aaa; margin-top: 3px; }
 
     .card {
-      width: 95%;
-      max-width: 450px;
+      width: 95%; max-width: 450px;
       background: linear-gradient(145deg, #0d1a0d, #000);
       border-radius: 18px;
       padding: 20px;
       box-shadow: 0 0 30px rgba(0, 255, 128, 0.3);
       margin-bottom: 15px;
     }
-
-    .card h2 {
-      font-size: 18px;
-      margin-bottom: 5px;
-    }
-
-    .card p {
-      font-size: 13px;
-      color: #bbb;
-      margin-bottom: 15px;
-    }
+    .card h2 { font-size: 18px; margin-bottom: 5px; }
+    .card p { font-size: 13px; color: #bbb; margin-bottom: 15px; }
 
     .input-box {
-      display: flex;
-      align-items: center;
       background: #111;
       border-radius: 12px;
       padding: 10px;
       margin-bottom: 15px;
     }
-
     .input-box input {
-      flex: 1;
+      width: 100%;
       background: transparent;
-      border: none;
-      outline: none;
-      color: #fff;
-      font-size: 14px;
-    }
-
-    .input-box span {
-      cursor: pointer;
-      margin-left: 8px;
-      color: #aaa;
-      display: flex;
-      align-items: center;
+      border: none; outline: none;
+      color: #fff; font-size: 14px;
     }
 
     .btn {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 12px;
-      background: #00ff80;
-      color: #000;
-      cursor: pointer;
-      transition: 0.3s;
+      width: 100%; padding: 12px;
+      font-size: 16px; font-weight: bold;
+      border: none; border-radius: 12px;
+      background: #00ff80; color: #000;
+      cursor: pointer; transition: 0.3s;
     }
-    .btn:hover {
-      background: #00cc66;
-    }
+    .btn:hover { background: #00cc66; }
 
     .note {
-      font-size: 13px;
-      color: #bbb;
-      margin-top: 10px;
-      line-height: 1.5;
+      font-size: 13px; color: #bbb;
+      margin-top: 10px; line-height: 1.5;
     }
-    .note a {
-      color: #00ff80;
-      text-decoration: none;
-    }
+    .note a { color: #00ff80; text-decoration: none; }
   </style>
 </head>
 <body>
+  <!-- Canvas hiệu ứng hạt -->
+  <canvas id="particles"></canvas>
+
   <!-- Header -->
   <div class="header">
     <img src="https://i.ibb.co/3Yf2LbN/sample-logo.jpg" alt="Logo">
@@ -151,8 +101,6 @@
 
     <div class="input-box">
       <input type="password" id="key" placeholder="Nhập key của bạn...">
-      <span onclick="pasteKey()">📋</span>
-      <span onclick="togglePassword()">👁</span>
     </div>
 
     <button class="btn">Đăng nhập</button>
@@ -168,19 +116,57 @@
   </div>
 
   <script>
-    function togglePassword() {
-      const field = document.getElementById("key");
-      field.type = field.type === "password" ? "text" : "password";
-    }
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
 
-    async function pasteKey() {
-      try {
-        const text = await navigator.clipboard.readText();
-        document.getElementById("key").value = text;
-      } catch (err) {
-        alert("Trình duyệt không hỗ trợ dán từ clipboard!");
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.speedY = Math.random() * 1 + 0.2;
+      }
+      update() {
+        this.y += this.speedY;
+        if (this.y > canvas.height) {
+          this.y = 0;
+          this.x = Math.random() * canvas.width;
+        }
+      }
+      draw() {
+        ctx.fillStyle = "rgba(0,255,128,0.7)";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
       }
     }
+
+    function init() {
+      particles = [];
+      for (let i = 0; i < 100; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
   </script>
 </body>
 </html>
