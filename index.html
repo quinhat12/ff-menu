@@ -7,95 +7,118 @@
   <style>
     body {
       margin: 0;
-      height: 100vh;
+      font-family: Arial, sans-serif;
       background: black;
       color: white;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
       overflow: hidden;
     }
 
     canvas {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
+      width: 100%;
+      height: 100%;
       z-index: -1;
     }
 
     .container {
-      background: rgba(0, 0, 0, 0.85);
-      border-radius: 15px;
-      padding: 25px;
-      max-width: 400px;
-      width: 90%;
-      text-align: center;
-      box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
     }
 
-    .logo {
+    .login-box {
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(0, 255, 100, 0.4);
+      border-radius: 15px;
+      padding: 20px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(0, 255, 100, 0.4);
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .logo-box {
       width: 60px;
       height: 60px;
-      border-radius: 50%;
-      border: 2px solid #00ff88;
-      margin-bottom: 10px;
+      border-radius: 15px;
+      overflow: hidden;
+      margin-right: 10px;
+      box-shadow: 0 0 15px #00ff99;
     }
 
-    h1 {
+    .logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .header-text {
+      text-align: left;
+    }
+
+    .header-text h1 {
       font-size: 20px;
       margin: 0;
       color: #fff;
     }
 
-    p.subtitle {
-      font-size: 14px;
+    .header-text p {
+      margin: 0;
+      font-size: 12px;
       color: #aaa;
-      margin: 5px 0 20px 0;
     }
 
-    .input-box {
-      margin-bottom: 20px;
+    h2 {
+      margin-bottom: 15px;
     }
 
-    .input-box input {
+    input {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
+      margin: 10px 0;
       border-radius: 8px;
       border: none;
       outline: none;
       background: #111;
-      color: #fff;
-      font-size: 14px;
+      color: white;
     }
 
-    .btn {
+    button {
       width: 100%;
       padding: 12px;
-      border-radius: 8px;
       border: none;
-      background: #00ff88;
-      font-size: 16px;
+      border-radius: 8px;
+      background: lime;
+      color: black;
+      font-weight: bold;
       cursor: pointer;
       transition: 0.3s;
-      font-weight: bold;
     }
 
-    .btn:hover {
-      background: #00cc66;
+    button:hover {
+      background: #00ff99;
     }
 
     .note {
-      font-size: 12px;
-      color: #aaa;
-      text-align: left;
       margin-top: 15px;
+      font-size: 12px;
+      color: #bbb;
+      text-align: left;
     }
 
-    .note a {
-      color: #00ff88;
-      text-decoration: none;
+    .note b {
+      color: #00ff99;
     }
   </style>
 </head>
@@ -103,41 +126,49 @@
   <canvas id="particles"></canvas>
 
   <div class="container">
-    <img src="Logo.jpg" alt="Logo" class="logo">
-    <h1>AKATSUKI APK TEAM</h1>
-    <p class="subtitle">Tốc độ · An toàn · Ổn định</p>
+    <div class="login-box">
+      <div class="header">
+        <div class="logo-box">
+          <img src="logo.jpg" alt="Logo">
+        </div>
+        <div class="header-text">
+          <h1>AKATSUKI APK TEAM</h1>
+          <p>Tốc độ · An toàn · Ổn định</p>
+        </div>
+      </div>
 
-    <div class="input-box">
+      <h2>Đăng nhập key</h2>
+      <p>Nhập key đã được cấp để tiếp tục</p>
       <input type="text" placeholder="Nhập key của bạn...">
-    </div>
+      <button>Đăng nhập</button>
 
-    <button class="btn">Đăng nhập</button>
-
-    <div class="note">
-      <p><b>Ghi chú</b><br>
-      Không chia sẻ key. Hệ thống sẽ khoá khi phát hiện sử dụng bất thường hoặc phát tán công khai.<br>
-      • Chạm giữ vào ô nhập để dán key từ clipboard.</p>
-      <p>Bằng việc đăng nhập bạn đồng ý với 
-        <a href="#">Điều khoản</a> & 
-        <a href="#">Chính sách bảo mật</a>.
-      </p>
+      <div class="note">
+        <p><b>Ghi chú:</b></p>
+        <p>Không chia sẻ key. Hệ thống sẽ khoá khi phát hiện sử dụng bất thường hoặc phát tán công khai.</p>
+        <p>• Chạm giữ vào ô nhập để dán key từ clipboard.</p>
+        <p>Bằng việc đăng nhập bạn đồng ý với <b>Điều khoản</b> & <b>Chính sách bảo mật</b>.</p>
+      </div>
     </div>
   </div>
 
   <script>
+    // Hiệu ứng hạt rơi
     const canvas = document.getElementById("particles");
     const ctx = canvas.getContext("2d");
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    let particles = [];
+    const particlesArray = [];
+    const colors = ["#00ff99", "#00ff66", "#00ffcc"];
 
     class Particle {
       constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 1;
+        this.size = Math.random() * 3 + 1;
         this.speedY = Math.random() * 1 + 0.3;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
       }
 
       update() {
@@ -149,25 +180,24 @@
       }
 
       draw() {
-        ctx.fillStyle = "#00ff88";
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
         ctx.fill();
       }
     }
 
     function init() {
-      particles = [];
       for (let i = 0; i < 100; i++) {
-        particles.push(new Particle());
+        particlesArray.push(new Particle());
       }
     }
 
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
+      particlesArray.forEach(particle => {
+        particle.update();
+        particle.draw();
       });
       requestAnimationFrame(animate);
     }
@@ -178,7 +208,6 @@
     window.addEventListener("resize", () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      init();
     });
   </script>
 </body>
