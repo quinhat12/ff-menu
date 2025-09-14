@@ -16,40 +16,53 @@
 
     /* Header */
     .header { display:flex; align-items:center; justify-content:center; margin-bottom:20px; }
-    .team-info h1 { font-size:20px; margin:0; color:#0f0; text-align:center; }
+    .team-info h1 { font-size:22px; margin:0; color:#0f0; text-align:center; text-shadow:0 0 10px #0f0; }
 
     /* Floating buttons */
-    .back-btn, .vip-btn {
+    .floating-btn {
       position: fixed;
       top: 15px;
-      width: 40px;
-      height: 40px;
+      width: 50px;
+      height: 50px;
       border: none;
-      border-radius: 12px;
+      border-radius: 50%;
       cursor: pointer;
-      font-size: 18px;
+      font-size: 22px;
       font-weight: bold;
-      box-shadow: 0 0 15px rgba(0,255,100,0.6);
-      transition: 0.3s;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: 0.3s;
       z-index: 10;
     }
+    /* Nút ☰ */
     .back-btn {
       left: 15px;
-      background: linear-gradient(135deg, #00ff99, #00cc66);
+      background: radial-gradient(circle at 30% 30%, #00ff99, #008844);
       color: black;
+      box-shadow: 0 0 15px rgba(0,255,153,0.6), inset 0 0 8px rgba(0,255,153,0.4);
     }
-    .back-btn:hover { transform: scale(1.1); box-shadow: 0 0 25px rgba(0,255,100,0.9); }
-
+    .back-btn:hover {
+      transform: scale(1.15) rotate(-5deg);
+      box-shadow: 0 0 25px rgba(0,255,153,1), 0 0 40px rgba(0,255,153,0.6);
+    }
+    /* Nút ★ */
     .vip-btn {
       right: 15px;
-      background: linear-gradient(135deg, #FFD700, #FFA500);
+      background: radial-gradient(circle at 30% 30%, #FFD700, #FF8C00);
       color: black;
-      box-shadow: 0 0 15px rgba(255,215,0,0.7);
+      box-shadow: 0 0 15px rgba(255,215,0,0.8), inset 0 0 8px rgba(255,200,0,0.5);
+      animation: pulse 2s infinite;
     }
-    .vip-btn:hover { transform: scale(1.1); box-shadow: 0 0 25px rgba(255,215,0,1); }
+    .vip-btn:hover {
+      transform: scale(1.15) rotate(5deg);
+      box-shadow: 0 0 25px rgba(255,215,0,1), 0 0 40px rgba(255,180,0,0.9);
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 15px rgba(255,215,0,0.8); }
+      50% { box-shadow: 0 0 35px rgba(255,215,0,1); }
+      100% { box-shadow: 0 0 15px rgba(255,215,0,0.8); }
+    }
 
     /* Stats */
     .stats { display:flex; justify-content:space-around; background:rgba(0,30,0,0.85); padding:15px; border-radius:12px; box-shadow:0 0 10px rgba(0,255,100,0.2); margin:20px 0; }
@@ -61,10 +74,11 @@
     .game-card img { width:60px; height:60px; border-radius:12px; margin-bottom:10px; }
     .game-title { font-weight:bold; margin:5px 0; }
     .game-stats { display:flex; justify-content:space-between; font-size:12px; margin:5px 0; }
-    .game-stats .fps strong { color:#0f0; }
-    .game-stats .ping strong { color:#0ff; }
+    .game-stats .fps strong { color:#0f0; text-shadow:0 0 5px #0f0; }
+    .game-stats .ping strong { color:#0ff; text-shadow:0 0 5px #0ff; }
     .game-info { font-size:12px; color:#aaa; margin-bottom:10px; }
-    .start-btn { background:#00ff66; color:#000; font-weight:bold; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; width:100%; }
+    .start-btn { background:#00ff66; color:#000; font-weight:bold; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; width:100%; transition:0.3s; }
+    .start-btn:hover { background:#00cc55; transform:scale(1.05); }
 
     /* Popup */
     .popup { position:fixed; top:0; left:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.7); z-index:5; opacity:0; visibility:hidden; transition:.3s; }
@@ -73,14 +87,15 @@
     .progress { width:100%; height:20px; background:#222; border-radius:10px; margin:15px 0; overflow:hidden; }
     .progress-bar { height:100%; width:0%; background:#00ff66; transition:width .2s; }
     .close-btn { display:none; background:#111; color:white; border:1px solid #0f0; padding:8px 12px; border-radius:8px; cursor:pointer; margin-top:10px; }
+    .close-btn:hover { background:#0f0; color:#000; }
   </style>
 </head>
 <body>
   <canvas id="matrix"></canvas>
 
   <!-- Floating buttons -->
-  <button class="back-btn" onclick="window.location.href='panel.html'">☰</button>
-  <button class="vip-btn">★</button>
+  <button class="floating-btn back-btn" onclick="window.location.href='panel.html'">☰</button>
+  <button class="floating-btn vip-btn">★</button>
 
   <div class="container">
     <!-- Header -->
