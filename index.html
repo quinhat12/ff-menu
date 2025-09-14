@@ -163,7 +163,7 @@
     .then(res => res.json())
     .then(keys => {
       if (!keys[key]) {
-        status.innerHTML = "❌ Key không tồn tại!";
+        status.innerHTML = "Key không tồn tại!";
         status.style.color = "red";
         return;
       }
@@ -172,12 +172,12 @@
       const expire = new Date(keys[key].expires);
 
       if (today > expire) {
-        status.innerHTML = "⚠️ Key đã hết hạn!";
+        status.innerHTML = "Key đã hết hạn!";
         status.style.color = "red";
         return;
       }
 
-      status.innerHTML = "✅ Key hợp lệ! (HSD: " + keys[key].expires + ")";
+      status.innerHTML = "Key hợp lệ! (HSD: " + keys[key].expires + ")";
       status.style.color = "lime";
 
       // 👉 Ở đây có thể redirect sang app chính
