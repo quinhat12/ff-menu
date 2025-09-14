@@ -189,6 +189,30 @@
     function init(){for(let i=0;i<numParticles;i++)particles.push(new Particle());}
     function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>p.update());connect();requestAnimationFrame(animate);}
     init();animate();
-  </script>
+  <script>
+async function verifyKey(key, udid) {
+  const resp = await fetch("http://localhost:3000/api/verify", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ key, udid })
+  });
+  return resp.json();
+}
+
+async function checkSession() {
+  const session = JSON.parse(localStorage.getItem("session") || "{}");
+  if (!session.key || !session.udid) {
+    window.location.href = "index.html";
+    return;
+  }
+  const result = await verifyKey(session.key, session.udid);
+  if (!result.ok) {
+    alert("Phiên hết hạn hoặc sai thiết bị!");
+    localStorage.removeItem("session");
+    window.location.href = "index.html";
+  }
+}
+checkSession();
+</script>
 </body>
 </html>
