@@ -160,7 +160,7 @@
       const status = document.getElementById("status");
 
       if (!key) {
-        status.innerHTML = "⚠️ Vui lòng nhập key!";
+        status.innerHTML = "Vui lòng nhập key!";
         status.style.color = "orange";
         return;
       }
@@ -170,7 +170,7 @@
         .then(res => res.json())
         .then(keys => {
           if (!keys[key]) {
-            status.innerHTML = "❌ Key không tồn tại!";
+            status.innerHTML = "Key không tồn tại!";
             status.style.color = "red";
             return;
           }
@@ -179,19 +179,19 @@
           const expire = new Date(keys[key].expires);
 
           if (today > expire) {
-            status.innerHTML = "⏳ Key đã hết hạn!";
+            status.innerHTML = "Key đã hết hạn!";
             status.style.color = "red";
             return;
           }
 
-          status.innerHTML = "✅ Key hợp lệ! (HSD: " + keys[key].expires + ")";
+          status.innerHTML = "Key hợp lệ! (HSD: " + keys[key].expires + ")";
           status.style.color = "lime";
 
           // 👉 Redirect sang app chính (nếu có)
           // window.location.href = "app.html";
         })
         .catch(err => {
-          status.innerHTML = "❌ Lỗi tải key list!";
+          status.innerHTML = "Lỗi tải key list!";
           status.style.color = "red";
         });
     }
