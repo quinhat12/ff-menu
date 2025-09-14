@@ -159,7 +159,7 @@
   }
 
   // Link raw JSON trên GitHub (dùng raw.githubusercontent.com)
-  fetch("https://github.com/quinhat12/ff-menu/blob/main/keys.json")
+  fetch("https://raw.githubusercontent.com/quinhat12/ff-menu/blob/main/keys.json")
     .then(res => res.json())
     .then(keys => {
       if (!keys[key]) {
