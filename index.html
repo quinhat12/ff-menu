@@ -3,203 +3,210 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UCHIHA PANEL</title>
+  <title>AKATSUKI APK TEAM</title>
   <style>
-    /* ===== RESET & FONT ===== */
-    * {margin:0; padding:0; box-sizing:border-box;}
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
     body {
-      font-family: 'Poppins', sans-serif;
-      background: radial-gradient(circle at top, #0f0f0f, #000);
-      color: white;
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: radial-gradient(circle at top, #0a0f0d, #000);
+      color: #fff;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
+      align-items: flex-start;
+      padding: 20px;
+      background-attachment: fixed;
     }
 
-    /* ===== LOGIN ===== */
-    .login-container {
-      background: rgba(20,20,20,0.9);
-      padding: 40px;
-      border-radius: 15px;
-      box-shadow: 0px 0px 25px #ff0000;
-      text-align: center;
-    }
-    .login-container img {
-      width: 120px;
-      margin-bottom: 15px;
-    }
-    .login-container h2 {
-      color: #ff0000;
-      margin-bottom: 20px;
-      text-shadow: 0 0 12px #ff3333;
-    }
-    .login-container input {
-      display: block;
-      margin: 12px auto;
-      padding: 12px;
-      width: 240px;
-      border: none;
-      border-radius: 8px;
-      background: #111;
-      color: #fff;
-      outline: none;
-    }
-    .login-container button {
-      padding: 12px 30px;
-      margin-top: 15px;
-      border: none;
-      border-radius: 8px;
-      background: linear-gradient(90deg, #ff0000, #660000);
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .login-container button:hover {
-      background: linear-gradient(90deg, #ff3333, #990000);
+    .container {
+      max-width: 400px;
+      width: 100%;
+      background: rgba(20, 30, 25, 0.9);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 0 25px rgba(0, 255, 128, 0.2);
+      position: relative;
+      overflow: hidden;
     }
 
-    /* ===== PANEL ===== */
-    .panel {
-      display: none;
-      background: rgba(25,25,25,0.85);
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 0 25px #ff0000;
-      width: 90%;
-      max-width: 900px;
-      text-align: center;
-    }
-    .panel h1 {
-      margin-bottom: 25px;
-      color: #ff0000;
-      text-shadow: 0 0 15px #ff3333;
-    }
-    .functions {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 20px;
-    }
-
-    /* ===== SWITCH ===== */
-    .switch-container {
-      background: rgba(50,50,50,0.7);
-      padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 0 12px #111;
-    }
-    .switch-label {
+    .logo {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .logo img {
+      width: 55px;
+      height: 55px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,255,128,0.6);
+    }
+
+    .logo h1 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .tags {
       font-size: 14px;
+      color: #bbb;
+      margin-bottom: 25px;
     }
-    .switch {
+
+    .card {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: inset 0 0 12px rgba(0,255,128,0.1);
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .input-group {
       position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 30px;
+      margin: 15px 0;
     }
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
+
+    .input-group input {
+      width: 100%;
+      padding: 14px 45px 14px 14px;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+      font-size: 15px;
+      background: #0a0f0d;
+      color: #fff;
+      box-shadow: inset 0 0 8px rgba(0,255,128,0.2);
     }
-    .slider {
+
+    .input-group button {
       position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #0f0;
       cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #444;
-      transition: .4s;
-      border-radius: 30px;
-      box-shadow: 0 0 10px #ff0000;
+      font-size: 18px;
     }
-    .slider:before {
+
+    .btn-login {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+      color: #000;
+      background: #00ff88;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-login:hover {
+      background: #00cc6a;
+    }
+
+    .note {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #aaa;
+      margin-bottom: 15px;
+    }
+
+    .note strong {
+      color: #00ff88;
+    }
+
+    .footer {
+      font-size: 12px;
+      color: #777;
+      text-align: center;
+    }
+
+    .footer a {
+      color: #00ff88;
+      text-decoration: none;
+    }
+
+    /* Hiệu ứng hạt */
+    .particle {
       position: absolute;
-      content: "";
-      height: 22px; width: 22px;
-      left: 4px; bottom: 4px;
-      background-color: white;
-      transition: .4s;
+      background: rgba(0,255,128,0.7);
       border-radius: 50%;
+      animation: float 6s linear infinite;
     }
-    input:checked + .slider {
-      background: linear-gradient(90deg, #ff0000, #ff6600);
-      box-shadow: 0 0 20px #ff3333;
-    }
-    input:checked + .slider:before {
-      transform: translateX(30px);
+
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); opacity: 1; }
+      100% { transform: translateY(-800px) translateX(200px); opacity: 0; }
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <div class="logo">
+      <img src="https://i.ibb.co/dLQZyYt/akatsuki-icon.jpg" alt="logo">
+      <h1>AKATSUKI APK TEAM</h1>
+    </div>
+    <div class="tags">Tốc độ • An toàn • Ổn định</div>
 
-  <!-- LOGIN -->
-  <div class="login-container" id="loginBox">
-    <img src="uchiha_logo.png" alt="UCHIHA Logo">
-    <h2>UCHIHA PANEL</h2>
-    <input type="text" id="username" placeholder="Tài khoản">
-    <input type="password" id="password" placeholder="Mật khẩu">
-    <button onclick="login()">Đăng nhập</button>
-  </div>
+    <div class="card">
+      <h2>Đăng nhập key</h2>
+      <p>Nhập key đã được cấp để tiếp tục</p>
+      <div class="input-group">
+        <input type="password" id="keyInput" placeholder="Nhập key của bạn...">
+        <button onclick="toggleKey()">👁</button>
+      </div>
+      <button class="btn-login" onclick="login()">Đăng nhập</button>
+    </div>
 
-  <!-- PANEL -->
-  <div class="panel" id="panelBox">
-    <h1>UCHIHA GAMING PANEL</h1>
-    <div class="functions">
-      <div class="switch-container"><div class="switch-label">Aimlock
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div></div>
+    <div class="note">
+      <p><strong>Ghi chú</strong><br>
+      Không chia sẻ key. Hệ thống sẽ khoá khi phát hiện sử dụng bất thường hoặc phát tán công khai.<br>
+      • Chạm giữ vào ô nhập để dán key từ clipboard.</p>
+    </div>
 
-      <div class="switch-container"><div class="switch-label">Aimbot Trick
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div></div>
-
-      <div class="switch-container"><div class="switch-label">Sensitivity Boost
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div></div>
-
-      <div class="switch-container"><div class="switch-label">FPS Unlock
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div></div>
-
-      <div class="switch-container"><div class="switch-label">Display Optimize
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div></div>
-
-      <div class="switch-container"><div class="switch-label">Anti-Lag
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div></div>
-
-      <div class="switch-container"><div class="switch-label">Crosshair Mode
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div></div>
-
-      <div class="switch-container"><div class="switch-label">Auto Headshot
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div></div>
-
-      <div class="switch-container"><div class="switch-label">Recoil Control
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div></div>
-
-      <div class="switch-container"><div class="switch-label">Stability Mode
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div></div>
+    <div class="footer">
+      Bằng việc đăng nhập bạn đồng ý với <a href="#">Điều khoản</a> & <a href="#">Chính sách bảo mật</a>.
     </div>
   </div>
 
   <script>
-    function login(){
-      let user = document.getElementById("username").value;
-      let pass = document.getElementById("password").value;
-      if(user === "uchiha" && pass === "madara"){
-        document.getElementById("loginBox").style.display="none";
-        document.getElementById("panelBox").style.display="block";
+    function toggleKey() {
+      const input = document.getElementById("keyInput");
+      input.type = input.type === "password" ? "text" : "password";
+    }
+
+    function login() {
+      const key = document.getElementById("keyInput").value;
+      if (!key) {
+        alert("Vui lòng nhập key!");
       } else {
-        alert("Sai tài khoản hoặc mật khẩu!");
+        alert("Key bạn nhập: " + key);
       }
+    }
+
+    // tạo hiệu ứng hạt bay
+    for (let i = 0; i < 25; i++) {
+      let particle = document.createElement("div");
+      particle.className = "particle";
+      particle.style.width = particle.style.height = Math.random() * 4 + "px";
+      particle.style.left = Math.random() * window.innerWidth + "px";
+      particle.style.bottom = "0px";
+      particle.style.animationDuration = (Math.random() * 5 + 3) + "s";
+      document.body.appendChild(particle);
     }
   </script>
 </body>
