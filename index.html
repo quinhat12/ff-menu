@@ -136,15 +136,13 @@
           <p>Tốc độ · An toàn · Ổn định</p>
         </div>
       </div>
-
       <h2>Đăng nhập key</h2>
-      <p class="admin">ADMIN : NhismDev</p>
-
-      <input id="keyInput" type="text" placeholder="Nhập key của bạn...">
-      <button onclick="login()">Đăng nhập</button>
+<p class="admin">ADMIN : NhismDev</p>
+<input id="keyInput" type="text" placeholder="Nhập key của bạn...">
+<input id="udidInput" type="text" placeholder="Nhập UDID iPhone...">
+<button onclick="login()">Đăng nhập</button>
       <!-- ✅ Kết quả hiển thị ở đây -->
       <div id="status" style="margin-top:10px; font-size:14px; color:#fff;"></div>
-
       <div class="note">
         <p><b>Ghi chú:</b></p>
         <p>Không chia sẻ key. Hệ thống sẽ khoá khi phát hiện sử dụng bất thường hoặc phát tán công khai.</p>
@@ -155,48 +153,45 @@
   </div>
 
   <script>
-    function login() {
-      const key = document.getElementById("keyInput").value.trim();
-      const status = document.getElementById("status");
+async function login() {
+  const key = document.getElementById("keyInput").value.trim();
+  const udid = document.getElementById("udidInput").value.trim();
+  const status = document.getElementById("status");
 
-      if (!key) {
-        status.innerHTML = "Vui lòng nhập key!";
-        status.style.color = "orange";
-        return;
-      }
+  if (!key || !udid) {
+    status.innerHTML = "Vui lòng nhập đủ Key và UDID!";
+    status.style.color = "orange";
+    return;
+  }
 
-      // Link raw JSON trên GitHub
-      fetch("https://raw.githubusercontent.com/quinhat12/ff-menu/main/keys.json")
-        .then(res => res.json())
-        .then(keys => {
-          if (!keys[key]) {
-            status.innerHTML = "Key không tồn tại!";
-            status.style.color = "red";
-            return;
-          }
+  try {
+    const resp = await fetch("http://localhost:3000/api/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ key, udid })
+    });
+    const data = await resp.json();
 
-          const today = new Date();
-          const expire = new Date(keys[key].expires);
+    if (data.ok) {
+      status.innerHTML = "✅ Key hợp lệ! (HSD: " + data.expires + ")";
+      status.style.color = "lime";
 
-          if (today > expire) {
-            status.innerHTML = "Key đã hết hạn!";
-            status.style.color = "red";
-            return;
-          }
+      // Lưu session
+      localStorage.setItem("session", JSON.stringify({ key, udid, expires: data.expires }));
 
-          status.innerHTML = "Key hợp lệ! (HSD: " + keys[key].expires + ")";
-          status.style.color = "lime";
-
-          // 👉 Redirect sang app chính (nếu có)
-          setTimeout(() => {
-  window.location.href = "panel.html";
-}, 1500);
-        })
-        .catch(err => {
-          status.innerHTML = "Lỗi tải key list!";
-          status.style.color = "red";
-        });
+      // Chuyển sang panel
+      setTimeout(() => {
+        window.location.href = "panel.html";
+      }, 1500);
+    } else {
+      status.innerHTML = "❌ " + (data.error || "Key không hợp lệ");
+      status.style.color = "red";
     }
-  </script>
+  } catch (err) {
+    status.innerHTML = "⚠️ Không kết nối được server!";
+    status.style.color = "red";
+  }
+}
+</script>
 </body>
 </html>
