@@ -136,15 +136,15 @@
           <p>Tốc độ · An toàn · Ổn định</p>
         </div>
       </div>
-      <div class="login-box">
-  <h2>Đăng nhập key</h2>
-  <p class="admin">ADMIN : NhismDev</p>
 
-  <input id="keyInput" type="text" placeholder="Nhập key của bạn...">
-  <button onclick="login()">Đăng nhập</button>
-  <!-- ✅ Chỗ này để hiện kết quả -->
-  <div id="status" style="margin-top:10px; font-size:14px; color:#fff;"></div>
-</div>
+      <h2>Đăng nhập key</h2>
+      <p class="admin">ADMIN : NhismDev</p>
+
+      <input id="keyInput" type="text" placeholder="Nhập key của bạn...">
+      <button onclick="login()">Đăng nhập</button>
+      <!-- ✅ Kết quả hiển thị ở đây -->
+      <div id="status" style="margin-top:10px; font-size:14px; color:#fff;"></div>
+
       <div class="note">
         <p><b>Ghi chú:</b></p>
         <p>Không chia sẻ key. Hệ thống sẽ khoá khi phát hiện sử dụng bất thường hoặc phát tán công khai.</p>
@@ -153,43 +153,48 @@
       </div>
     </div>
   </div>
- function login() {
-  const key = document.getElementById("keyInput").value.trim();
-  const status = document.getElementById("status");
 
-  if (!key) {
-    status.innerHTML = "⚠️ Vui lòng nhập key!";
-    status.style.color = "orange";
-    return;
-  }
+  <script>
+    function login() {
+      const key = document.getElementById("keyInput").value.trim();
+      const status = document.getElementById("status");
 
-  // Link raw JSON trên GitHub (dùng raw.githubusercontent.com)
-  fetch("https://raw.githubusercontent.com/quinhat12/ff-menu/blob/main/keys.json")
-    .then(res => res.json())
-    .then(keys => {
-      if (!keys[key]) {
-        status.innerHTML = "Key không tồn tại!";
-        status.style.color = "red";
+      if (!key) {
+        status.innerHTML = "⚠️ Vui lòng nhập key!";
+        status.style.color = "orange";
         return;
       }
 
-      const today = new Date();
-      const expire = new Date(keys[key].expires);
+      // Link raw JSON trên GitHub
+      fetch("https://raw.githubusercontent.com/quinhat12/ff-menu/main/keys.json")
+        .then(res => res.json())
+        .then(keys => {
+          if (!keys[key]) {
+            status.innerHTML = "❌ Key không tồn tại!";
+            status.style.color = "red";
+            return;
+          }
 
-      if (today > expire) {
-        status.innerHTML = "Key đã hết hạn!";
-        status.style.color = "red";
-        return;
-      }
+          const today = new Date();
+          const expire = new Date(keys[key].expires);
 
-      status.innerHTML = "Key hợp lệ! (HSD: " + keys[key].expires + ")";
-      status.style.color = "lime";
+          if (today > expire) {
+            status.innerHTML = "⏳ Key đã hết hạn!";
+            status.style.color = "red";
+            return;
+          }
 
-      // 👉 Ở đây có thể redirect sang app chính
-      // window.location.href = "app.html";
-    })
-    .catch(err => {
-      status.innerHTML = "❌ Lỗi tải key list!";
-      status.style.color = "red";
-    });
-}
+          status.innerHTML = "✅ Key hợp lệ! (HSD: " + keys[key].expires + ")";
+          status.style.color = "lime";
+
+          // 👉 Redirect sang app chính (nếu có)
+          // window.location.href = "app.html";
+        })
+        .catch(err => {
+          status.innerHTML = "❌ Lỗi tải key list!";
+          status.style.color = "red";
+        });
+    }
+  </script>
+</body>
+</html>
