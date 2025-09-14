@@ -11,249 +11,121 @@
       background: black;
       color: white;
     }
+    #matrix { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; background:#001a00; }
+    .container { max-width: 900px; margin: 20px auto; padding: 20px; position: relative; z-index:1; }
 
-    /* Canvas nền particles */
-    #matrix {
+    /* Header */
+    .header { display:flex; align-items:center; justify-content:center; margin-bottom:20px; }
+    .team-info h1 { font-size:22px; margin:0; color:#0f0; text-align:center; text-shadow:0 0 10px #0f0; }
+
+    /* Floating buttons */
+    .floating-btn {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: -1;
-      background: #001a00;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 20px auto;
-      padding: 20px;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* HEADER */
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo-box {
-      display: flex;
-      align-items: center;
-    }
-
-    .logo-box img {
-      width: 60px;
-      height: 60px;
-      border-radius: 15px;
-      margin-right: 10px;
-    }
-
-    .team-info h1 {
-      font-size: 20px;
-      margin: 0;
-      color: #0f0;
-    }
-
-    .filters {
-      display: flex;
-      gap: 10px;
-      margin: 20px 0;
-      flex-wrap: wrap;
-    }
-
-    .filters input,
-    .filters select,
-    .filters button {
-      padding: 8px 12px;
-      border-radius: 8px;
+      top: 15px;
+      width: 50px;
+      height: 50px;
       border: none;
-      outline: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 22px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.3s;
+      z-index: 10;
     }
-
-    .filters input {
-      flex: 1;
+    /* Nút ☰ */
+    .back-btn {
+      left: 15px;
+      background: radial-gradient(circle at 30% 30%, #00ff99, #008844);
+      color: black;
+      box-shadow: 0 0 15px rgba(0,255,153,0.6), inset 0 0 8px rgba(0,255,153,0.4);
+    }
+    .back-btn:hover {
+      transform: scale(1.15) rotate(-5deg);
+      box-shadow: 0 0 25px rgba(0,255,153,1), 0 0 40px rgba(0,255,153,0.6);
+    }
+    /* Nút ★ */
+    .vip-btn {
+      right: 15px;
+      background: radial-gradient(circle at 30% 30%, #FFD700, #FF8C00);
+      color: black;
+      box-shadow: 0 0 15px rgba(255,215,0,0.8), inset 0 0 8px rgba(255,200,0,0.5);
+      animation: pulse 2s infinite;
+    }
+    .vip-btn:hover {
+      transform: scale(1.15) rotate(5deg);
+      box-shadow: 0 0 25px rgba(255,215,0,1), 0 0 40px rgba(255,180,0,0.9);
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 15px rgba(255,215,0,0.8); }
+      50% { box-shadow: 0 0 35px rgba(255,215,0,1); }
+      100% { box-shadow: 0 0 15px rgba(255,215,0,0.8); }
     }
 
     /* Stats */
-    .stats {
-      display: flex;
-      justify-content: space-around;
-      background: rgba(0, 30, 0, 0.85);
-      padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,255,100,0.2);
-      margin-bottom: 20px;
-    }
+    .stats { display:flex; justify-content:space-around; background:rgba(0,30,0,0.85); padding:15px; border-radius:12px; box-shadow:0 0 10px rgba(0,255,100,0.2); margin:20px 0; }
+    .stats div { text-align:center; }
 
-    .stats div {
-      text-align: center;
-    }
-
-    /* Game cards */
-    .games {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .game-card {
-      background: rgba(0, 30, 0, 0.85);
-      border-radius: 15px;
-      padding: 15px;
-      width: 250px;
-      box-shadow: 0 0 15px rgba(0,255,100,0.2);
-    }
-
-    .game-card img {
-      width: 60px;
-      height: 60px;
-      border-radius: 12px;
-      margin-bottom: 10px;
-    }
-
-    .game-title {
-      font-weight: bold;
-      margin: 5px 0;
-    }
-
-    .game-info {
-      font-size: 12px;
-      color: #aaa;
-      margin-bottom: 10px;
-    }
-
-    .start-btn {
-      background: #00ff66;
-      color: #000;
-      font-weight: bold;
-      padding: 8px 12px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      width: 100%;
-    }
+    /* Games */
+    .games { display:flex; gap:20px; flex-wrap:wrap; justify-content:center; }
+    .game-card { background:rgba(0,30,0,0.85); border-radius:15px; padding:15px; width:250px; box-shadow:0 0 15px rgba(0,255,100,0.2); }
+    .game-card img { width:60px; height:60px; border-radius:12px; margin-bottom:10px; }
+    .game-title { font-weight:bold; margin:5px 0; }
+    .game-stats { display:flex; justify-content:space-between; font-size:12px; margin:5px 0; }
+    .game-stats .fps strong { color:#0f0; text-shadow:0 0 5px #0f0; }
+    .game-stats .ping strong { color:#0ff; text-shadow:0 0 5px #0ff; }
+    .game-info { font-size:12px; color:#aaa; margin-bottom:10px; }
+    .start-btn { background:#00ff66; color:#000; font-weight:bold; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; width:100%; transition:0.3s; }
+    .start-btn:hover { background:#00cc55; transform:scale(1.05); }
 
     /* Popup */
-    .popup {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.7);
-      z-index: 5;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s;
-    }
-    .popup.show {
-      opacity: 1;
-      visibility: visible;
-    }
-    .popup-box {
-      background: rgba(0,20,0,0.95);
-      padding: 20px;
-      border-radius: 12px;
-      width: 300px;
-      text-align: center;
-      box-shadow: 0 0 20px rgba(0,255,100,0.3);
-    }
-
-    .progress {
-      width: 100%;
-      height: 20px;
-      background: #222;
-      border-radius: 10px;
-      margin: 15px 0;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: #00ff66;
-      transition: width 0.2s;
-    }
-
-    .close-btn {
-      display: none;
-      background: #111;
-      color: white;
-      border: 1px solid #0f0;
-      padding: 8px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
+    .popup { position:fixed; top:0; left:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.7); z-index:5; opacity:0; visibility:hidden; transition:.3s; }
+    .popup.show { opacity:1; visibility:visible; }
+    .popup-box { background:rgba(0,20,0,0.95); padding:20px; border-radius:12px; width:300px; text-align:center; box-shadow:0 0 20px rgba(0,255,100,0.3); }
+    .progress { width:100%; height:20px; background:#222; border-radius:10px; margin:15px 0; overflow:hidden; }
+    .progress-bar { height:100%; width:0%; background:#00ff66; transition:width .2s; }
+    .close-btn { display:none; background:#111; color:white; border:1px solid #0f0; padding:8px 12px; border-radius:8px; cursor:pointer; margin-top:10px; }
+    .close-btn:hover { background:#0f0; color:#000; }
   </style>
 </head>
 <body>
   <canvas id="matrix"></canvas>
 
+  <!-- Floating buttons -->
+  <button class="floating-btn back-btn" onclick="window.location.href='panel.html'">☰</button>
+  <button class="floating-btn vip-btn">★</button>
+
   <div class="container">
     <!-- Header -->
     <div class="header">
-      <div class="logo-box">
-        <img src="Logo.jpg" alt="Logo">
-        <div class="team-info">
-          <h1>AKATSUKI</h1>
-          <p>Phuc Phan • Anh Hoang • Văn Việt</p>
-        </div>
-      </div>
-      <div>
-        <button class="lang-btn">VIP</button>
-        <button class="lang-btn">★</button>
-        <button class="lang-btn">☰</button>
-      </div>
-    </div>
-
-    <!-- Filters -->
-    <div class="filters">
-      <input type="text" placeholder="Tìm ứng dụng..." />
-      <button>Yêu Thích</button>
-      <select>
-        <option>Tên (A→Z)</option>
-        <option>Tên (Z→A)</option>
-      </select>
-      <button>Xoá lọc</button>
-      <button>Cài đặt</button>
+      <div class="team-info"><h1>CPU — Ultra Boost</h1></div>
     </div>
 
     <!-- Stats -->
     <div class="stats">
-      <div>
-        <div>Ứng dụng</div>
-        <strong>2</strong>
-      </div>
-      <div>
-        <div>Favorites</div>
-        <strong>0</strong>
-      </div>
-      <div>
-        <div>Lượt chạy</div>
-        <strong>0</strong>
-      </div>
-      <div>
-        <div>Lần gần nhất</div>
-        <strong>—</strong>
-      </div>
+      <div><div>Ứng dụng</div><strong>2</strong></div>
+      <div><div>Favorites</div><strong>0</strong></div>
+      <div><div>Lượt chạy</div><strong>0</strong></div>
+      <div><div>Lần gần nhất</div><strong>—</strong></div>
     </div>
 
     <!-- Games -->
     <div class="games">
       <div class="game-card">
-        <img src="ffmax.jpg" alt="Free Fire">
+        <img src="ff.png" alt="Free Fire">
         <div class="game-title">Free Fire</div>
+        <div class="game-stats"><span>FPS: <strong id="ff-fps">0</strong></span><span>Ping: <strong id="ff-ping">0ms</strong></span></div>
         <div class="game-info">Super game optimization</div>
-        <button class="start-btn" onclick="startOptimize('Free Fire')">Bắt đầu</button>
+        <button class="start-btn" onclick="startOptimize('Free Fire','ff')">Bắt đầu</button>
       </div>
-
       <div class="game-card">
-        <img src="ffmax.jpg" alt="Free Fire MAX">
+        <img src="ffmax.png" alt="Free Fire MAX">
         <div class="game-title">Free Fire MAX</div>
+        <div class="game-stats"><span>FPS: <strong id="ffmax-fps">0</strong></span><span>Ping: <strong id="ffmax-ping">0ms</strong></span></div>
         <div class="game-info">Super game optimization</div>
-        <button class="start-btn" onclick="startOptimize('Free Fire MAX')">Bắt đầu</button>
+        <button class="start-btn" onclick="startOptimize('Free Fire MAX','ffmax')">Bắt đầu</button>
       </div>
     </div>
   </div>
@@ -262,16 +134,14 @@
   <div class="popup" id="popup">
     <div class="popup-box">
       <h3 id="popupTitle">Đang tối ưu...</h3>
-      <div class="progress">
-        <div class="progress-bar" id="progressBar"></div>
-      </div>
+      <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
       <div id="progressText">0%</div>
       <button class="close-btn" id="closeBtn">Đóng</button>
     </div>
   </div>
 
   <script>
-    function startOptimize(game) {
+    function startOptimize(game,id) {
       const popup = document.getElementById("popup");
       const progressBar = document.getElementById("progressBar");
       const progressText = document.getElementById("progressText");
@@ -294,75 +164,31 @@
           clearInterval(interval);
           popupTitle.textContent = "✅ Tối ưu " + game + " thành công!";
           closeBtn.style.display = "inline-block";
+
+          // Update FPS/Ping sau khi tối ưu
+          const fps = Math.floor(55 + Math.random() * 15);
+          const ping = Math.floor(10 + Math.random() * 40);
+          document.getElementById(id + "-fps").textContent = fps;
+          document.getElementById(id + "-ping").textContent = ping + "ms";
         }
       }, 200);
     }
-
     document.getElementById("closeBtn").addEventListener("click", () => {
       document.getElementById("popup").classList.remove("show");
     });
 
-    /* Particles nền xanh */
-    const canvas = document.getElementById("matrix");
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const particles = [];
-    const numParticles = 80;
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.radius = 2;
-        this.dx = (Math.random() - 0.5) * 1.5;
-        this.dy = (Math.random() - 0.5) * 1.5;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "#00ff99";
-        ctx.shadowColor = "#00ff99";
-        ctx.shadowBlur = 15;
-        ctx.fill();
-        ctx.closePath();
-      }
-      update() {
-        this.x += this.dx;
-        this.y += this.dy;
-        if (this.x < 0 || this.x > canvas.width) this.dx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.dy *= -1;
-        this.draw();
-      }
-    }
-    function connect() {
-      for (let a = 0; a < particles.length; a++) {
-        for (let b = a; b < particles.length; b++) {
-          const dx = particles[a].x - particles[b].x;
-          const dy = particles[a].y - particles[b].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < 120) {
-            ctx.beginPath();
-            ctx.strokeStyle = "rgba(0,255,153,0.2)";
-            ctx.moveTo(particles[a].x, particles[a].y);
-            ctx.lineTo(particles[b].x, particles[b].y);
-            ctx.stroke();
-            ctx.closePath();
-          }
-        }
-      }
-    }
-    function init() {
-      for (let i = 0; i < numParticles; i++) particles.push(new Particle());
-    }
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => p.update());
-      connect();
-      requestAnimationFrame(animate);
-    }
-    init();
-    animate();
+    /* Particles nền */
+    const canvas=document.getElementById("matrix");const ctx=canvas.getContext("2d");
+    function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+    resizeCanvas();window.addEventListener("resize",resizeCanvas);
+    const particles=[];const numParticles=80;
+    class Particle{constructor(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.radius=2;this.dx=(Math.random()-.5)*1.5;this.dy=(Math.random()-.5)*1.5;}
+    draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);ctx.fillStyle="#00ff99";ctx.shadowColor="#00ff99";ctx.shadowBlur=15;ctx.fill();ctx.closePath();}
+    update(){this.x+=this.dx;this.y+=this.dy;if(this.x<0||this.x>canvas.width)this.dx*=-1;if(this.y<0||this.y>canvas.height)this.dy*=-1;this.draw();}}
+    function connect(){for(let a=0;a<particles.length;a++){for(let b=a;b<particles.length;b++){const dx=particles[a].x-particles[b].x;const dy=particles[a].y-particles[b].y;const dist=Math.sqrt(dx*dx+dy*dy);if(dist<120){ctx.beginPath();ctx.strokeStyle="rgba(0,255,153,0.2)";ctx.moveTo(particles[a].x,particles[a].y);ctx.lineTo(particles[b].x,particles[b].y);ctx.stroke();ctx.closePath();}}}}
+    function init(){for(let i=0;i<numParticles;i++)particles.push(new Particle());}
+    function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>p.update());connect();requestAnimationFrame(animate);}
+    init();animate();
   </script>
 </body>
 </html>
