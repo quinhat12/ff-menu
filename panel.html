@@ -330,37 +330,87 @@
   </div>
 
   <!-- Hiệu ứng hacker -->
-  <script>
-    const canvas = document.getElementById("matrix");
-    const ctx = canvas.getContext("2d");
+  <!-- Hiệu ứng particles xanh neon -->
+<script>
+  const canvas = document.getElementById("matrix");
+  const ctx = canvas.getContext("2d");
 
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
 
-    const chars = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&*+";
-    const fontSize = 16;
-    const columns = canvas.width / fontSize; 
-    const drops = [];
+  const particles = [];
+  const numParticles = 80;
 
-    for (let x = 0; x < columns; x++) drops[x] = 1;
-
-    function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#0F0";
-      ctx.font = fontSize + "px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
-      }
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.radius = 2 + Math.random() * 2;
+      this.dx = (Math.random() - 0.5) * 1.5; // tốc độ ngang
+      this.dy = (Math.random() - 0.5) * 1.5; // tốc độ dọc
     }
 
-    setInterval(draw, 33);
-  </script>
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = "#00ff99";
+      ctx.shadowColor = "#00ff99";
+      ctx.shadowBlur = 15;
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    update() {
+      this.x += this.dx;
+      this.y += this.dy;
+
+      if (this.x < 0 || this.x > canvas.width) this.dx *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.dy *= -1;
+
+      this.draw();
+    }
+  }
+
+  function connect() {
+    for (let a = 0; a < particles.length; a++) {
+      for (let b = a; b < particles.length; b++) {
+        const dx = particles[a].x - particles[b].x;
+        const dy = particles[a].y - particles[b].y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < 120) {
+          ctx.beginPath();
+          ctx.strokeStyle = "rgba(0,255,153,0.2)";
+          ctx.lineWidth = 1;
+          ctx.moveTo(particles[a].x, particles[a].y);
+          ctx.lineTo(particles[b].x, particles[b].y);
+          ctx.stroke();
+          ctx.closePath();
+        }
+      }
+    }
+  }
+
+  function init() {
+    for (let i = 0; i < numParticles; i++) {
+      particles.push(new Particle());
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => p.update());
+    connect();
+    requestAnimationFrame(animate);
+  }
+
+  init();
+  animate();
+
+  // Cập nhật lại khi resize
+  window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+</script>
 </body>
 </html>
