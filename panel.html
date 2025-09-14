@@ -37,48 +37,23 @@
       justify-content: space-between;
     }
 
-    .logo-box {
-      display: flex;
-      align-items: center;
-    }
-
+    .logo-box { display: flex; align-items: center; }
     .logo-box img {
-      width: 60px;
-      height: 60px;
-      border-radius: 15px;
-      margin-right: 10px;
+      width: 60px; height: 60px; border-radius: 15px; margin-right: 10px;
     }
-
     .team-info h1 { font-size: 18px; margin: 0; }
     .team-info p { margin: 0; font-size: 12px; color: #aaa; }
-
     .badge {
-      background: #00ff66;
-      color: black;
-      font-weight: bold;
-      padding: 4px 8px;
-      border-radius: 20px;
-      font-size: 12px;
+      background: #00ff66; color: black; font-weight: bold;
+      padding: 4px 8px; border-radius: 20px; font-size: 12px;
     }
-
     .vip-status {
-      margin: 10px 0;
-      font-size: 12px;
-      background: rgba(0,255,100,0.1);
-      padding: 5px 10px;
-      border-radius: 10px;
-      display: inline-block;
+      margin: 10px 0; font-size: 12px; background: rgba(0,255,100,0.1);
+      padding: 5px 10px; border-radius: 10px; display: inline-block;
     }
-
     .lang-btn {
-      border: none;
-      background: #0a0;
-      color: white;
-      border-radius: 50%;
-      width: 35px;
-      height: 35px;
-      cursor: pointer;
-      font-weight: bold;
+      border: none; background: #0a0; color: white; border-radius: 50%;
+      width: 35px; height: 35px; cursor: pointer; font-weight: bold;
     }
 
     /* CARD */
@@ -89,34 +64,21 @@
       margin: 15px 0;
       box-shadow: 0 0 15px rgba(0,255,100,0.2);
     }
-
     .card h3 {
-      margin: 0 0 10px;
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: #0f0;
+      margin: 0 0 10px; font-size: 16px; display: flex;
+      align-items: center; justify-content: space-between; color: #0f0;
     }
-
     .item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-
     .item:last-child { border-bottom: none; }
     .item-left { display:flex; align-items:center; }
-
     .icon {
-      width: 35px; height: 35px; border-radius: 10px;
-      background: #111; display:flex; align-items:center;
-      justify-content:center; margin-right:10px; font-size:12px;
-      font-weight:bold; color:#0f0; box-shadow: 0 0 8px #0f0;
+      width: 35px; height: 35px; border-radius: 10px; background: #111;
+      display:flex; align-items:center; justify-content:center; margin-right:10px;
+      font-size:12px; font-weight:bold; color:#0f0; box-shadow: 0 0 8px #0f0;
     }
-
     .label { font-size:14px; }
     .desc  { font-size:11px; color:#888; }
 
@@ -142,50 +104,18 @@
     .boost-bar {
       flex:1; background:#004400; padding:10px; border-radius:12px;
       font-weight:bold; text-align:center; box-shadow:0 0 10px #0f0;
+      cursor: pointer; /* làm nút bấm */
     }
     .admin-btn {
-      padding:8px 12px; background:#111; color:#fff; border-radius:8px; border:1px solid #0f0; cursor:pointer;
+      padding:8px 12px; background:#111; color:#fff; border-radius:8px;
+      border:1px solid #0f0; cursor:pointer;
     }
     .footer-bottom { display:flex; justify-content:center; gap:10px; }
-
-    /* --- LOGIN MODAL (xuất khi Đăng xuất) --- */
-    .modal {
-      position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
-      background: rgba(0,0,0,0.6); z-index: 3; opacity: 0; visibility: hidden;
-      transition: opacity .25s ease;
-    }
-    .modal.show { opacity: 1; visibility: visible; }
-    .login-box-modal {
-      width: 360px; background: rgba(0,0,0,0.95); border-radius: 12px;
-      border: 1px solid rgba(0,255,100,0.18); padding: 18px; box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-    }
-    .login-box-modal h2 { margin:0 0 8px; color:#00ff99; }
-    .login-box-modal p.admin { margin:0 0 12px; color:#aaa; font-size:13px; }
-    .login-box-modal input[type="text"] {
-      width:100%; padding:10px; border-radius:8px; border: none; outline:none;
-      background:#0b0b0b; color:#fff; margin-bottom:10px;
-    }
-    .login-box-modal .status { font-size:13px; min-height:18px; margin-bottom:10px; color:#fff; }
-    .modal-actions { display:flex; gap:8px; justify-content:flex-end; }
-    .btn-primary {
-      background: #00ff66; color: #000; border: none; padding:8px 12px; border-radius:8px; font-weight:bold; cursor:pointer;
-    }
-    .btn-secondary {
-      background: transparent; color:#fff; border: 1px solid rgba(255,255,255,0.12); padding:8px 12px; border-radius:8px; cursor:pointer;
-    }
-
-    /* small responsive */
-    @media (max-width:520px){
-      .container{ padding:14px; margin:12px; max-width: 94%; }
-      .login-box-modal{ width: 92%; }
-    }
   </style>
 </head>
 <body>
-  <!-- Nền particles -->
   <canvas id="matrix"></canvas>
 
-  <!-- MAIN PANEL -->
   <div class="container">
     <!-- Header -->
     <div class="header">
@@ -206,40 +136,28 @@
       <div class="item">
         <div class="item-left">
           <div class="icon">IG</div>
-          <div>
-            <div class="label">Optimizer</div>
-            <div class="desc">Bật tối ưu hoá hệ thống</div>
-          </div>
+          <div><div class="label">Optimizer</div><div class="desc">Bật tối ưu hoá hệ thống</div></div>
         </div>
         <label class="switch"><input type="checkbox"><span class="slider"></span></label>
       </div>
       <div class="item">
         <div class="item-left">
           <div class="icon">SS</div>
-          <div>
-            <div class="label">Sensitivity Boost</div>
-            <div class="desc">Tăng độ nhạy mượt</div>
-          </div>
+          <div><div class="label">Sensitivity Boost</div><div class="desc">Tăng độ nhạy mượt</div></div>
         </div>
         <label class="switch"><input type="checkbox"><span class="slider"></span></label>
       </div>
       <div class="item">
         <div class="item-left">
           <div class="icon">TS</div>
-          <div>
-            <div class="label">Touch Screen</div>
-            <div class="desc">Cải thiện cảm ứng</div>
-          </div>
+          <div><div class="label">Touch Screen</div><div class="desc">Cải thiện cảm ứng</div></div>
         </div>
         <label class="switch"><input type="checkbox"><span class="slider"></span></label>
       </div>
       <div class="item">
         <div class="item-left">
           <div class="icon">UI</div>
-          <div>
-            <div class="label">UI Sounds</div>
-            <div class="desc">Tắt/bật âm thanh</div>
-          </div>
+          <div><div class="label">UI Sounds</div><div class="desc">Tắt/bật âm thanh</div></div>
         </div>
         <label class="switch"><input type="checkbox"><span class="slider"></span></label>
       </div>
@@ -251,30 +169,21 @@
       <div class="item">
         <div class="item-left">
           <div class="icon">AL</div>
-          <div>
-            <div class="label">AimLock</div>
-            <div class="desc">Auto-aim assist</div>
-          </div>
+          <div><div class="label">AimLock</div><div class="desc">Auto-aim assist</div></div>
         </div>
         <label class="switch"><input type="checkbox"><span class="slider"></span></label>
       </div>
       <div class="item">
         <div class="item-left">
           <div class="icon">RC</div>
-          <div>
-            <div class="label">Smooth view sys</div>
-            <div class="desc">Range smooth view</div>
-          </div>
+          <div><div class="label">Smooth view sys</div><div class="desc">Range smooth view</div></div>
         </div>
         <label class="switch"><input type="checkbox"><span class="slider"></span></label>
       </div>
       <div class="item">
         <div class="item-left">
           <div class="icon">QS</div>
-          <div>
-            <div class="label">Head Scope</div>
-            <div class="desc">Faster scope head</div>
-          </div>
+          <div><div class="label">Head Scope</div><div class="desc">Faster scope head</div></div>
         </div>
         <label class="switch"><input type="checkbox"><span class="slider"></span></label>
       </div>
@@ -285,10 +194,7 @@
       <div class="item">
         <div class="item-left">
           <div class="icon">DPI</div>
-          <div>
-            <div class="label">DPI START</div>
-            <div class="desc">Standard sensitivity</div>
-          </div>
+          <div><div class="label">DPI START</div><div class="desc">Standard sensitivity</div></div>
         </div>
         <label class="switch"><input type="checkbox"><span class="slider"></span></label>
       </div>
@@ -298,38 +204,21 @@
     <div class="footer">
       <div class="footer-top">
         <div class="boost-bar" id="cpuBtn">CPU — Ultra Boost</div>
-
-<script>
-  document.getElementById("cpuBtn").addEventListener("click", () => {
-    window.location.href = "cpu.html";
-  });
-</script>
+        <button class="admin-btn">Admin</button>
+      </div>
       <div class="footer-bottom">
-        <button id="logoutBtn" class="admin-btn">Đăng xuất</button>
-        <button id="resetBtn" class="admin-btn">Reset</button>
+        <button class="admin-btn">Đăng xuất</button>
+        <button class="admin-btn">Reset</button>
       </div>
     </div>
   </div>
 
-  <!-- LOGIN MODAL (xuất khi bấm Đăng xuất) -->
-  <div id="loginModal" class="modal" aria-hidden="true">
-    <div class="login-box-modal" role="dialog" aria-modal="true">
-      <h2>Đăng nhập key</h2>
-      <p class="admin">Vui lòng nhập key để tiếp tục</p>
-
-      <input id="modalKeyInput" type="text" placeholder="Nhập key..." />
-      <div id="modalStatus" class="status"></div>
-
-      <div class="modal-actions">
-        <button id="modalCancel" class="btn-secondary">Hủy</button>
-        <button id="modalLoginBtn" class="btn-primary">Đăng nhập</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Hiệu ứng particles xanh neon -->
+  <!-- Particles -->
   <script>
-    /* ====== particles background (giữ nguyên) ====== */
+    document.getElementById("cpuBtn").addEventListener("click", () => {
+      window.location.href = "cpu.html";
+    });
+
     const canvas = document.getElementById("matrix");
     const ctx = canvas.getContext("2d");
     function resizeCanvas(){
@@ -359,8 +248,7 @@
         ctx.closePath();
       }
       update() {
-        this.x += this.dx;
-        this.y += this.dy;
+        this.x += this.dx; this.y += this.dy;
         if (this.x < 0 || this.x > canvas.width) this.dx *= -1;
         if (this.y < 0 || this.y > canvas.height) this.dy *= -1;
         this.draw();
@@ -396,90 +284,6 @@
     }
     initParticles();
     animate();
-
-    /* ====== Logout / Modal logic ====== */
-    const logoutBtn = document.getElementById('logoutBtn');
-    const loginModal = document.getElementById('loginModal');
-    const modalCancel = document.getElementById('modalCancel');
-    const modalLoginBtn = document.getElementById('modalLoginBtn');
-    const modalKeyInput = document.getElementById('modalKeyInput');
-    const modalStatus = document.getElementById('modalStatus');
-    const resetBtn = document.getElementById('resetBtn');
-
-    // Show modal when bấm Đăng xuất
-    logoutBtn.addEventListener('click', () => {
-      modalStatus.textContent = '';
-      modalKeyInput.value = '';
-      loginModal.classList.add('show');
-      modalKeyInput.focus();
-    });
-
-    // Hủy
-    modalCancel.addEventListener('click', () => {
-      loginModal.classList.remove('show');
-    });
-
-    // Enter để submit
-    modalKeyInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') modalLogin();
-    });
-
-    // Login button trong modal
-    modalLoginBtn.addEventListener('click', modalLogin);
-
-    function modalLogin() {
-      const key = modalKeyInput.value.trim();
-      if (!key) {
-        modalStatus.textContent = '⚠️ Vui lòng nhập key!';
-        modalStatus.style.color = 'orange';
-        return;
-      }
-
-      modalStatus.textContent = 'Đang kiểm tra key...';
-      modalStatus.style.color = '#fff';
-
-      // Sử dụng same raw GitHub JSON
-      fetch('https://raw.githubusercontent.com/quinhat12/ff-menu/main/keys.json')
-        .then(res => {
-          if (!res.ok) throw new Error('network');
-          return res.json();
-        })
-        .then(keys => {
-          if (!keys[key]) {
-            modalStatus.textContent = '❌ Key không tồn tại!';
-            modalStatus.style.color = 'red';
-            return;
-          }
-          const today = new Date();
-          const expire = new Date(keys[key].expires);
-          if (today > expire) {
-            modalStatus.textContent = '⏳ Key đã hết hạn!';
-            modalStatus.style.color = 'red';
-            return;
-          }
-          // Key hợp lệ
-          modalStatus.textContent = '✅ Key hợp lệ! Đăng nhập thành công.';
-          modalStatus.style.color = 'lime';
-
-          // Đóng modal (nhỏ delay để user thấy thông báo)
-          setTimeout(() => {
-            loginModal.classList.remove('show');
-            modalStatus.textContent = '';
-            modalKeyInput.value = '';
-          }, 700);
-        })
-        .catch(err => {
-          modalStatus.textContent = '❌ Lỗi tải key list!';
-          modalStatus.style.color = 'red';
-        });
-    }
-
-    // Reset: load lại trang (hoặc có thể reset các toggle)
-    resetBtn.addEventListener('click', () => {
-      // reset tất cả checkbox về unchecked
-      document.querySelectorAll('.switch input[type="checkbox"]').forEach(cb => cb.checked = false);
-    });
-
   </script>
 </body>
 </html>
