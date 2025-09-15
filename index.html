@@ -263,7 +263,7 @@ async function login() {
   const key     = (keyEl ? keyEl.value : "").trim();
 
   if (!key) {
-    if (status) { status.textContent = "⚠️ Vui lòng nhập key!"; status.style.color = "orange"; }
+    if (status) { status.textContent = "Vui lòng nhập key!"; status.style.color = "orange"; }
     return;
   }
 
@@ -276,14 +276,14 @@ async function login() {
     // 2) Tồn tại key?
     const info = keys[key];
     if (!info) {
-      if (status) { status.textContent = "❌ Key không tồn tại!"; status.style.color = "red"; }
+      if (status) { status.textContent = " Key không hoạt động!"; status.style.color = "red"; }
       return;
     }
 
     // 3) Kiểm tra hạn
     const exp = info.expires ? new Date(info.expires) : null;
     if (exp && (new Date() > exp)) {
-      if (status) { status.textContent = `⏳ Key đã hết hạn (HSD: ${info.expires})`; status.style.color = "red"; }
+      if (status) { status.textContent = ` Key đã hết hạn (HSD: ${info.expires})`; status.style.color = "red"; }
       return;
     }
 
@@ -293,7 +293,7 @@ async function login() {
 
     if (!bind) {
       if (REQUIRE_BOUND) {
-        if (status) { status.textContent = "🔒 Key chưa được gắn thiết bị. Gửi Mã Thiết Bị cho Admin để bind."; status.style.color = "orange"; }
+        if (status) { status.textContent = "Key chưa được kích hoạt Liên Hệ Admin Để Kích Hoạt!"; status.style.color = "orange"; }
         return;
       }
       // Nếu REQUIRE_BOUND=false sẽ cho qua khi chưa bind
@@ -304,7 +304,7 @@ async function login() {
 
     // 5) Thành công
     if (status) {
-      status.textContent = exp ? `✅ Key hợp lệ (HSD: ${info.expires})` : "✅ Key vĩnh viễn";
+      status.textContent = exp ? `Key hợp lệ (HSD: ${info.expires})` : "✅ Key vĩnh viễn";
       status.style.color = "lime";
     }
     setTimeout(() => { window.location.href = "panel.html"; }, 600);
