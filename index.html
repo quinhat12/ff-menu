@@ -120,6 +120,59 @@
     .note b {
       color: #00ff99;
     }
+
+    /* ============ SHOP ADD-ON ============ */
+    .ak-shop-fab{
+      position:fixed; right:16px; bottom:16px;
+      width:56px; height:56px; border:none; border-radius:50%;
+      /* giữ background riêng để không bị rule button:hover override */
+      background: radial-gradient(circle at 30% 30%, #00ff99, #008844);
+      color:#000; font-size:24px; font-weight:700;
+      box-shadow: 0 0 16px rgba(0,255,153,.6), inset 0 0 8px rgba(0,255,153,.4);
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; z-index:99999; transition:.2s;
+    }
+    .ak-shop-fab:hover{
+      transform: scale(1.07);
+      background: radial-gradient(circle at 30% 30%, #00ff99, #008844);
+    }
+
+    .ak-shop-panel{
+      position:fixed; right:12px; bottom:84px; width:320px; max-width:calc(100vw - 24px);
+      background: rgba(0,15,0,.96); color:#fff;
+      border:1px solid rgba(0,255,153,.2); border-radius:16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.6), 0 0 20px rgba(0,255,153,.15);
+      transform: scale(.98) translateY(10px); opacity:0; pointer-events:none; transition:.2s; z-index:99999;
+    }
+    .ak-shop-panel.ak-open{ opacity:1; transform: scale(1) translateY(0); pointer-events:auto; }
+    .ak-shop-head{
+      display:flex; align-items:center; justify-content:space-between; padding:10px 12px;
+      border-bottom:1px solid rgba(0,255,153,.15);
+    }
+    .ak-shop-title{ font-weight:700; }
+    .ak-shop-close{ background:transparent; color:#fff; border:none; font-size:18px; cursor:pointer; padding:6px; border-radius:8px; }
+    .ak-shop-close:hover{ background:rgba(255,255,255,.06); }
+
+    .ak-shop-body{ padding:10px 12px 6px; max-height:60vh; overflow:auto; }
+    .ak-shop-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+    .ak-chip{
+      background:transparent; color:#fff; padding:8px 12px; border-radius:14px;
+      border:1px dashed rgba(0,255,153,.5); cursor:pointer; font-size:14px;
+    }
+    .ak-chip:hover{ background:rgba(0,255,153,.08); }
+
+    .ak-shop-card{
+      margin:10px 0; padding:10px 12px; background:rgba(0,0,0,.4);
+      border:1px solid rgba(0,255,153,.15); border-radius:12px;
+    }
+    .ak-shop-card h4{ margin:0 0 6px; font-size:14px; color:#a6ffd6; }
+    .ak-shop-card ul{ margin:6px 0 0 18px; padding:0; }
+    .ak-shop-links{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+    .ak-shop-links a{
+      text-decoration:none; padding:8px 12px; border-radius:10px;
+      border:1px solid rgba(0,255,153,.5); background:rgba(0,255,153,.15); color:#fff; flex:1; text-align:center;
+    }
+    /* ========== /SHOP ADD-ON CSS ========== */
   </style>
 </head>
 <body>
@@ -154,7 +207,26 @@
     </div>
   </div>
 
+  <!-- ===== SHOP ADD-ON (HTML) ===== -->
+  <button id="akShopFab" class="ak-shop-fab" aria-label="Mua key" title="Mua key">🛒</button>
+
+  <div id="akShopPanel" class="ak-shop-panel" aria-hidden="true" role="dialog">
+    <div class="ak-shop-head">
+      <div class="ak-shop-title">Mua key • Hỗ trợ</div>
+      <button class="ak-shop-close" id="akShopClose" aria-label="Đóng">✕</button>
+    </div>
+    <div class="ak-shop-body">
+      <div class="ak-shop-row">
+        <button class="ak-chip" id="akChipPricing">Bảng giá</button>
+        <button class="ak-chip" id="akChipBuy">Mua key ngay</button>
+      </div>
+      <div id="akShopContent"></div>
+    </div>
+  </div>
+  <!-- ===== /SHOP ADD-ON ===== -->
+
   <script>
+    /* ========= LOGIN (giữ nguyên theo file gốc) ========= */
     function login() {
       const key = document.getElementById("keyInput").value.trim();
       const status = document.getElementById("status");
@@ -195,152 +267,62 @@
           status.style.color = "red";
         });
     }
-  <!-- ========== SHOP ADD-ON (drop-in, không đụng UI cũ) ========== -->
-<style id="ak-shop-css">
-  .ak-shop-fab{
-    position:fixed; right:16px; bottom:16px; width:56px; height:56px; border:none; border-radius:50%;
-    background: radial-gradient(circle at 30% 30%, #00ff99, #008844);
-    box-shadow: 0 0 16px rgba(0,255,153,.6), inset 0 0 8px rgba(0,255,153,.4);
-    display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:99999;
-    transition:.2s;
-  }
-  .ak-shop-fab:hover{ transform: scale(1.07); }
-  .ak-shop-fab svg{ display:block; }
 
-  .ak-shop-panel{
-    position:fixed; right:12px; bottom:84px; width:320px; max-width:calc(100vw - 24px);
-    background: rgba(0,15,0,.96); color:#fff;
-    border:1px solid rgba(0,255,153,.2); border-radius:16px;
-    box-shadow: 0 10px 40px rgba(0,0,0,.6), 0 0 20px rgba(0,255,153,.15);
-    transform: scale(.98) translateY(10px); opacity:0; pointer-events:none; transition:.2s; z-index:99999;
-  }
-  .ak-shop-panel.ak-open{ opacity:1; transform: scale(1) translateY(0); pointer-events:auto; }
-  .ak-shop-head{ display:flex; align-items:center; justify-content:space-between; padding:10px 12px;
-    border-bottom:1px solid rgba(0,255,153,.15); }
-  .ak-shop-title{ font-weight:700; }
-  .ak-shop-close{ background:transparent; color:#fff; border:none; font-size:18px; cursor:pointer; padding:6px; border-radius:8px; }
-  .ak-shop-close:hover{ background:rgba(255,255,255,.06); }
+    /* ========= SHOP (chỉ thêm, không ảnh hưởng login) ========= */
+    const AK_SHOP_ADMIN_NAME   = 'Admin';
+    const AK_SHOP_DISCORD_LINK = 'https://discord.com/users/your-id';
+    const AK_SHOP_TICKET_LINK  = 'https://vncheat.com/ticket';
 
-  .ak-shop-body{ padding:10px 12px 4px; max-height:60vh; overflow:auto; }
-  .ak-shop-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
-  .ak-chip{
-    background:transparent; color:#fff; padding:8px 12px; border-radius:14px;
-    border:1px dashed rgba(0,255,153,.5); cursor:pointer; font-size:14px;
-  }
-  .ak-chip:hover{ background:rgba(0,255,153,.08); }
+    (function akShopInit(){
+      const fab   = document.getElementById('akShopFab');
+      const panel = document.getElementById('akShopPanel');
+      const close = document.getElementById('akShopClose');
+      const chipPricing = document.getElementById('akChipPricing');
+      const chipBuy     = document.getElementById('akChipBuy');
 
-  .ak-shop-card{
-    margin:10px 0; padding:10px 12px; background:rgba(0,0,0,.4);
-    border:1px solid rgba(0,255,153,.15); border-radius:12px;
-  }
-  .ak-shop-card h4{ margin:0 0 6px; font-size:14px; color:#a6ffd6; }
-  .ak-shop-card ul{ margin:6px 0 0 18px; padding:0; }
-  .ak-shop-links{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
-  .ak-shop-links a{
-    text-decoration:none; padding:8px 12px; border-radius:10px;
-    border:1px solid rgba(0,255,153,.5); background:rgba(0,255,153,.15); color:#fff; flex:1; text-align:center;
-  }
-</style>
+      function toggle(open){
+        const willOpen = typeof open === 'boolean' ? open : !panel.classList.contains('ak-open');
+        panel.classList.toggle('ak-open', willOpen);
+        if (willOpen) renderPricing();
+      }
 
-<script>
-  // ============ Cấu hình liên hệ (đổi lại cho đúng của bạn) ============
-  const AK_SHOP_ADMIN_NAME   = 'Nhism';
-  const AK_SHOP_DISCORD_LINK = 'https://discord.gg/zQbS2TDn';
-  const AK_SHOP_TICKET_LINK  = 'https://discord.com/channels/1308032010039857203/1372503314247192616';
+      function renderPricing(){
+        const box = document.getElementById('akShopContent');
+        box.innerHTML = `
+          <div class="ak-shop-card">
+            <h4>Bảng giá</h4>
+            <ul>
+              <li>10.000&nbsp;VNĐ — 1 Ngày</li>
+              <li>50.000&nbsp;VNĐ — 7 Ngày</li>
+              <li>150.000&nbsp;VNĐ — 30 Ngày</li>
+              <li>250.000&nbsp;VNĐ — Vĩnh viễn</li>
+            </ul>
+          </div>
+        `;
+      }
 
-  // ============ Tạo UI Shop và gắn vào body (không sửa HTML cũ) ============
-  (function akShopMount(){
-    // Nút giỏ hàng (FAB)
-    const fab = document.createElement('button');
-    fab.className = 'ak-shop-fab';
-    fab.id = 'akShopFab';
-    fab.setAttribute('aria-label','Mua key');
-    fab.innerHTML = `
-      <svg viewBox="0 0 24 24" width="26" height="26" fill="#000" aria-hidden="true">
-        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 
-                 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.17 14h9.66c.75 0 
-                 1.41-.41 1.75-1.03l3.58-6.49a1 1 0 0 0-.88-1.48H6.21L5.27 2H2v2h2l3.6 7.59L6.25 
-                 14.04A2 2 0 0 0 6 15c0 1.1.9 2 2 2h12v-2H8.42a.5.5 0 0 1-.45-.29L8.1 14z"/>
-      </svg>
-    `;
+      function renderBuy(){
+        const box = document.getElementById('akShopContent');
+        box.innerHTML = `
+          <div class="ak-shop-card">
+            <h4>Mua key ngay</h4>
+            <div>Chọn một trong các cách sau:</div>
+            <div class="ak-shop-links" style="margin-top:8px;">
+              <a href="${AK_SHOP_DISCORD_LINK}" target="_blank" rel="noopener">Inbox Admin Discord</a>
+              <a href="${AK_SHOP_TICKET_LINK}"  target="_blank" rel="noopener">Tạo ticket trong VNCheat</a>
+            </div>
+            <div style="margin-top:8px; font-size:12px; opacity:.8;">Admin: <b>${AK_SHOP_ADMIN_NAME}</b></div>
+          </div>
+        `;
+      }
 
-    // Panel
-    const panel = document.createElement('div');
-    panel.className = 'ak-shop-panel';
-    panel.id = 'akShopPanel';
-    panel.setAttribute('role','dialog');
-    panel.setAttribute('aria-modal','false');
-    panel.innerHTML = `
-      <div class="ak-shop-head">
-        <div class="ak-shop-title">Mua key • Hỗ trợ</div>
-        <button class="ak-shop-close" id="akShopClose" aria-label="Đóng">✕</button>
-      </div>
-      <div class="ak-shop-body">
-        <div class="ak-shop-row">
-          <button class="ak-chip" id="akChipPricing">Bảng giá</button>
-          <button class="ak-chip" id="akChipBuy">Mua key ngay</button>
-        </div>
-        <div id="akShopContent"></div>
-      </div>
-    `;
+      fab && fab.addEventListener('click', () => toggle());
+      close && close.addEventListener('click', () => toggle(false));
+      chipPricing && chipPricing.addEventListener('click', renderPricing);
+      chipBuy && chipBuy.addEventListener('click', renderBuy);
 
-    document.body.appendChild(fab);
-    document.body.appendChild(panel);
-
-    // Sự kiện
-    fab.addEventListener('click', () => akShopToggle());
-    panel.querySelector('#akShopClose').addEventListener('click', () => akShopToggle(false));
-    panel.querySelector('#akChipPricing').addEventListener('click', akShopRenderPricing);
-    panel.querySelector('#akChipBuy').addEventListener('click', akShopRenderBuy);
-
-    // Đóng bằng phím Esc
-    document.addEventListener('keydown', (e)=> {
-      if (e.key === 'Escape') akShopToggle(false);
-    });
-  })();
-
-  // ============ Hành vi ============ 
-  function akShopToggle(force){
-    const panel = document.getElementById('akShopPanel');
-    const isOpen = panel.classList.contains('ak-open');
-    const open = (typeof force === 'boolean') ? force : !isOpen;
-    panel.classList.toggle('ak-open', open);
-    if (open) {
-      // mặc định hiện bảng giá khi mở
-      akShopRenderPricing();
-    }
-  }
-
-  function akShopRenderPricing(){
-    const box = document.getElementById('akShopContent');
-    box.innerHTML = `
-      <div class="ak-shop-card">
-        <h4>Bảng giá</h4>
-        <ul>
-          <li>10.000&nbsp;VNĐ — 1 Ngày</li>
-          <li>50.000&nbsp;VNĐ — 7 Ngày</li>
-          <li>150.000&nbsp;VNĐ — 30 Ngày</li>
-          <li>250.000&nbsp;VNĐ — Vĩnh viễn</li>
-        </ul>
-      </div>
-    `;
-  }
-    
-  function akShopRenderBuy(){
-    const box = document.getElementById('akShopContent');
-    box.innerHTML = `
-      <div class="ak-shop-card">
-        <h4>Mua key ngay</h4>
-        <div>Chọn một trong các cách sau:</div>
-        <div class="ak-shop-links" style="margin-top:8px;">
-          <a href="${AK_SHOP_DISCORD_LINK}" target="_blank" rel="noopener">Inbox Admin Discord</a>
-          <a href="${AK_SHOP_TICKET_LINK}" target="_blank" rel="noopener">Tạo ticket trong VNCheat</a>
-        </div>
-        <div style="margin-top:8px; font-size:12px; opacity:.8;">Admin: <b>${AK_SHOP_ADMIN_NAME}</b></div>
-      </div>
-    `;
-  }
-</script>
-<!-- ========== /SHOP ADD-ON ========== -->
+      document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') toggle(false); });
+    })();
+  </script>
 </body>
 </html>
