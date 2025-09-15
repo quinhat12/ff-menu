@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>CPU — Ultra Boost</title>
   <style>
-    body { margin: 0; font-family: 'Segoe UI', Arial, sans-serif; background: black; color: white; }
-    #matrix { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; background:#001a00; }
+    /* ========== Nền/khung tổng thể ========== */
+    body { margin:0; font-family: 'Segoe UI', Arial, sans-serif; background:#000; color:#fff; }
+    #matrix { position:fixed; inset:0; z-index:-1; background:#001a00; }
     .container { max-width: 900px; margin: 20px auto; padding: 20px; position: relative; z-index:1; }
 
-    /* Header */
     .header { display:flex; align-items:center; justify-content:center; margin-bottom:20px; }
     .team-info h1 { font-size:22px; margin:0; color:#0f0; text-align:center; text-shadow:0 0 10px #0f0; }
 
-    /* Floating buttons */
+    /* Nút tròn nổi */
     .floating-btn {
       position: fixed; top: 15px; width: 50px; height: 50px; border: none; border-radius: 50%;
       cursor: pointer; font-size: 22px; font-weight: bold; display: flex; align-items: center; justify-content: center;
@@ -31,11 +31,11 @@
     .stats { display:flex; justify-content:space-around; background:rgba(0,30,0,0.85); padding:15px; border-radius:12px; box-shadow:0 0 10px rgba(0,255,100,0.2); margin:20px 0; }
     .stats div { text-align:center; }
 
-    /* Toolbar + Files panel (MỚI) */
+    /* Toolbar + Files panel */
     .toolbar { display:flex; gap:10px; justify-content:center; margin:10px 0 15px; flex-wrap: wrap; }
-    .file-btn { padding:10px 14px; border:none; border-radius:10px; font-weight:bold; cursor:pointer; box-shadow: 0 0 12px rgba(0,255,153,0.3); }
-    .file-btn.add { background:#00ff66; color:#000; }
-    .file-btn.export { background:#00ccff; color:#000; }
+    .start-btn { background:#00ff66; color:#000; font-weight:bold; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; transition:.3s; }
+    .start-btn:hover{ background:#00cc55; transform:scale(1.03); }
+
     .files-panel { background:rgba(0,30,0,0.75); padding:12px; border-radius:12px; box-shadow:0 0 12px rgba(0,255,153,0.15); }
     .files-panel h3 { margin:0 0 10px; color:#0f0; text-shadow:0 0 8px #0f0; text-align:center; }
     .file-list.empty { color:#aaa; text-align:center; }
@@ -47,32 +47,66 @@
     .file-item .actions .download { background:#ffaa00; color:#000; }
     .file-item .actions .remove { background:#ff5555; color:#000; }
 
-    /* Games */
+    /* Game cards */
     .games { display:flex; gap:20px; flex-wrap:wrap; justify-content:center; }
     .game-card { background:rgba(0,30,0,0.85); border-radius:15px; padding:15px; width:250px; box-shadow:0 0 15px rgba(0,255,100,0.2); }
-    .game-card img { width:60px; height:60px; border-radius:12px; margin-bottom:10px; }
+    .game-card img { width:60px; height:60px; border-radius:12px; margin-bottom:10px; object-fit:cover; }
     .game-title { font-weight:bold; margin:5px 0; }
     .game-stats { display:flex; justify-content:space-between; font-size:12px; margin:5px 0; }
     .game-stats .fps strong { color:#0f0; text-shadow:0 0 5px #0f0; }
     .game-stats .ping strong { color:#0ff; text-shadow:0 0 5px #0ff; }
     .game-info { font-size:12px; color:#aaa; margin-bottom:10px; }
-    .start-btn { background:#00ff66; color:#000; font-weight:bold; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; width:100%; transition:0.3s; }
-    .start-btn:hover { background:#00cc55; transform:scale(1.05); }
 
     /* Popup */
-    .popup { position:fixed; top:0; left:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.7); z-index:5; opacity:0; visibility:hidden; transition:.3s; }
+    .popup { position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+      background:rgba(0,0,0,0.7); z-index:5; opacity:0; visibility:hidden; transition:.3s; }
     .popup.show { opacity:1; visibility:visible; }
     .popup-box { background:rgba(0,20,0,0.95); padding:20px; border-radius:12px; width:300px; text-align:center; box-shadow:0 0 20px rgba(0,255,100,0.3); }
-    .progress { width:100%; height:20px; background:#222; border-radius:10px; margin:15px 0; overflow:hidden; }
-    .progress-bar { height:100%; width:0%; background:#00ff66; transition:width .2s; }
     .close-btn { display:none; background:#111; color:white; border:1px solid #0f0; padding:8px 12px; border-radius:8px; cursor:pointer; margin-top:10px; }
     .close-btn:hover { background:#0f0; color:#000; }
+
+    /* Loader LED tròn */
+    .loader{ width:120px; height:120px; margin:12px auto 8px; position:relative; }
+    .ring-led{
+      --p: 0;            /* 0..100% */
+      --rot: 0deg;
+      width:100%; height:100%; border-radius:50%;
+      background:
+        radial-gradient(closest-side, rgba(0,0,0,0.9) 72%, transparent 73% 100%),
+        conic-gradient(#00ff99 calc(var(--p) * 1%), rgba(255,255,255,0.08) 0),
+        repeating-conic-gradient(from 0deg,
+          rgba(0,255,153,0.25) 0 6deg, transparent 6deg 12deg);
+      filter: drop-shadow(0 0 10px #00ff99);
+      transform: rotate(var(--rot));
+      animation: ring-spin 1.2s linear infinite;
+    }
+    @keyframes ring-spin{ from{ transform: rotate(0deg); } to{ transform: rotate(360deg); } }
+    .percent{
+      position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+      font-weight:700; font-size:18px; letter-spacing:0.5px;
+      text-shadow: 0 0 6px rgba(0,255,153,0.6);
+    }
+
+    /* Ẩn progress bar cũ nếu có */
+    .progress{ display:none !important; }
+
+    /* Toast Hoàn Thành */
+    .toast{
+      position: fixed; top:12px; left:50%; transform: translateX(-50%) translateY(-20px);
+      background: #a6ffd6; color:#000; border-radius:12px; padding:10px 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35), 0 0 0 2px rgba(0,255,153,0.35) inset;
+      display: none; align-items:center; gap:10px; z-index: 9999; font-weight: 600;
+      animation: toast-drop .35s ease forwards;
+    }
+    .toast.show{ display:flex; }
+    @keyframes toast-drop{ to{ transform: translateX(-50%) translateY(0); } }
+    .toast svg{ flex: 0 0 auto; }
   </style>
 </head>
 <body>
   <canvas id="matrix"></canvas>
 
-  <!-- Floating buttons -->
+  <!-- Nút nổi -->
   <button class="floating-btn back-btn" onclick="window.location.href='panel.html'">☰</button>
   <button class="floating-btn vip-btn">★</button>
 
@@ -88,18 +122,17 @@
       <div><div>Lần gần nhất</div><strong>—</strong></div>
     </div>
 
-    <!-- ===== Toolbar & Files panel (MỚI) ===== -->
+    <!-- Toolbar + Files -->
     <div class="toolbar">
-      <button class="file-btn add" onclick="document.getElementById('fileInput').click()">+ Thêm tệp</button>
-      <button class="file-btn export" onclick="exportFiles()">Xuất tệp</button>
-      <input id="fileInput" type="file" multiple style="display:none" onchange="handleAddFiles(event)">
+      <button class="start-btn" onclick="document.getElementById('ak-file-input').click()">+ Thêm tệp</button>
+      <button class="start-btn" onclick="ak_exportFiles()">⬇ Xuất tệp</button>
+      <input id="ak-file-input" type="file" multiple style="display:none" onchange="ak_handleAddFiles(event)">
     </div>
 
     <div class="files-panel">
       <h3>Tệp của bạn</h3>
-      <div id="fileList" class="file-list empty">Chưa có tệp nào. Ấn "Thêm tệp".</div>
+      <div id="ak-file-list" class="file-list empty">Chưa có tệp nào. Ấn "Thêm tệp".</div>
     </div>
-    <!-- ===== End Files panel ===== -->
 
     <!-- Games -->
     <div class="games">
@@ -123,50 +156,27 @@
   <!-- Popup -->
   <div class="popup" id="popup">
     <div class="popup-box">
-      <h3 id="popupTitle">Đang tối ưu...</h3>
+      <h3 id="popupTitle">Đang xử lý...</h3>
+
+      <!-- Loader LED tròn -->
+      <div class="loader" id="loader">
+        <div class="ring-led" id="ringLed"></div>
+        <div class="percent" id="percentText">0%</div>
+      </div>
+
+      <!-- (progress cũ sẽ bị ẩn bởi CSS, để sẵn nếu bạn cần) -->
       <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
-      <div id="progressText">0%</div>
+      <div id="progressText" style="display:none">0%</div>
+
       <button class="close-btn" id="closeBtn">Đóng</button>
     </div>
   </div>
 
+  <!-- Toast -->
+  <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
+
   <script>
-    /* ====== GAMES: giữ nguyên logic tối ưu cũ ====== */
-    function startOptimize(game,id) {
-      const popup = document.getElementById("popup");
-      const progressBar = document.getElementById("progressBar");
-      const progressText = document.getElementById("progressText");
-      const popupTitle = document.getElementById("popupTitle");
-      const closeBtn = document.getElementById("closeBtn");
-
-      popup.classList.add("show");
-      popupTitle.textContent = "Đang tối ưu " + game + "...";
-      progressBar.style.width = "0%";
-      progressText.textContent = "0%";
-      closeBtn.style.display = "none";
-
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += 5;
-        progressBar.style.width = progress + "%";
-        progressText.textContent = progress + "%";
-        if (progress >= 100) {
-          clearInterval(interval);
-          popupTitle.textContent = "✅ Tối ưu " + game + " thành công!";
-          closeBtn.style.display = "inline-block";
-
-          const fps = Math.floor(55 + Math.random() * 15);
-          const ping = Math.floor(10 + Math.random() * 40);
-          document.getElementById(id + "-fps").textContent = fps;
-          document.getElementById(id + "-ping").textContent = ping + "ms";
-        }
-      }, 200);
-    }
-    document.getElementById("closeBtn").addEventListener("click", () => {
-      document.getElementById("popup").classList.remove("show");
-    });
-
-    /* ====== Particles nền giữ nguyên ====== */
+    /* ===== Particles nền ===== */
     const canvas=document.getElementById("matrix");const ctx=canvas.getContext("2d");
     function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
     resizeCanvas();window.addEventListener("resize",resizeCanvas);
@@ -179,171 +189,162 @@
     function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>p.update());connect();requestAnimationFrame(animate);}
     init();animate();
 
-    /* ====== FILES: Add / Export / Inject / Persist (MỚI) ====== */
-    const STORE_KEY = 'ak_files_v1';
-    let filesStore = [];
+    /* ===== Helpers ===== */
+    function ak_escape(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+    function ak_id(){ return Math.random().toString(36).slice(2) + Date.now().toString(36); }
+    function ak_abToB64(buf){ let bin=''; const bytes=new Uint8Array(buf); for(let i=0;i<bytes.byteLength;i++) bin += String.fromCharCode(bytes[i]); return btoa(bin); }
+    function ak_b64ToBlob(base64, type){ const bin = atob(base64), len = bin.length, bytes = new Uint8Array(len); for(let i=0;i<len;i++) bytes[i] = bin.charCodeAt(i); return new Blob([bytes], {type}); }
+    function ak_readAsBase64(file){ return new Promise((resolve, reject) => { const r = new FileReader(); r.onload=()=>resolve({ id: ak_id(), name:file.name, size:file.size, type:file.type||'application/octet-stream', data: ak_abToB64(r.result)}); r.onerror=reject; r.readAsArrayBuffer(file); }); }
+    function ak_readText(file){ return new Promise((resolve, reject) => { const r = new FileReader(); r.onload=()=>resolve(r.result); r.onerror=reject; r.readAsText(file); }); }
 
-    // Load saved files from localStorage
-    function loadStore(){
-      try { filesStore = JSON.parse(localStorage.getItem(STORE_KEY)) || []; }
-      catch(e){ filesStore = []; }
-      updateFilesUI();
+    /* ===== Files store (LocalStorage) ===== */
+    const AK_STORE_KEY = 'ak_files_v1';
+    let ak_files = [];
+    (function ak_initStore(){ try{ ak_files = JSON.parse(localStorage.getItem(AK_STORE_KEY)) || []; } catch(e){ ak_files=[]; } ak_updateUI(); })();
+
+    function ak_updateUI(){
+      const wrap = document.getElementById('ak-file-list');
+      if (!wrap) return;
+      if (!ak_files.length){ wrap.classList.add('empty'); wrap.style.display=''; wrap.textContent='Chưa có tệp nào. Ấn "Thêm tệp".'; return; }
+      wrap.classList.remove('empty'); wrap.style.display='';
+      wrap.innerHTML = ak_files.map(f => {
+        const sizeKB = (f.size/1024).toFixed(1);
+        const type   = f.type || 'file';
+        return `
+          <div class="file-item">
+            <div class="meta">
+              <div class="name">${ak_escape(f.name)}</div>
+              <div class="sub">${sizeKB} KB • ${ak_escape(type)}</div>
+            </div>
+            <div class="actions">
+              <button class="inject" onclick="ak_injectFile('${f.id}')">Inject</button>
+              <button class="download" onclick="ak_downloadFile('${f.id}')">Tải</button>
+              <button class="remove" onclick="ak_removeFile('${f.id}')">Xoá</button>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
-    function saveStore(){ localStorage.setItem(STORE_KEY, JSON.stringify(filesStore)); }
-
-    // Handle Add files
-    function handleAddFiles(e){
-      const files = Array.from(e.target.files || []);
-      if (!files.length) return;
-
-      // Hỗ trợ: nếu chọn 1 JSON export trước đó -> import hàng loạt
-      Promise.all(files.map(f => {
+    function ak_handleAddFiles(e){
+      const files = Array.from(e.target.files||[]); if(!files.length) return;
+      Promise.all(files.map(f=>{
+        // Import archive JSON nếu đúng cấu trúc
         if ((f.type === 'application/json') || f.name.toLowerCase().endsWith('.json')) {
-          return readText(f).then(text => {
-            try {
+          return ak_readText(f).then(text => {
+            try{
               const obj = JSON.parse(text);
               if (obj && obj.files && Array.isArray(obj.files)) {
-                // Import archive
-                return { importArchive: obj.files.map(it => ({...it, id: cryptoRandomId()})) };
+                return { _ak_import: obj.files.map(it => ({...it, id: ak_id()})) };
               }
-            } catch(_) {}
-            // Nếu chỉ là json thường -> lưu như file bình thường
-            return readFileAsBase64(f);
+            }catch(_){}
+            return ak_readAsBase64(f);
           });
         }
-        return readFileAsBase64(f);
-      })).then(results => {
+        return ak_readAsBase64(f);
+      })).then(results=>{
         results.forEach(r => {
-          if (r.importArchive) r.importArchive.forEach(item => filesStore.push(item));
-          else filesStore.push(r);
+          if (r._ak_import) r._ak_import.forEach(it => ak_files.push(it));
+          else ak_files.push(r);
         });
-        saveStore(); updateFilesUI(); e.target.value='';
-      }).catch(err => {
-        console.error(err);
-        alert('Không thể thêm tệp.');
-      });
+        localStorage.setItem(AK_STORE_KEY, JSON.stringify(ak_files));
+        ak_updateUI(); e.target.value='';
+      }).catch(err=>{ console.error(err); alert('Không thể thêm tệp.'); });
     }
-
-    // Inject (giả lập) theo từng file, dùng popup sẵn có
-    function injectFile(id){
-      const f = filesStore.find(x => x.id === id);
-      if(!f) return;
-      const popup = document.getElementById("popup");
-      const progressBar = document.getElementById("progressBar");
-      const progressText = document.getElementById("progressText");
-      const popupTitle = document.getElementById("popupTitle");
-      const closeBtn = document.getElementById("closeBtn");
-
-      popup.classList.add("show");
-      popupTitle.textContent = "Đang inject " + f.name + "...";
-      progressBar.style.width = "0%";
-      progressText.textContent = "0%";
-      closeBtn.style.display = "none";
-
-      let progress = 0;
-      const interval = setInterval(()=>{
-        progress += 7;
-        progressBar.style.width = progress + "%";
-        progressText.textContent = progress + "%";
-        if (progress >= 100){
-          clearInterval(interval);
-          popupTitle.textContent = "✅ Inject " + f.name + " thành công!";
-          closeBtn.style.display = "inline-block";
-        }
-      }, 180);
-    }
-
-    // Export toàn bộ filesStore -> JSON
-    function exportFiles(){
-      if (!filesStore.length){ alert('Chưa có tệp nào để xuất.'); return; }
-      const payload = { version:1, exported_at:new Date().toISOString(), files: filesStore };
+    function ak_exportFiles(){
+      if (!ak_files.length){ alert('Chưa có tệp nào để xuất.'); return; }
+      const payload = { version:1, exported_at:new Date().toISOString(), files: ak_files };
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type:'application/json' });
       const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'files-export.json';
+      a.href = URL.createObjectURL(blob); a.download='files-export.json';
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
+    }
+    function ak_downloadFile(id){
+      const f = ak_files.find(x=>x.id===id); if(!f) return;
+      const blob = ak_b64ToBlob(f.data, f.type||'application/octet-stream');
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = f.name;
       document.body.appendChild(a); a.click(); a.remove();
-      URL.revokeObjectURL(a.href);
+      setTimeout(()=> URL.revokeObjectURL(a.href), 0);
     }
+    function ak_removeFile(id){ ak_files = ak_files.filter(x=>x.id!==id); localStorage.setItem(AK_STORE_KEY, JSON.stringify(ak_files)); ak_updateUI(); }
 
-    // Download lại 1 file
-    function downloadFile(id){
-      const f = filesStore.find(x => x.id === id);
-      if(!f) return;
-      const blob = base64ToBlob(f.data, f.type || 'application/octet-stream');
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = f.name;
-      document.body.appendChild(a); a.click(); a.remove();
-      URL.revokeObjectURL(url);
+    /* ===== Loader LED + Toast ===== */
+    function setLoaderProgress(p){
+      const ring = document.getElementById('ringLed');
+      const txt  = document.getElementById('percentText');
+      if (!ring || !txt) return;
+      ring.style.setProperty('--p', p);
+      txt.textContent = p + '%';
     }
+    function runLoader({ title='Đang xử lý...', duration=2200, onTick, onDone }={}){
+      const popup = document.getElementById("popup");
+      const titleEl = document.getElementById("popupTitle");
+      const closeBtn = document.getElementById("closeBtn");
+      popup && popup.classList.add('show');
+      titleEl && (titleEl.textContent = title);
+      closeBtn && (closeBtn.style.display = 'none');
 
-    // Xoá file khỏi danh sách
-    function removeFile(id){
-      filesStore = filesStore.filter(x => x.id !== id);
-      saveStore(); updateFilesUI();
-    }
-
-    // UI render danh sách tệp
-    function updateFilesUI(){
-      const list = document.getElementById('fileList');
-      if (!filesStore.length){
-        list.classList.add('empty');
-        list.textContent = 'Chưa có tệp nào. Ấn "Thêm tệp".';
-        return;
+      let start; const startAt=1, endAt=100;
+      function frame(ts){
+        if (!start) start = ts;
+        const t = Math.min(1, (ts - start)/duration);
+        const p = Math.max(startAt, Math.min(endAt, Math.round(startAt + (endAt-startAt)*t)));
+        setLoaderProgress(p);
+        onTick && onTick(p);
+        if (t < 1) requestAnimationFrame(frame);
+        else onDone && onDone();
       }
-      list.classList.remove('empty');
-      list.innerHTML = filesStore.map(f => `
-        <div class="file-item">
-          <div class="meta">
-            <div class="name">${escapeHtml(f.name)}</div>
-            <div class="sub">${(f.size/1024).toFixed(1)} KB • ${escapeHtml(f.type || 'file')}</div>
-          </div>
-          <div class="actions">
-            <button class="inject" onclick="injectFile('${f.id}')">Inject</button>
-            <button class="download" onclick="downloadFile('${f.id}')">Tải</button>
-            <button class="remove" onclick="removeFile('${f.id}')">Xoá</button>
-          </div>
-        </div>
-      `).join('');
+      setLoaderProgress(1);
+      requestAnimationFrame(frame);
+    }
+    function showToastDone(msg='Hoàn Thành'){
+      const el = document.getElementById('toast'); if(!el) return;
+      el.innerHTML = `
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#000" aria-hidden="true">
+          <path d="M9 16.17l-3.88-3.88-1.41 1.41L9 19 20.29 7.71l-1.41-1.41L9 16.17z"/>
+        </svg>
+        <span>${msg}</span>
+      `;
+      el.classList.add('show');
+      setTimeout(()=> el.classList.remove('show'), 2200);
     }
 
-    /* Helpers */
-    function readFileAsBase64(file){
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const base64 = arrayBufferToBase64(reader.result);
-          resolve({ id: cryptoRandomId(), name: file.name, size: file.size, type: file.type || 'application/octet-stream', data: base64 });
-        };
-        reader.onerror = reject;
-        reader.readAsArrayBuffer(file);
-      });
-    }
-    function readText(file){
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsText(file);
-      });
-    }
-    function arrayBufferToBase64(buf){
-      let binary=''; const bytes=new Uint8Array(buf);
-      const len=bytes.byteLength; for(let i=0;i<len;i++){ binary+=String.fromCharCode(bytes[i]); }
-      return btoa(binary);
-    }
-    function base64ToBlob(base64, type){
-      const binary = atob(base64);
-      const len = binary.length;
-      const bytes = new Uint8Array(len);
-      for (let i=0;i<len;i++) bytes[i] = binary.charCodeAt(i);
-      return new Blob([bytes], {type});
-    }
-    function cryptoRandomId(){ return Math.random().toString(36).slice(2) + Date.now().toString(36); }
-    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+    /* ===== Boost game ===== */
+    function startOptimize(game, id){
+      runLoader({
+        title: 'Đang tối ưu ' + game + '...',
+        duration: 2400,
+        onDone: () => {
+          const fps = Math.floor(55 + Math.random()*15);
+          const ping = Math.floor(10 + Math.random()*40);
+          const fpsEl = document.getElementById(id+'-fps');
+          const pingEl = document.getElementById(id+'-ping');
+          if (fpsEl) fpsEl.textContent = fps;
+          if (pingEl) pingEl.textContent = ping + 'ms';
 
-    // Init
-    loadStore();
+          const popup = document.getElementById("popup");
+          const closeBtn = document.getElementById("closeBtn");
+          closeBtn && (closeBtn.style.display='none');
+          setTimeout(()=> popup && popup.classList.remove('show'), 300);
+          showToastDone('Hoàn Thành');
+        }
+      });
+    }
+
+    /* ===== Inject file ===== */
+    function ak_injectFile(id){
+      const f = ak_files.find(x=>x.id===id);
+      runLoader({
+        title: f ? ('Đang inject ' + f.name + '...') : 'Đang inject...',
+        duration: 2000,
+        onDone: () => {
+          const popup = document.getElementById("popup");
+          const closeBtn = document.getElementById("closeBtn");
+          closeBtn && (closeBtn.style.display='none');
+          setTimeout(()=> popup && popup.classList.remove('show'), 300);
+          showToastDone('Hoàn Thành');
+        }
+      });
+    }
   </script>
 </body>
 </html>
