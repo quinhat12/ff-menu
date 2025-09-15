@@ -316,7 +316,7 @@ async function login(){
       status.textContent = exp ? `✅ Key hợp lệ (HSD: ${info.expires})` : '✅ Key vĩnh viễn';
       status.style.color = 'lime';
     }
-    setTimeout(()=>{ window.location.href='panel.html'; }, 600);
+    setTimeout(()=>{ window.location.href='maintenance.html'; }, 600);
 
   }catch(e){
     console.error(e);
