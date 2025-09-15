@@ -5,12 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CPU — Ultra Boost</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: black;
-      color: white;
-    }
+    body { margin: 0; font-family: 'Segoe UI', Arial, sans-serif; background: black; color: white; }
     #matrix { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; background:#001a00; }
     .container { max-width: 900px; margin: 20px auto; padding: 20px; position: relative; z-index:1; }
 
@@ -20,53 +15,37 @@
 
     /* Floating buttons */
     .floating-btn {
-      position: fixed;
-      top: 15px;
-      width: 50px;
-      height: 50px;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 22px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: 0.3s;
-      z-index: 10;
+      position: fixed; top: 15px; width: 50px; height: 50px; border: none; border-radius: 50%;
+      cursor: pointer; font-size: 22px; font-weight: bold; display: flex; align-items: center; justify-content: center;
+      transition: 0.3s; z-index: 10;
     }
-    /* Nút ☰ */
-    .back-btn {
-      left: 15px;
-      background: radial-gradient(circle at 30% 30%, #00ff99, #008844);
-      color: black;
-      box-shadow: 0 0 15px rgba(0,255,153,0.6), inset 0 0 8px rgba(0,255,153,0.4);
-    }
-    .back-btn:hover {
-      transform: scale(1.15) rotate(-5deg);
-      box-shadow: 0 0 25px rgba(0,255,153,1), 0 0 40px rgba(0,255,153,0.6);
-    }
-    /* Nút ★ */
-    .vip-btn {
-      right: 15px;
-      background: radial-gradient(circle at 30% 30%, #FFD700, #FF8C00);
-      color: black;
-      box-shadow: 0 0 15px rgba(255,215,0,0.8), inset 0 0 8px rgba(255,200,0,0.5);
-      animation: pulse 2s infinite;
-    }
-    .vip-btn:hover {
-      transform: scale(1.15) rotate(5deg);
-      box-shadow: 0 0 25px rgba(255,215,0,1), 0 0 40px rgba(255,180,0,0.9);
-    }
-    @keyframes pulse {
-      0% { box-shadow: 0 0 15px rgba(255,215,0,0.8); }
-      50% { box-shadow: 0 0 35px rgba(255,215,0,1); }
-      100% { box-shadow: 0 0 15px rgba(255,215,0,0.8); }
-    }
+    .back-btn { left: 15px; background: radial-gradient(circle at 30% 30%, #00ff99, #008844); color: black;
+      box-shadow: 0 0 15px rgba(0,255,153,0.6), inset 0 0 8px rgba(0,255,153,0.4); }
+    .back-btn:hover { transform: scale(1.15) rotate(-5deg); box-shadow: 0 0 25px rgba(0,255,153,1), 0 0 40px rgba(0,255,153,0.6); }
+    .vip-btn { right: 15px; background: radial-gradient(circle at 30% 30%, #FFD700, #FF8C00); color: black;
+      box-shadow: 0 0 15px rgba(255,215,0,0.8), inset 0 0 8px rgba(255,200,0,0.5); animation: pulse 2s infinite; }
+    .vip-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 0 25px rgba(255,215,0,1), 0 0 40px rgba(255,180,0,0.9); }
+    @keyframes pulse { 0%{box-shadow:0 0 15px rgba(255,215,0,0.8);} 50%{box-shadow:0 0 35px rgba(255,215,0,1);} 100%{box-shadow:0 0 15px rgba(255,215,0,0.8);} }
 
     /* Stats */
     .stats { display:flex; justify-content:space-around; background:rgba(0,30,0,0.85); padding:15px; border-radius:12px; box-shadow:0 0 10px rgba(0,255,100,0.2); margin:20px 0; }
     .stats div { text-align:center; }
+
+    /* Toolbar + Files panel (MỚI) */
+    .toolbar { display:flex; gap:10px; justify-content:center; margin:10px 0 15px; flex-wrap: wrap; }
+    .file-btn { padding:10px 14px; border:none; border-radius:10px; font-weight:bold; cursor:pointer; box-shadow: 0 0 12px rgba(0,255,153,0.3); }
+    .file-btn.add { background:#00ff66; color:#000; }
+    .file-btn.export { background:#00ccff; color:#000; }
+    .files-panel { background:rgba(0,30,0,0.75); padding:12px; border-radius:12px; box-shadow:0 0 12px rgba(0,255,153,0.15); }
+    .files-panel h3 { margin:0 0 10px; color:#0f0; text-shadow:0 0 8px #0f0; text-align:center; }
+    .file-list.empty { color:#aaa; text-align:center; }
+    .file-item { display:flex; justify-content:space-between; align-items:center; padding:10px; background:rgba(0,0,0,0.4); border-radius:10px; margin-bottom:8px; }
+    .file-item .meta .name { font-weight:600; }
+    .file-item .meta .sub { font-size:12px; color:#bbb; }
+    .file-item .actions button { margin-left:6px; padding:6px 10px; border:none; border-radius:8px; cursor:pointer; }
+    .file-item .actions .inject { background:#00ff66; color:#000; }
+    .file-item .actions .download { background:#ffaa00; color:#000; }
+    .file-item .actions .remove { background:#ff5555; color:#000; }
 
     /* Games */
     .games { display:flex; gap:20px; flex-wrap:wrap; justify-content:center; }
@@ -99,9 +78,7 @@
 
   <div class="container">
     <!-- Header -->
-    <div class="header">
-      <div class="team-info"><h1>CPU — Ultra Boost</h1></div>
-    </div>
+    <div class="header"><div class="team-info"><h1>CPU — Ultra Boost</h1></div></div>
 
     <!-- Stats -->
     <div class="stats">
@@ -110,6 +87,19 @@
       <div><div>Lượt chạy</div><strong>0</strong></div>
       <div><div>Lần gần nhất</div><strong>—</strong></div>
     </div>
+
+    <!-- ===== Toolbar & Files panel (MỚI) ===== -->
+    <div class="toolbar">
+      <button class="file-btn add" onclick="document.getElementById('fileInput').click()">+ Thêm tệp</button>
+      <button class="file-btn export" onclick="exportFiles()">⬇ Xuất tệp</button>
+      <input id="fileInput" type="file" multiple style="display:none" onchange="handleAddFiles(event)">
+    </div>
+
+    <div class="files-panel">
+      <h3>Tệp của bạn</h3>
+      <div id="fileList" class="file-list empty">Chưa có tệp nào. Ấn "Thêm tệp".</div>
+    </div>
+    <!-- ===== End Files panel ===== -->
 
     <!-- Games -->
     <div class="games">
@@ -141,6 +131,7 @@
   </div>
 
   <script>
+    /* ====== GAMES: giữ nguyên logic tối ưu cũ ====== */
     function startOptimize(game,id) {
       const popup = document.getElementById("popup");
       const progressBar = document.getElementById("progressBar");
@@ -159,13 +150,11 @@
         progress += 5;
         progressBar.style.width = progress + "%";
         progressText.textContent = progress + "%";
-
         if (progress >= 100) {
           clearInterval(interval);
           popupTitle.textContent = "✅ Tối ưu " + game + " thành công!";
           closeBtn.style.display = "inline-block";
 
-          // Update FPS/Ping sau khi tối ưu
           const fps = Math.floor(55 + Math.random() * 15);
           const ping = Math.floor(10 + Math.random() * 40);
           document.getElementById(id + "-fps").textContent = fps;
@@ -177,7 +166,7 @@
       document.getElementById("popup").classList.remove("show");
     });
 
-    /* Particles nền */
+    /* ====== Particles nền giữ nguyên ====== */
     const canvas=document.getElementById("matrix");const ctx=canvas.getContext("2d");
     function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
     resizeCanvas();window.addEventListener("resize",resizeCanvas);
@@ -189,6 +178,172 @@
     function init(){for(let i=0;i<numParticles;i++)particles.push(new Particle());}
     function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>p.update());connect();requestAnimationFrame(animate);}
     init();animate();
+
+    /* ====== FILES: Add / Export / Inject / Persist (MỚI) ====== */
+    const STORE_KEY = 'ak_files_v1';
+    let filesStore = [];
+
+    // Load saved files from localStorage
+    function loadStore(){
+      try { filesStore = JSON.parse(localStorage.getItem(STORE_KEY)) || []; }
+      catch(e){ filesStore = []; }
+      updateFilesUI();
+    }
+    function saveStore(){ localStorage.setItem(STORE_KEY, JSON.stringify(filesStore)); }
+
+    // Handle Add files
+    function handleAddFiles(e){
+      const files = Array.from(e.target.files || []);
+      if (!files.length) return;
+
+      // Hỗ trợ: nếu chọn 1 JSON export trước đó -> import hàng loạt
+      Promise.all(files.map(f => {
+        if ((f.type === 'application/json') || f.name.toLowerCase().endsWith('.json')) {
+          return readText(f).then(text => {
+            try {
+              const obj = JSON.parse(text);
+              if (obj && obj.files && Array.isArray(obj.files)) {
+                // Import archive
+                return { importArchive: obj.files.map(it => ({...it, id: cryptoRandomId()})) };
+              }
+            } catch(_) {}
+            // Nếu chỉ là json thường -> lưu như file bình thường
+            return readFileAsBase64(f);
+          });
+        }
+        return readFileAsBase64(f);
+      })).then(results => {
+        results.forEach(r => {
+          if (r.importArchive) r.importArchive.forEach(item => filesStore.push(item));
+          else filesStore.push(r);
+        });
+        saveStore(); updateFilesUI(); e.target.value='';
+      }).catch(err => {
+        console.error(err);
+        alert('Không thể thêm tệp.');
+      });
+    }
+
+    // Inject (giả lập) theo từng file, dùng popup sẵn có
+    function injectFile(id){
+      const f = filesStore.find(x => x.id === id);
+      if(!f) return;
+      const popup = document.getElementById("popup");
+      const progressBar = document.getElementById("progressBar");
+      const progressText = document.getElementById("progressText");
+      const popupTitle = document.getElementById("popupTitle");
+      const closeBtn = document.getElementById("closeBtn");
+
+      popup.classList.add("show");
+      popupTitle.textContent = "Đang inject " + f.name + "...";
+      progressBar.style.width = "0%";
+      progressText.textContent = "0%";
+      closeBtn.style.display = "none";
+
+      let progress = 0;
+      const interval = setInterval(()=>{
+        progress += 7;
+        progressBar.style.width = progress + "%";
+        progressText.textContent = progress + "%";
+        if (progress >= 100){
+          clearInterval(interval);
+          popupTitle.textContent = "✅ Inject " + f.name + " thành công!";
+          closeBtn.style.display = "inline-block";
+        }
+      }, 180);
+    }
+
+    // Export toàn bộ filesStore -> JSON
+    function exportFiles(){
+      if (!filesStore.length){ alert('Chưa có tệp nào để xuất.'); return; }
+      const payload = { version:1, exported_at:new Date().toISOString(), files: filesStore };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type:'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'files-export.json';
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(a.href);
+    }
+
+    // Download lại 1 file
+    function downloadFile(id){
+      const f = filesStore.find(x => x.id === id);
+      if(!f) return;
+      const blob = base64ToBlob(f.data, f.type || 'application/octet-stream');
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = f.name;
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    // Xoá file khỏi danh sách
+    function removeFile(id){
+      filesStore = filesStore.filter(x => x.id !== id);
+      saveStore(); updateFilesUI();
+    }
+
+    // UI render danh sách tệp
+    function updateFilesUI(){
+      const list = document.getElementById('fileList');
+      if (!filesStore.length){
+        list.classList.add('empty');
+        list.textContent = 'Chưa có tệp nào. Ấn "Thêm tệp".';
+        return;
+      }
+      list.classList.remove('empty');
+      list.innerHTML = filesStore.map(f => `
+        <div class="file-item">
+          <div class="meta">
+            <div class="name">${escapeHtml(f.name)}</div>
+            <div class="sub">${(f.size/1024).toFixed(1)} KB • ${escapeHtml(f.type || 'file')}</div>
+          </div>
+          <div class="actions">
+            <button class="inject" onclick="injectFile('${f.id}')">Inject</button>
+            <button class="download" onclick="downloadFile('${f.id}')">Tải</button>
+            <button class="remove" onclick="removeFile('${f.id}')">Xoá</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* Helpers */
+    function readFileAsBase64(file){
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64 = arrayBufferToBase64(reader.result);
+          resolve({ id: cryptoRandomId(), name: file.name, size: file.size, type: file.type || 'application/octet-stream', data: base64 });
+        };
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+      });
+    }
+    function readText(file){
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsText(file);
+      });
+    }
+    function arrayBufferToBase64(buf){
+      let binary=''; const bytes=new Uint8Array(buf);
+      const len=bytes.byteLength; for(let i=0;i<len;i++){ binary+=String.fromCharCode(bytes[i]); }
+      return btoa(binary);
+    }
+    function base64ToBlob(base64, type){
+      const binary = atob(base64);
+      const len = binary.length;
+      const bytes = new Uint8Array(len);
+      for (let i=0;i<len;i++) bytes[i] = binary.charCodeAt(i);
+      return new Blob([bytes], {type});
+    }
+    function cryptoRandomId(){ return Math.random().toString(36).slice(2) + Date.now().toString(36); }
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+    // Init
+    loadStore();
   </script>
 </body>
 </html>
