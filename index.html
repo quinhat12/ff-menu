@@ -227,37 +227,11 @@
 
   <!-- ====== CHECK KEY: 1 key = 1 thiết bị (JSON tĩnh) ====== -->
 <script>
-/* Cấu hình: link keys.json trên GitHub RAW
-   -> đổi <username>/<repo>/<branch> nếu bạn để chỗ khác */
-const KEYS_URL = "https://raw.githubusercontent.com/quinhat12/ff-menu/main/keys.json";
+/* ===== CẤU HÌNH ===== */
+const KEYS_URL = "https://raw.githubusercontent.com/quinhat12/ff-menu/main/keys.json"; // đổi nếu repo khác
+const REQUIRE_BOUND = true; // bắt buộc key đã bind thiết bị
 
-/* Bắt buộc key phải có bind (khuyến nghị).
-   Nếu muốn cho phép key chưa bind vẫn dùng tạm thì đổi thành false */
-const REQUIRE_BOUND = true;
-
-/* Helper: tạo/lấy deviceId và tính SHA-256 (hex) */
-function getDeviceId(){
-  const k = 'device_id_v1';
-  let id = localStorage.getItem(k);
-  if (!id) {
-    id = (crypto.randomUUID ? crypto.randomUUID()
-         : (Math.random().toString(36).slice(2) + Date.now().toString(36)));
-    localStorage.setItem(k, id);
-  }
-  return id;
-}
-async function sha256Hex(input){
-  const enc = new TextEncoder().encode(input);
-  const buf = await crypto.subtle.digest('SHA-256', enc);
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
-
-<script>
-// === CẤU HÌNH ===
-const KEYS_URL = "https://raw.githubusercontent.com/quinhat12/ff-menu/main/keys.json"; // sửa nếu keys.json ở repo khác
-const REQUIRE_BOUND = true; // bắt buộc key phải bind thiết bị
-
-// === Helper có thể bạn đã có, nếu đã có thì giữ bản của bạn ===
+/* ===== Helpers ===== */
 function getDeviceId(){
   const k='device_id_v1';
   let id=localStorage.getItem(k);
@@ -272,10 +246,8 @@ async function sha256Hex(str){
   const buf=await crypto.subtle.digest('SHA-256',enc);
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
-
-// === Thêm 2 hàm này để ưu tiên UDID thật nếu đã lưu ===
+// Ưu tiên UDID nếu đã lưu, chưa có thì fallback deviceId
 function getBindingId(){
-  // Nếu đã lưu UDID thật thì dùng, chưa có thì fallback về deviceId ngẫu nhiên
   return localStorage.getItem('ios_udid') || getDeviceId();
 }
 function setUDID(udid){
@@ -283,17 +255,17 @@ function setUDID(udid){
   localStorage.setItem('ios_udid', udid.trim());
 }
 
-// === THAY THẾ HÀM login() CŨ BẰNG HÀM NÀY ===
+/* ===== LOGIN (đã fix) ===== */
 async function login(){
-  const status = document.getElementById('status');            // phần thông báo sẵn có của bạn
-  const raw    = (document.getElementById('keyInput').value||'').trim(); // ô nhập key sẵn có
+  const status = document.getElementById('status');
+  const raw    = (document.getElementById('keyInput').value||'').trim();
 
   if(!raw){
     if(status){ status.textContent='⚠️ Vui lòng nhập key'; status.style.color='orange'; }
     return;
   }
 
-  // --- CHẾ ĐỘ NHẬP UDID (không đổi UI): gõ "udid:<UDID>" vào ô key, bấm Đăng nhập để lưu ---
+  // Chế độ nhập UDID: gõ "udid:<UDID>" vào ô key để lưu UDID (1 lần)
   if(raw.toLowerCase().startsWith('udid:')){
     const udid = raw.slice(5).trim();
     if(!udid){
@@ -305,7 +277,7 @@ async function login(){
     return;
   }
 
-  // --- ĐĂNG NHẬP BẰNG KEY ---
+  // Đăng nhập bằng KEY
   const key = raw;
   try{
     const res = await fetch(KEYS_URL, { cache:'no-store' });
@@ -325,7 +297,7 @@ async function login(){
       return;
     }
 
-    // Ràng buộc 1 key = 1 thiết bị (dùng UDID nếu đã lưu)
+    // 1 key = 1 thiết bị
     const deviceHash = await sha256Hex(getBindingId());
     const bind = (info.bind||'').toLowerCase().trim();
 
@@ -334,7 +306,6 @@ async function login(){
         if(status){ status.textContent='🔒 Key chưa được gắn thiết bị. Gửi UDID cho Admin để bind.'; status.style.color='orange'; }
         return;
       }
-      // Nếu REQUIRE_BOUND=false thì cho qua khi chưa bind (không khuyến nghị)
     }else if(bind !== deviceHash){
       if(status){ status.textContent='🛑 Key đã gắn với thiết bị khác'; status.style.color='red'; }
       return;
@@ -353,61 +324,58 @@ async function login(){
   }
 }
 
-    /* ========= SHOP (chá» thÃªm, khÃ´ng áº£nh hÆ°á»ng login) ========= */
-    const AK_SHOP_ADMIN_NAME   = 'Admin';
-    const AK_SHOP_DISCORD_LINK = 'https://discord.com/users/your-id';
-    const AK_SHOP_TICKET_LINK  = 'https://vncheat.com/ticket';
+/* ===== SHOP (giữ nguyên UI, chỉ fix text bị lỗi mã hóa) ===== */
+const AK_SHOP_ADMIN_NAME   = 'Admin';
+const AK_SHOP_DISCORD_LINK = 'https://discord.com/users/your-id';
+const AK_SHOP_TICKET_LINK  = 'https://vncheat.com/ticket';
 
-    (function akShopInit(){
-      const fab   = document.getElementById('akShopFab');
-      const panel = document.getElementById('akShopPanel');
-      const close = document.getElementById('akShopClose');
-      const chipPricing = document.getElementById('akChipPricing');
-      const chipBuy     = document.getElementById('akChipBuy');
+(function akShopInit(){
+  const fab   = document.getElementById('akShopFab');
+  const panel = document.getElementById('akShopPanel');
+  const close = document.getElementById('akShopClose');
+  const chipPricing = document.getElementById('akChipPricing');
+  const chipBuy     = document.getElementById('akChipBuy');
 
-      function toggle(open){
-        const willOpen = typeof open === 'boolean' ? open : !panel.classList.contains('ak-open');
-        panel.classList.toggle('ak-open', willOpen);
-        if (willOpen) renderPricing();
-      }
+  function toggle(open){
+    const willOpen = typeof open === 'boolean' ? open : !panel.classList.contains('ak-open');
+    panel.classList.toggle('ak-open', willOpen);
+    if (willOpen) renderPricing();
+  }
+  function renderPricing(){
+    const box = document.getElementById('akShopContent');
+    box.innerHTML = `
+      <div class="ak-shop-card">
+        <h4>Bảng giá</h4>
+        <ul>
+          <li>10.000 VNĐ — 1 Ngày</li>
+          <li>50.000 VNĐ — 7 Ngày</li>
+          <li>150.000 VNĐ — 30 Ngày</li>
+          <li>250.000 VNĐ — Vĩnh viễn</li>
+        </ul>
+      </div>
+    `;
+  }
+  function renderBuy(){
+    const box = document.getElementById('akShopContent');
+    box.innerHTML = `
+      <div class="ak-shop-card">
+        <h4>Mua key ngay</h4>
+        <div>Chọn một trong các cách sau:</div>
+        <div class="ak-shop-links" style="margin-top:8px;">
+          <a href="${AK_SHOP_DISCORD_LINK}" target="_blank" rel="noopener">Inbox Admin Discord</a>
+          <a href="${AK_SHOP_TICKET_LINK}"  target="_blank" rel="noopener">Tạo ticket trong VNCheat</a>
+        </div>
+        <div style="margin-top:8px; font-size:12px; opacity:.8;">Admin: <b>${AK_SHOP_ADMIN_NAME}</b></div>
+      </div>
+    `;
+  }
 
-      function renderPricing(){
-        const box = document.getElementById('akShopContent');
-        box.innerHTML = `
-          <div class="ak-shop-card">
-            <h4>Báº£ng giÃ¡</h4>
-            <ul>
-              <li>10.000&nbsp;VNÄ â 1 NgÃ y</li>
-              <li>50.000&nbsp;VNÄ â 7 NgÃ y</li>
-              <li>150.000&nbsp;VNÄ â 30 NgÃ y</li>
-              <li>250.000&nbsp;VNÄ â 
-            </ul>
-          </div>
-        `;
-      }
-
-      function renderBuy(){
-        const box = document.getElementById('akShopContent');
-        box.innerHTML = `
-          <div class="ak-shop-card">
-            <h4>Mua key ngay</h4>
-            <div>Chá»n má»t trong cÃ¡c cÃ¡ch sau:</div>
-            <div class="ak-shop-links" style="margin-top:8px;">
-              <a href="${AK_SHOP_DISCORD_LINK}" target="_blank" rel="noopener">Inbox Admin Discord</a>
-              <a href="${AK_SHOP_TICKET_LINK}"  target="_blank" rel="noopener">Táº¡o ticket trong VNCheat</a>
-            </div>
-            <div style="margin-top:8px; font-size:12px; opacity:.8;">Admin: <b>${AK_SHOP_ADMIN_NAME}</b></div>
-          </div>
-        `;
-      }
-
-      fab && fab.addEventListener('click', () => toggle());
-      close && close.addEventListener('click', () => toggle(false));
-      chipPricing && chipPricing.addEventListener('click', renderPricing);
-      chipBuy && chipBuy.addEventListener('click', renderBuy);
-
-      document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') toggle(false); });
-    })();
-  </script>
+  fab   && fab.addEventListener('click', () => toggle());
+  close && close.addEventListener('click', () => toggle(false));
+  chipPricing && chipPricing.addEventListener('click', renderPricing);
+  chipBuy     && chipBuy.addEventListener('click', renderBuy);
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') toggle(false); });
+})();
+</script>
 </body>
 </html>
