@@ -1,163 +1,328 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OBITO IOS TEAM</title>
   <style>
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      background:#000;
-      color:#fff;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      min-height:100vh;
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: black;
+      color: white;
+      overflow: hidden;
     }
-    .box{
-      width:95%;max-width:400px;padding:20px;
-      background:rgba(0,0,0,.7);border-radius:12px;
-      border:1px solid rgba(0,255,153,.3);
-      box-shadow:0 0 20px rgba(0,255,153,.3);
-      text-align:center;
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
     }
-    h2{margin:0 0 10px}
-    input{
-      width:100%;padding:12px;margin:8px 0;
-      border-radius:8px;border:1px solid #333;
-      background:#111;color:#fff;
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
     }
-    button{
-      width:100%;padding:12px;margin-top:10px;
-      border:none;border-radius:8px;
-      background:#00ff66;color:#000;font-weight:700;cursor:pointer;
+
+    .login-box {
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(0, 255, 100, 0.4);
+      border-radius: 15px;
+      padding: 20px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(0, 255, 100, 0.4);
     }
-    #status{margin-top:10px;font-size:14px;min-height:18px}
-    /* SHOP */
-    .shop-fab{
-      position:fixed;right:16px;bottom:16px;
-      width:56px;height:56px;border-radius:50%;border:none;
-      background:#00ff66;color:#000;font-size:22px;font-weight:800;
-      box-shadow:0 0 20px rgba(0,255,153,.5);
-      cursor:pointer;
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
     }
-    .shop-panel{
-      position:fixed;right:12px;bottom:84px;width:300px;
-      background:rgba(0,0,0,.95);color:#fff;
-      border:1px solid rgba(0,255,153,.25);border-radius:12px;
-      box-shadow:0 0 30px rgba(0,0,0,.6);
-      display:none;z-index:999;
+
+    .logo-box {
+      width: 60px;
+      height: 60px;
+      border-radius: 15px;
+      overflow: hidden;
+      margin-right: 10px;
+      box-shadow: 0 0 15px #00ff99;
     }
-    .shop-panel.open{display:block}
-    .shop-head{display:flex;justify-content:space-between;align-items:center;padding:10px}
-    .shop-body{padding:10px}
-    .chip{display:inline-block;margin:5px;padding:6px 10px;border:1px dashed #0f6;border-radius:12px;cursor:pointer}
-    .card{margin-top:10px;padding:10px;background:#111;border-radius:8px;border:1px solid #222}
-    .card ul{margin:5px 0 0 18px;padding:0;text-align:left}
-    .links{display:flex;gap:8px;margin-top:8px}
-    .links a{flex:1;text-align:center;text-decoration:none;padding:8px;border-radius:8px;background:#0f6;color:#000;font-weight:600}
+
+    .logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .header-text {
+      text-align: left;
+    }
+
+    .header-text h1 {
+      font-size: 20px;
+      margin: 0;
+      color: #fff;
+    }
+
+    .header-text p {
+      margin: 0;
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      background: #111;
+      color: white;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: lime;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #00ff99;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #bbb;
+      text-align: left;
+    }
+
+    .note b {
+      color: #00ff99;
+    }
+
+    /* ============ SHOP ADD-ON ============ */
+    .ak-shop-fab{
+      position:fixed; right:16px; bottom:16px;
+      width:56px; height:56px; border:none; border-radius:50%;
+      /* giá»¯ background riÃªng Äá» khÃ´ng bá» rule button:hover override */
+      background: radial-gradient(circle at 30% 30%, #00ff99, #008844);
+      color:#000; font-size:24px; font-weight:700;
+      box-shadow: 0 0 16px rgba(0,255,153,.6), inset 0 0 8px rgba(0,255,153,.4);
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; z-index:99999; transition:.2s;
+    }
+    .ak-shop-fab:hover{
+      transform: scale(1.07);
+      background: radial-gradient(circle at 30% 30%, #00ff99, #008844);
+    }
+
+    .ak-shop-panel{
+      position:fixed; right:12px; bottom:84px; width:320px; max-width:calc(100vw - 24px);
+      background: rgba(0,15,0,.96); color:#fff;
+      border:1px solid rgba(0,255,153,.2); border-radius:16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.6), 0 0 20px rgba(0,255,153,.15);
+      transform: scale(.98) translateY(10px); opacity:0; pointer-events:none; transition:.2s; z-index:99999;
+    }
+    .ak-shop-panel.ak-open{ opacity:1; transform: scale(1) translateY(0); pointer-events:auto; }
+    .ak-shop-head{
+      display:flex; align-items:center; justify-content:space-between; padding:10px 12px;
+      border-bottom:1px solid rgba(0,255,153,.15);
+    }
+    .ak-shop-title{ font-weight:700; }
+    .ak-shop-close{ background:transparent; color:#fff; border:none; font-size:18px; cursor:pointer; padding:6px; border-radius:8px; }
+    .ak-shop-close:hover{ background:rgba(255,255,255,.06); }
+
+    .ak-shop-body{ padding:10px 12px 6px; max-height:60vh; overflow:auto; }
+    .ak-shop-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+    .ak-chip{
+      background:transparent; color:#fff; padding:8px 12px; border-radius:14px;
+      border:1px dashed rgba(0,255,153,.5); cursor:pointer; font-size:14px;
+    }
+    .ak-chip:hover{ background:rgba(0,255,153,.08); }
+
+    .ak-shop-card{
+      margin:10px 0; padding:10px 12px; background:rgba(0,0,0,.4);
+      border:1px solid rgba(0,255,153,.15); border-radius:12px;
+    }
+    .ak-shop-card h4{ margin:0 0 6px; font-size:14px; color:#a6ffd6; }
+    .ak-shop-card ul{ margin:6px 0 0 18px; padding:0; }
+    .ak-shop-links{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+    .ak-shop-links a{
+      text-decoration:none; padding:8px 12px; border-radius:10px;
+      border:1px solid rgba(0,255,153,.5); background:rgba(0,255,153,.15); color:#fff; flex:1; text-align:center;
+    }
+    /* ========== /SHOP ADD-ON CSS ========== */
   </style>
 </head>
 <body>
-  <div class="box">
-    <h2>Đăng nhập key</h2>
-    <p>ADMIN: NhismDev</p>
-    <input id="keyInput" type="text" placeholder="Nhập key của bạn...">
-    <button onclick="login()">Đăng nhập</button>
-    <div id="status"></div>
-  </div>
+  <canvas id="particles"></canvas>
 
-  <!-- SHOP -->
-  <button id="shopFab" class="shop-fab">🛒</button>
-  <div id="shopPanel" class="shop-panel">
-    <div class="shop-head">
-      <span>Bảng giá</span>
-      <button id="shopClose">✕</button>
-    </div>
-    <div class="shop-body">
-      <div class="card">
-        <ul>
-          <li>10.000 VNĐ — 1 Ngày</li>
-          <li>50.000 VNĐ — 7 Ngày</li>
-          <li>150.000 VNĐ — 30 Ngày</li>
-          <li>250.000 VNĐ — Vĩnh viễn</li>
-        </ul>
-      </div>
-      <div class="card">
-        <b>Mua key ngay:</b>
-        <div class="links">
-          <a href="https://discord.com/users/your-id" target="_blank">Inbox Discord</a>
-          <a href="https://vncheat.com/ticket" target="_blank">Tạo ticket</a>
+  <div class="container">
+    <div class="login-box">
+      <div class="header">
+        <div class="logo-box">
+          <img src="Logo.jpg" alt="Logo">
+        </div>
+        <div class="header-text">
+          <h1>OBITO IOS TEAM</h1>
+          <p>Tá»c Äá» Â· An toÃ n Â· á»n Äá»nh</p>
         </div>
       </div>
+
+      <h2>ÄÄng nháº­p key</h2>
+      <p class="admin">ADMIN : NhismDev</p>
+
+      <input id="keyInput" type="text" placeholder="Nháº­p key cá»§a báº¡n...">
+      <button onclick="login()">ÄÄng nháº­p</button>
+      <!-- â Káº¿t quáº£ hiá»n thá» á» ÄÃ¢y -->
+      <div id="status" style="margin-top:10px; font-size:14px; color:#fff;"></div>
+
+      <div class="note">
+        <p><b>Ghi chÃº:</b></p>
+        <p>KhÃ´ng chia sáº» key. Há» thá»ng sáº½ khoÃ¡ khi phÃ¡t hiá»n sá»­ dá»¥ng báº¥t thÆ°á»ng hoáº·c phÃ¡t tÃ¡n cÃ´ng khai.</p>
+        <p>â¢ Cháº¡m giá»¯ vÃ o Ã´ nháº­p Äá» dÃ¡n key tá»« clipboard.</p>
+        <p>Báº±ng viá»c ÄÄng nháº­p báº¡n Äá»ng Ã½ vá»i <b>Äiá»u khoáº£n</b> & <b>ChÃ­nh sÃ¡ch báº£o máº­t</b>.</p>
+      </div>
     </div>
   </div>
 
+  <!-- ===== SHOP ADD-ON (HTML) ===== -->
+  <button id="akShopFab" class="ak-shop-fab" aria-label="Mua key" title="Mua key">ð</button>
+
+  <div id="akShopPanel" class="ak-shop-panel" aria-hidden="true" role="dialog">
+    <div class="ak-shop-head">
+      <div class="ak-shop-title">Mua key â¢ Há» trá»£</div>
+      <button class="ak-shop-close" id="akShopClose" aria-label="ÄÃ³ng">â</button>
+    </div>
+    <div class="ak-shop-body">
+      <div class="ak-shop-row">
+        <button class="ak-chip" id="akChipPricing">Báº£ng giÃ¡</button>
+        <button class="ak-chip" id="akChipBuy">Mua key ngay</button>
+      </div>
+      <div id="akShopContent"></div>
+    </div>
+  </div>
+  <!-- ===== /SHOP ADD-ON ===== -->
+
   <script>
-    /* ===== SHOP toggle ===== */
-    const fab=document.getElementById('shopFab');
-    const panel=document.getElementById('shopPanel');
-    const close=document.getElementById('shopClose');
-    fab.onclick=()=>panel.classList.add('open');
-    close.onclick=()=>panel.classList.remove('open');
+    /* ========= LOGIN (giá»¯ nguyÃªn theo file gá»c) ========= */
+    function login() {
+      const key = document.getElementById("keyInput").value.trim();
+      const status = document.getElementById("status");
 
-    /* ====== Helpers ====== */
-    function getDeviceId(){
-      const k='device_id_v1';
-      let id=localStorage.getItem(k);
-      if(!id){
-        id=(crypto.randomUUID?crypto.randomUUID():(Math.random().toString(36).slice(2)+Date.now()));
-        localStorage.setItem(k,id);
+      if (!key) {
+        status.innerHTML = "â ï¸ Vui lÃ²ng nháº­p key!";
+        status.style.color = "orange";
+        return;
       }
-      return id;
-    }
-    async function sha256Hex(str){
-      const enc=new TextEncoder().encode(str);
-      const buf=await crypto.subtle.digest('SHA-256',enc);
-      return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-    }
 
-    /* ====== LOGIN ====== */
-    const KEYS_URL="https://raw.githubusercontent.com/quinhat12/ff-menu/main/keys.json";
-    const REQUIRE_BOUND=true;
-
-    async function login(){
-      const key=document.getElementById("keyInput").value.trim();
-      const status=document.getElementById("status");
-      if(!key){status.textContent="⚠️ Vui lòng nhập key";status.style.color="orange";return;}
-
-      try{
-        const res=await fetch(KEYS_URL,{cache:"no-store"});
-        if(!res.ok) throw new Error("Không tải được keys.json");
-        const keys=await res.json();
-        const info=keys[key];
-        if(!info){status.textContent="❌ Key không tồn tại";status.style.color="red";return;}
-
-        const exp=info.expires?new Date(info.expires):null;
-        if(exp && (new Date()>exp)){status.textContent="⏳ Key đã hết hạn";status.style.color="red";return;}
-
-        const deviceHash=await sha256Hex(getDeviceId());
-        const bind=(info.bind||"").toLowerCase().trim();
-        if(!bind){
-          if(REQUIRE_BOUND){
-            status.textContent="🔒 Key chưa được gắn thiết bị. Gửi Mã Thiết Bị cho Admin.";
-            status.style.color="orange";return;
+      // Link raw JSON trÃªn GitHub
+      fetch("https://raw.githubusercontent.com/quinhat12/ff-menu/main/keys.json")
+        .then(res => res.json())
+        .then(keys => {
+          if (!keys[key]) {
+            status.innerHTML = "â Key khÃ´ng tá»n táº¡i!";
+            status.style.color = "red";
+            return;
           }
-        }else if(bind!==deviceHash){
-          status.textContent="🛑 Key đã gắn với thiết bị khác";
-          status.style.color="red";return;
-        }
 
-        status.textContent=exp?`✅ Key hợp lệ (HSD: ${info.expires})`:"✅ Key vĩnh viễn";
-        status.style.color="lime";
-        setTimeout(()=>{window.location.href="panel.html"},600);
-      }catch(e){
-        console.error(e);
-        status.textContent="🚫 Lỗi khi kiểm tra key";
-        status.style.color="red";
-      }
+          const today = new Date();
+          const expire = new Date(keys[key].expires);
+
+          if (today > expire) {
+            status.innerHTML = "â³ Key ÄÃ£ háº¿t háº¡n!";
+            status.style.color = "red";
+            return;
+          }
+
+          status.innerHTML = "â Key há»£p lá»! (HSD: " + keys[key].expires + ")";
+          status.style.color = "lime";
+
+          // ð Redirect sang app chÃ­nh (náº¿u cÃ³)
+          window.location.href = "panel.html";
+        })
+        .catch(err => {
+          status.innerHTML = "â Lá»i táº£i key list!";
+          status.style.color = "red";
+        });
     }
+
+    /* ========= SHOP (chá» thÃªm, khÃ´ng áº£nh hÆ°á»ng login) ========= */
+    const AK_SHOP_ADMIN_NAME   = 'Admin';
+    const AK_SHOP_DISCORD_LINK = 'https://discord.com/users/your-id';
+    const AK_SHOP_TICKET_LINK  = 'https://vncheat.com/ticket';
+
+    (function akShopInit(){
+      const fab   = document.getElementById('akShopFab');
+      const panel = document.getElementById('akShopPanel');
+      const close = document.getElementById('akShopClose');
+      const chipPricing = document.getElementById('akChipPricing');
+      const chipBuy     = document.getElementById('akChipBuy');
+
+      function toggle(open){
+        const willOpen = typeof open === 'boolean' ? open : !panel.classList.contains('ak-open');
+        panel.classList.toggle('ak-open', willOpen);
+        if (willOpen) renderPricing();
+      }
+
+      function renderPricing(){
+        const box = document.getElementById('akShopContent');
+        box.innerHTML = `
+          <div class="ak-shop-card">
+            <h4>Báº£ng giÃ¡</h4>
+            <ul>
+              <li>10.000&nbsp;VNÄ â 1 NgÃ y</li>
+              <li>50.000&nbsp;VNÄ â 7 NgÃ y</li>
+              <li>150.000&nbsp;VNÄ â 30 NgÃ y</li>
+              <li>250.000&nbsp;VNÄ â VÄ©nh viá»n</li>
+            </ul>
+          </div>
+        `;
+      }
+
+      function renderBuy(){
+        const box = document.getElementById('akShopContent');
+        box.innerHTML = `
+          <div class="ak-shop-card">
+            <h4>Mua key ngay</h4>
+            <div>Chá»n má»t trong cÃ¡c cÃ¡ch sau:</div>
+            <div class="ak-shop-links" style="margin-top:8px;">
+              <a href="${AK_SHOP_DISCORD_LINK}" target="_blank" rel="noopener">Inbox Admin Discord</a>
+              <a href="${AK_SHOP_TICKET_LINK}"  target="_blank" rel="noopener">Táº¡o ticket trong VNCheat</a>
+            </div>
+            <div style="margin-top:8px; font-size:12px; opacity:.8;">Admin: <b>${AK_SHOP_ADMIN_NAME}</b></div>
+          </div>
+        `;
+      }
+
+      fab && fab.addEventListener('click', () => toggle());
+      close && close.addEventListener('click', () => toggle(false));
+      chipPricing && chipPricing.addEventListener('click', renderPricing);
+      chipBuy && chipBuy.addEventListener('click', renderBuy);
+
+      document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') toggle(false); });
+    })();
   </script>
 </body>
 </html>
