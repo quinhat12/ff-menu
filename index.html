@@ -261,7 +261,7 @@ async function login(){
   const raw    = (document.getElementById('keyInput').value||'').trim();
 
   if(!raw){
-    if(status){ status.textContent='⚠️ Vui lòng nhập key'; status.style.color='orange'; }
+    if(status){ status.textContent=' Vui lòng nhập key'; status.style.color='orange'; }
     return;
   }
 
@@ -269,11 +269,11 @@ async function login(){
   if(raw.toLowerCase().startsWith('udid:')){
     const udid = raw.slice(5).trim();
     if(!udid){
-      if(status){ status.textContent='⚠️ Nhập UDID sau "udid:" (vd: udid:0000-...)'; status.style.color='orange'; }
+      if(status){ status.textContent='Nhập UDID sau "udid:" (vd: udid:0000-...)'; status.style.color='orange'; }
       return;
     }
     setUDID(udid);
-    if(status){ status.textContent='✅ Đã lưu UDID. Giờ nhập KEY để đăng nhập.'; status.style.color='lime'; }
+    if(status){ status.textContent='Đã lưu UDID. Giờ nhập KEY để đăng nhập.'; status.style.color='lime'; }
     return;
   }
 
@@ -303,11 +303,11 @@ async function login(){
 
     if(!bind){
       if(REQUIRE_BOUND){
-        if(status){ status.textContent='🔒 Key chưa được gắn thiết bị. Gửi UDID cho Admin để bind.'; status.style.color='orange'; }
+        if(status){ status.textContent='Key chưa được kích hoạt. Gửi UDID cho Admin để kích hoạt.'; status.style.color='orange'; }
         return;
       }
     }else if(bind !== deviceHash){
-      if(status){ status.textContent='🛑 Key đã gắn với thiết bị khác'; status.style.color='red'; }
+      if(status){ status.textContent='Key đã gắn với thiết bị khác'; status.style.color='red'; }
       return;
     }
 
