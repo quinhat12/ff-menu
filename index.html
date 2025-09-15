@@ -225,48 +225,95 @@
   </div>
   <!-- ===== /SHOP ADD-ON ===== -->
 
-  <script>
-    /* ========= LOGIN (giá»¯ nguyÃªn theo file gá»c) ========= */
-    function login() {
-      const key = document.getElementById("keyInput").value.trim();
-      const status = document.getElementById("status");
+  <!-- ====== CHECK KEY: 1 key = 1 thiết bị (JSON tĩnh) ====== -->
+<script>
+/* Cấu hình: link keys.json trên GitHub RAW
+   -> đổi <username>/<repo>/<branch> nếu bạn để chỗ khác */
+const KEYS_URL = "https://raw.githubusercontent.com/quinhat12/ff-menu/main/keys.json";
 
-      if (!key) {
-        status.innerHTML = "â ï¸ Vui lÃ²ng nháº­p key!";
-        status.style.color = "orange";
+/* Bắt buộc key phải có bind (khuyến nghị).
+   Nếu muốn cho phép key chưa bind vẫn dùng tạm thì đổi thành false */
+const REQUIRE_BOUND = true;
+
+/* Helper: tạo/lấy deviceId và tính SHA-256 (hex) */
+function getDeviceId(){
+  const k = 'device_id_v1';
+  let id = localStorage.getItem(k);
+  if (!id) {
+    id = (crypto.randomUUID ? crypto.randomUUID()
+         : (Math.random().toString(36).slice(2) + Date.now().toString(36)));
+    localStorage.setItem(k, id);
+  }
+  return id;
+}
+async function sha256Hex(input){
+  const enc = new TextEncoder().encode(input);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+/* === HÀM ĐĂNG NHẬP (thay cho bản cũ) ===
+   - Đọc keys.json (tĩnh)
+   - Kiểm tra tồn tại + hạn
+   - So khớp bind (SHA-256(deviceId)) để ràng buộc 1 key = 1 thiết bị
+*/
+async function login() {
+  const keyEl   = document.getElementById("keyInput");
+  const status  = document.getElementById("status");
+  const key     = (keyEl ? keyEl.value : "").trim();
+
+  if (!key) {
+    if (status) { status.textContent = "⚠️ Vui lòng nhập key!"; status.style.color = "orange"; }
+    return;
+  }
+
+  try {
+    // 1) Tải danh sách key
+    const res = await fetch(KEYS_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error("Không tải được keys.json");
+    const keys = await res.json();
+
+    // 2) Tồn tại key?
+    const info = keys[key];
+    if (!info) {
+      if (status) { status.textContent = "❌ Key không tồn tại!"; status.style.color = "red"; }
+      return;
+    }
+
+    // 3) Kiểm tra hạn
+    const exp = info.expires ? new Date(info.expires) : null;
+    if (exp && (new Date() > exp)) {
+      if (status) { status.textContent = `⏳ Key đã hết hạn (HSD: ${info.expires})`; status.style.color = "red"; }
+      return;
+    }
+
+    // 4) Kiểm tra ràng buộc thiết bị
+    const deviceHash = await sha256Hex(getDeviceId());
+    const bind = (info.bind || "").toLowerCase().trim();
+
+    if (!bind) {
+      if (REQUIRE_BOUND) {
+        if (status) { status.textContent = "🔒 Key chưa được gắn thiết bị. Gửi Mã Thiết Bị cho Admin để bind."; status.style.color = "orange"; }
         return;
       }
-
-      // Link raw JSON trÃªn GitHub
-      fetch("https://raw.githubusercontent.com/quinhat12/ff-menu/main/keys.json")
-        .then(res => res.json())
-        .then(keys => {
-          if (!keys[key]) {
-            status.innerHTML = "â Key khÃ´ng tá»n táº¡i!";
-            status.style.color = "red";
-            return;
-          }
-
-          const today = new Date();
-          const expire = new Date(keys[key].expires);
-
-          if (today > expire) {
-            status.innerHTML = "â³ Key ÄÃ£ háº¿t háº¡n!";
-            status.style.color = "red";
-            return;
-          }
-
-          status.innerHTML = "â Key há»£p lá»! (HSD: " + keys[key].expires + ")";
-          status.style.color = "lime";
-
-          // ð Redirect sang app chÃ­nh (náº¿u cÃ³)
-          window.location.href = "panel.html";
-        })
-        .catch(err => {
-          status.innerHTML = "â Lá»i táº£i key list!";
-          status.style.color = "red";
-        });
+      // Nếu REQUIRE_BOUND=false sẽ cho qua khi chưa bind
+    } else if (bind !== deviceHash) {
+      if (status) { status.textContent = "🛑 Key đã gắn với thiết bị khác!"; status.style.color = "red"; }
+      return;
     }
+
+    // 5) Thành công
+    if (status) {
+      status.textContent = exp ? `✅ Key hợp lệ (HSD: ${info.expires})` : "✅ Key vĩnh viễn";
+      status.style.color = "lime";
+    }
+    setTimeout(() => { window.location.href = "panel.html"; }, 600);
+
+  } catch (e) {
+    console.error(e);
+    if (status) { status.textContent = "🚫 Lỗi khi kiểm tra key!"; status.style.color = "red"; }
+  }
+}
 
     /* ========= SHOP (chá» thÃªm, khÃ´ng áº£nh hÆ°á»ng login) ========= */
     const AK_SHOP_ADMIN_NAME   = 'Admin';
