@@ -7,5 +7,5 @@
   "TOBI": { "expires": "2025-09-19T23:59:59Z", "bind": "d6a43d3233030a558391d2ab234b0c7687bc237826313658a31dc99b388f9db5", "note": "3 ngày" },
   "OBITO-3D-008": { "expires": "2025-09-19T23:59:59Z", "bind": "", "note": "3 ngày" },
   "OBITO-3D-009": { "expires": "2025-09-19T23:59:59Z", "bind": "e3ff7316fcbb739d00f934daeb392b98cb5a678c7a2161636ef8ed30bf08ffb7", "note": "3 ngày" },
-  "OBITO-3D-010": { "expires": "2025-09-19T23:59:59Z", "bind": "107222fd1ebc42bcfd2f0f8ef471baed7800427ea24a4616d1d91181d6208172", "note": "3 ngày" }
+  "OBITO-3D-VNC": { "expires": "2025-09-19T23:59:59Z", "bind": "107222fd1ebc42bcfd2f0f8ef471baed7800427ea24a4616d1d91181d6208172", "note": "3 ngày" }
 }
