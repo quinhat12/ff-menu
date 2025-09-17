@@ -1,379 +1,183 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>CPU — Ultra Boost</title>
+  <meta charset="UTF-8">
+  <title>CPU Panel</title>
   <style>
-    /* ========== Nền/khung tổng thể (giữ tông cũ) ========== */
-    body { margin:0; font-family: 'Segoe UI', Arial, sans-serif; background:#000; color:#fff; }
-    #matrix { position:fixed; inset:0; z-index:-1; background:#001a00; }
-    .container { max-width: 900px; margin: 20px auto; padding: 20px; position: relative; z-index:1; }
-
-    .header { display:flex; align-items:center; justify-content:center; margin-bottom:20px; }
-    .team-info h1 { font-size:22px; margin:0; color:#0f0; text-align:center; text-shadow:0 0 10px #0f0; }
-
-    /* Nút tròn nổi (giữ cho giống style cũ) */
-    .floating-btn {
-      position: fixed; top: 15px; width: 50px; height: 50px; border: none; border-radius: 50%;
-      cursor: pointer; font-size: 22px; font-weight: bold; display: flex; align-items: center; justify-content: center;
-      transition: 0.3s; z-index: 10;
+    body {
+      margin:0;
+      font-family:Arial, sans-serif;
+      background:#111;
+      color:#fff;
     }
-    .back-btn { left: 15px; background: radial-gradient(circle at 30% 30%, #00ff99, #008844); color: black;
-      box-shadow: 0 0 15px rgba(0,255,153,0.6), inset 0 0 8px rgba(0,255,153,0.4); }
-    .back-btn:hover { transform: scale(1.15) rotate(-5deg); box-shadow: 0 0 25px rgba(0,255,153,1), 0 0 40px rgba(0,255,153,0.6); }
-    .vip-btn { right: 15px; background: radial-gradient(circle at 30% 30%, #FFD700, #FF8C00); color: black;
-      box-shadow: 0 0 15px rgba(255,215,0,0.8), inset 0 0 8px rgba(255,200,0,0.5); animation: pulse 2s infinite; }
-    .vip-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 0 25px rgba(255,215,0,1), 0 0 40px rgba(255,180,0,0.9); }
-    @keyframes pulse { 0%{box-shadow:0 0 15px rgba(255,215,0,0.8);} 50%{box-shadow:0 0 35px rgba(255,215,0,1);} 100%{box-shadow:0 0 15px rgba(255,215,0,0.8);} }
-
-    /* Stats */
-    .stats { display:flex; justify-content:space-around; background:rgba(0,30,0,0.85); padding:15px; border-radius:12px; box-shadow:0 0 10px rgba(0,255,100,0.2); margin:20px 0; }
-    .stats div { text-align:center; }
-
-    /* ===== Toolbar + Files panel (không phá CSS cũ) ===== */
-    .toolbar { display:flex; gap:10px; justify-content:center; margin:10px 0 15px; flex-wrap: wrap; }
-    .start-btn { background:#00ff66; color:#000; font-weight:bold; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; transition:.3s; }
-    .start-btn:hover{ background:#00cc55; transform:scale(1.03); }
-
-    .files-panel { background:rgba(0,30,0,0.75); padding:12px; border-radius:12px; box-shadow:0 0 12px rgba(0,255,153,0.15); }
-    .files-panel h3 { margin:0 0 10px; color:#0f0; text-shadow:0 0 8px #0f0; text-align:center; }
-    .file-list.empty { color:#aaa; text-align:center; }
-    .file-item { display:flex; justify-content:space-between; align-items:center; padding:10px; background:rgba(0,0,0,0.4); border-radius:10px; margin-bottom:8px; }
-    .file-item .meta .name { font-weight:600; }
-    .file-item .meta .sub { font-size:12px; color:#bbb; }
-    .file-item .actions button { margin-left:6px; padding:6px 10px; border:none; border-radius:8px; cursor:pointer; }
-    .file-item .actions .inject { background:#00ff66; color:#000; }
-    .file-item .actions .download { background:#ffaa00; color:#000; }
-    .file-item .actions .remove { background:#ff5555; color:#000; }
-
-    /* Games */
-    .games { display:flex; gap:20px; flex-wrap:wrap; justify-content:center; }
-    .game-card { background:rgba(0,30,0,0.85); border-radius:15px; padding:15px; width:250px; box-shadow:0 0 15px rgba(0,255,100,0.2); }
-    .game-card img { width:60px; height:60px; border-radius:12px; margin-bottom:10px; object-fit:cover; }
-    .game-title { font-weight:bold; margin:5px 0; }
-    .game-stats { display:flex; justify-content:space-between; font-size:12px; margin:5px 0; }
-    .game-stats .fps strong { color:#0f0; text-shadow:0 0 5px #0f0; }
-    .game-stats .ping strong { color:#0ff; text-shadow:0 0 5px #0ff; }
-    .game-info { font-size:12px; color:#aaa; margin-bottom:10px; }
-
-    /* Nháy sáng khi auto focus Games */
-    .games-focus {
-      outline: 2px dashed #00ff99;
-      animation: games-pulse 1.2s ease-in-out 2;
+    .toolbar {
+      padding:15px;
+      text-align:center;
     }
-    @keyframes games-pulse {
-      0% { box-shadow: 0 0 0 rgba(0,255,153,0); }
-      50% { box-shadow: 0 0 24px rgba(0,255,153,0.6); }
-      100% { box-shadow: 0 0 0 rgba(0,255,153,0); }
+    .start-btn {
+      margin:5px;
+      padding:10px 20px;
+      border:none;
+      border-radius:8px;
+      background:#222;
+      color:#fff;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.3s;
+    }
+    .start-btn:hover { background:#ff4444; }
+    .files-panel {
+      margin:20px;
+      padding:15px;
+      background:rgba(0,0,0,0.6);
+      border-radius:12px;
+    }
+    .file-list {
+      min-height:40px;
+      font-size:14px;
+      color:#ccc;
     }
 
-    /* Popup */
-    .popup { position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
-      background:rgba(0,0,0,0.7); z-index:5; opacity:0; visibility:hidden; transition:.3s; }
-    .popup.show { opacity:1; visibility:visible; }
-    .popup-box { background:rgba(0,20,0,0.95); padding:20px; border-radius:12px; width:300px; text-align:center; box-shadow:0 0 20px rgba(0,255,100,0.3); }
-    .close-btn { display:none; background:#111; color:white; border:1px solid #0f0; padding:8px 12px; border-radius:8px; cursor:pointer; margin-top:10px; }
-    .close-btn:hover { background:#0f0; color:#000; }
-
-    /* Loader LED tròn (mới) */
-    .loader{ width:120px; height:120px; margin:12px auto 8px; position:relative; }
-    .ring-led{
-      --p: 0;            /* 0..100% */
-      width:100%; height:100%; border-radius:50%;
-      background:
-        radial-gradient(closest-side, rgba(0,0,0,0.9) 72%, transparent 73% 100%),
-        conic-gradient(#00ff99 calc(var(--p) * 1%), rgba(255,255,255,0.08) 0),
-        repeating-conic-gradient(from 0deg,
-          rgba(0,255,153,0.25) 0 6deg, transparent 6deg 12deg);
-      filter: drop-shadow(0 0 10px #00ff99);
-      animation: ring-spin 1.2s linear infinite;
+    /* ⚙️ Chế Độ Game */
+    .modes {
+      margin:20px;
+      padding:15px;
+      background:rgba(0,0,0,0.6);
+      border-radius:12px;
+      text-align:center;
+      box-shadow:0 0 15px rgba(255,0,0,0.4);
     }
-    @keyframes ring-spin{ from{ transform: rotate(0deg); } to{ transform: rotate(360deg); } }
-    .percent{
-      position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-      font-weight:700; font-size:18px; letter-spacing:0.5px;
-      text-shadow: 0 0 6px rgba(0,255,153,0.6);
+    .mode-btn {
+      display:block;
+      width:220px;
+      margin:8px auto;
+      padding:12px;
+      font-size:15px;
+      font-weight:bold;
+      border:none;
+      border-radius:12px;
+      background:#333;
+      color:#fff;
+      cursor:pointer;
+      transition:all 0.3s ease;
+    }
+    .mode-btn.on {
+      background:#28a745;
+      box-shadow:0 0 12px #00ff66;
+    }
+    .mode-btn.off {
+      background:#dc3545;
+      box-shadow:0 0 12px #ff0000;
     }
 
-    /* Ẩn progress bar cũ nếu có */
-    .progress{ display:none !important; }
-
-    /* Toast “Hoàn Thành / Sẵn Sàng” trên đầu UI */
-    .toast{
-      position: fixed; top:12px; left:50%; transform: translateX(-50%) translateY(-20px);
-      background: #a6ffd6; color:#000; border-radius:12px; padding:10px 14px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.35), 0 0 0 2px rgba(0,255,153,0.35) inset;
-      display: none; align-items:center; gap:10px; z-index: 9999; font-weight: 600;
-      animation: toast-drop .35s ease forwards;
+    /* ⚡ Unlock FPS */
+    .fps-section {
+      margin:20px;
+      padding:15px;
+      background:rgba(0,0,0,0.6);
+      border-radius:12px;
+      text-align:center;
+      box-shadow:0 0 15px rgba(0,255,255,0.3);
     }
-    .toast.show{ display:flex; }
-    @keyframes toast-drop{ to{ transform: translateX(-50%) translateY(0); } }
-    .toast svg{ flex: 0 0 auto; }
+    .fps-btn {
+      display:block;
+      width:240px;
+      margin:10px auto;
+      padding:12px;
+      font-size:16px;
+      font-weight:bold;
+      border:none;
+      border-radius:12px;
+      color:#fff;
+      cursor:pointer;
+      transition:0.3s;
+    }
+    .fps60 { background:#1b3d1b; }   /* xanh lá đậm */
+    .fps90 { background:#5a2a2a; }   /* nâu đỏ */
+    .fps120 { background:#0f2a4d; }  /* xanh dương đậm */
+    .fps-btn:hover { opacity:0.85; }
+
+    /* Games Section */
+    .games {
+      margin:20px;
+      padding:15px;
+      background:rgba(0,0,0,0.6);
+      border-radius:12px;
+    }
+    .game-card {
+      margin:10px 0;
+      padding:15px;
+      background:#222;
+      border-radius:8px;
+      text-align:center;
+      cursor:pointer;
+      transition:0.3s;
+    }
+    .game-card:hover { background:#333; }
   </style>
 </head>
 <body>
-  <canvas id="matrix"></canvas>
 
-  <!-- Nút nổi -->
-  <button class="floating-btn back-btn" onclick="window.location.href='panel.html'">☰</button>
-  <button class="floating-btn vip-btn">★</button>
-
-  <div class="container">
-    <!-- Header -->
-    <div class="header"><div class="team-info"><h1>CPU — Ultra Boost</h1></div></div>
-
-    <!-- Stats -->
-    <div class="stats">
-      <div><div>Ứng dụng</div><strong>2</strong></div>
-      <div><div>Favorites</div><strong>0</strong></div>
-      <div><div>Lượt chạy</div><strong>0</strong></div>
-      <div><div>Lần gần nhất</div><strong>—</strong></div>
-    </div>
-
-    <!-- Toolbar + Files -->
-    <div class="toolbar">
-      <button class="start-btn" onclick="document.getElementById('ak-file-input').click()">+ Thêm tệp</button>
-      <button class="start-btn" onclick="ak_exportFiles()">⬇ Xuất tệp</button>
-      <input id="ak-file-input" type="file" multiple style="display:none" onchange="ak_handleAddFiles(event)">
-    </div>
-
-    <div class="files-panel">
-      <h3>Config của bạn</h3>
-      <div id="ak-file-list" class="file-list empty">Chưa có Config nào. Ấn "Thêm tệp".</div>
-    </div>
-
-    <!-- Games -->
-    <div class="games">
-      <div class="game-card">
-        <img src="ffmax.jpg" alt="Free Fire">
-        <div class="game-title">Free Fire</div>
-        <div class="game-stats"><span>FPS: <strong id="ff-fps">0</strong></span><span>Ping: <strong id="ff-ping">0ms</strong></span></div>
-        <div class="game-info">Super game optimization</div>
-        <button class="start-btn" onclick="startOptimize('Free Fire','ff')">Bắt đầu</button>
-      </div>
-      <div class="game-card">
-        <img src="ffmax.jpg" alt="Free Fire MAX">
-        <div class="game-title">Free Fire MAX</div>
-        <div class="game-stats"><span>FPS: <strong id="ffmax-fps">0</strong></span><span>Ping: <strong id="ffmax-ping">0ms</strong></span></div>
-        <div class="game-info">Super game optimization</div>
-        <button class="start-btn" onclick="startOptimize('Free Fire MAX','ffmax')">Bắt đầu</button>
-      </div>
-    </div>
+  <!-- Toolbar + Files -->
+  <div class="toolbar">
+    <button class="start-btn" onclick="document.getElementById('ak-file-input').click()">+ Thêm tệp</button>
+    <button class="start-btn" onclick="ak_exportFiles()">⬇ Xuất tệp</button>
+    <input id="ak-file-input" type="file" multiple style="display:none" onchange="ak_handleAddFiles(event)">
   </div>
 
-  <!-- Popup -->
-  <div class="popup" id="popup">
-    <div class="popup-box">
-      <h3 id="popupTitle">Đang xử lý...</h3>
-
-      <!-- Loader LED tròn -->
-      <div class="loader" id="loader">
-        <div class="ring-led" id="ringLed"></div>
-        <div class="percent" id="percentText">0%</div>
-      </div>
-
-      <!-- Nếu còn progress bar cũ, nó đã bị CSS ẩn -->
-      <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
-      <div id="progressText" style="display:none">0%</div>
-
-      <button class="close-btn" id="closeBtn">Đóng</button>
-    </div>
+  <div class="files-panel">
+    <h3>Config của bạn</h3>
+    <div id="ak-file-list" class="file-list empty">Chưa có Config nào. Ấn "Thêm tệp".</div>
   </div>
 
-  <!-- Toast trên đầu UI -->
-  <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
+  <!-- ⚙️ Chế Độ Game -->
+  <div class="modes">
+    <h3 style="color:#ff4444; text-shadow:0 0 10px #ff0000; text-align:center;">⚙️ Chế Độ Game</h3>
+    <button class="mode-btn off" id="btnRung" onclick="toggleButton(this, 'Giảm Rung')">Giảm Rung: OFF</button>
+    <button class="mode-btn off" id="btnAim" onclick="toggleButton(this, 'AIMLOCK')">AIMLOCK: OFF</button>
+    <button class="mode-btn off" id="btnFix" onclick="toggleButton(this, 'Fix Lố Đầu')">Fix Lố Đầu: OFF</button>
+    <div id="modeStatus" style="margin-top:12px; font-size:14px;"></div>
+  </div>
+
+  <!-- ⚡ Unlock FPS -->
+  <div class="fps-section">
+    <h3 style="color:#00ffff; text-align:center; text-shadow:0 0 10px #00ffff;">⚡ Unlock FPS</h3>
+    <button class="fps-btn fps60" onclick="unlockFPS(60)">➡ Unlock 60 FPS</button>
+    <button class="fps-btn fps90" onclick="unlockFPS(90)">➡ Unlock 90 FPS</button>
+    <button class="fps-btn fps120" onclick="unlockFPS(120)">➡ Unlock 120 FPS</button>
+  </div>
+
+  <!-- Games -->
+  <div class="games">
+    <h3>Game</h3>
+    <div class="game-card" onclick="startOptimize('Free Fire')">🚀 Free Fire</div>
+  </div>
 
   <script>
-    /* ===== Particles nền (giữ phong cách cũ) ===== */
-    const canvas=document.getElementById("matrix");const ctx=canvas.getContext("2d");
-    function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
-    resizeCanvas();window.addEventListener("resize",resizeCanvas);
-    const particles=[];const numParticles=80;
-    class Particle{constructor(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.radius=2;this.dx=(Math.random()-.5)*1.5;this.dy=(Math.random()-.5)*1.5;}
-    draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);ctx.fillStyle="#00ff99";ctx.shadowColor="#00ff99";ctx.shadowBlur=15;ctx.fill();ctx.closePath();}
-    update(){this.x+=this.dx;this.y+=this.dy;if(this.x<0||this.x>canvas.width)this.dx*=-1;if(this.y<0||this.y>canvas.height)this.dy*=-1;this.draw();}}
-    function connect(){for(let a=0;a<particles.length;a++){for(let b=a;b<particles.length;b++){const dx=particles[a].x-particles[b].x;const dy=particles[a].y-particles[b].y;const dist=Math.sqrt(dx*dx+dy*dy);if(dist<120){ctx.beginPath();ctx.strokeStyle="rgba(0,255,153,0.2)";ctx.moveTo(particles[a].x,particles[a].y);ctx.lineTo(particles[b].x,particles[b].y);ctx.stroke();ctx.closePath();}}}}
-    function init(){for(let i=0;i<numParticles;i++)particles.push(new Particle());}
-    function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>p.update());connect();requestAnimationFrame(animate);}
-    init();animate();
-
-    /* ===== Helpers chung ===== */
-    function ak_escape(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-    function ak_id(){ return Math.random().toString(36).slice(2) + Date.now().toString(36); }
-    function ak_abToB64(buf){ let bin=''; const bytes=new Uint8Array(buf); for(let i=0;i<bytes.byteLength;i++) bin += String.fromCharCode(bytes[i]); return btoa(bin); }
-    function ak_b64ToBlob(base64, type){ const bin = atob(base64), len = bin.length, bytes = new Uint8Array(len); for(let i=0;i<len;i++) bytes[i] = bin.charCodeAt(i); return new Blob([bytes], {type}); }
-    function ak_readAsBase64(file){ return new Promise((resolve, reject) => { const r = new FileReader(); r.onload=()=>resolve({ id: ak_id(), name:file.name, size:file.size, type:file.type||'application/octet-stream', data: ak_abToB64(r.result)}); r.onerror=reject; r.readAsArrayBuffer(file); }); }
-    function ak_readText(file){ return new Promise((resolve, reject) => { const r = new FileReader(); r.onload=()=>resolve(r.result); r.onerror=reject; r.readAsText(file); }); }
-
-    /* ===== Files store (LocalStorage) ===== */
-    const AK_STORE_KEY = 'ak_files_v1';
-    let ak_files = [];
-    (function ak_initStore(){ try{ ak_files = JSON.parse(localStorage.getItem(AK_STORE_KEY)) || []; } catch(e){ ak_files=[]; } ak_updateUI(); })();
-
-    function ak_updateUI(){
-      const wrap = document.getElementById('ak-file-list');
-      if (!wrap) return;
-      if (!ak_files.length){ wrap.classList.add('empty'); wrap.style.display=''; wrap.textContent='Chưa có tệp nào. Ấn "Thêm tệp".'; return; }
-      wrap.classList.remove('empty'); wrap.style.display='';
-      wrap.innerHTML = ak_files.map(f => {
-        const sizeKB = (f.size/1024).toFixed(1);
-        const type   = f.type || 'file';
-        return `
-          <div class="file-item">
-            <div class="meta">
-              <div class="name">${ak_escape(f.name)}</div>
-              <div class="sub">${sizeKB} KB • ${ak_escape(type)}</div>
-            </div>
-            <div class="actions">
-              <button class="inject" onclick="ak_injectFile('${f.id}')">Inject</button>
-              <button class="download" onclick="ak_downloadFile('${f.id}')">Tải</button>
-              <button class="remove" onclick="ak_removeFile('${f.id}')">Xoá</button>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-    function ak_handleAddFiles(e){
-      const files = Array.from(e.target.files||[]); if(!files.length) return;
-      Promise.all(files.map(f=>{
-        // Import archive JSON nếu đúng cấu trúc
-        if ((f.type === 'application/json') || f.name.toLowerCase().endsWith('.json')) {
-          return ak_readText(f).then(text => {
-            try{
-              const obj = JSON.parse(text);
-              if (obj && obj.files && Array.isArray(obj.files)) {
-                return { _ak_import: obj.files.map(it => ({...it, id: ak_id()})) };
-              }
-            }catch(_){}
-            return ak_readAsBase64(f);
-          });
-        }
-        return ak_readAsBase64(f);
-      })).then(results=>{
-        results.forEach(r => {
-          if (r._ak_import) r._ak_import.forEach(it => ak_files.push(it));
-          else ak_files.push(r);
-        });
-        localStorage.setItem(AK_STORE_KEY, JSON.stringify(ak_files));
-        ak_updateUI(); e.target.value='';
-      }).catch(err=>{ console.error(err); alert('Không thể thêm tệp.'); });
-    }
-    function ak_exportFiles(){
-      if (!ak_files.length){ alert('Chưa có tệp nào để xuất.'); return; }
-      const payload = { version:1, exported_at:new Date().toISOString(), files: ak_files };
-      const blob = new Blob([JSON.stringify(payload, null, 2)], { type:'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob); a.download='files-export.json';
-      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
-    }
-    function ak_downloadFile(id){
-      const f = ak_files.find(x=>x.id===id); if(!f) return;
-      const blob = ak_b64ToBlob(f.data, f.type||'application/octet-stream');
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = f.name;
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(()=> URL.revokeObjectURL(a.href), 0);
-    }
-    function ak_removeFile(id){ ak_files = ak_files.filter(x=>x.id!==id); localStorage.setItem(AK_STORE_KEY, JSON.stringify(ak_files)); ak_updateUI(); }
-
-    /* ===== Loader LED + Toast ===== */
-    function setLoaderProgress(p){
-      const ring = document.getElementById('ringLed');
-      const txt  = document.getElementById('percentText');
-      if (!ring || !txt) return;
-      ring.style.setProperty('--p', p);
-      txt.textContent = p + '%';
-    }
-    function runLoader({ title='Đang xử lý...', duration=2200, onTick, onDone }={}){
-      const popup = document.getElementById("popup");
-      const titleEl = document.getElementById("popupTitle");
-      const closeBtn = document.getElementById("closeBtn");
-      popup && popup.classList.add('show');
-      titleEl && (titleEl.textContent = title);
-      closeBtn && (closeBtn.style.display = 'none');
-
-      let start; const startAt=1, endAt=100;
-      function frame(ts){
-        if (!start) start = ts;
-        const t = Math.min(1, (ts - start)/duration);
-        const p = Math.max(startAt, Math.min(endAt, Math.round(startAt + (endAt-startAt)*t)));
-        setLoaderProgress(p);
-        onTick && onTick(p);
-        if (t < 1) requestAnimationFrame(frame);
-        else onDone && onDone();
+    function toggleButton(el, mode){
+      const status = document.getElementById("modeStatus");
+      if(el.classList.contains("on")){
+        el.classList.remove("on");
+        el.classList.add("off");
+        el.textContent = `${mode}: OFF`;
+        status.textContent = `❌ ${mode} đã TẮT`;
+        status.style.color = "red";
+      } else {
+        el.classList.remove("off");
+        el.classList.add("on");
+        el.textContent = `${mode}: ON`;
+        status.textContent = `✅ ${mode} đã BẬT`;
+        status.style.color = "lime";
       }
-      setLoaderProgress(1);
-      requestAnimationFrame(frame);
-    }
-    function showToastMessage(msg){
-      const el = document.getElementById('toast'); if(!el) return;
-      el.innerHTML = `
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="#000" aria-hidden="true">
-          <path d="M9 16.17l-3.88-3.88-1.41 1.41L9 19 20.29 7.71l-1.41-1.41L9 16.17z"/>
-        </svg>
-        <span>${msg}</span>
-      `;
-      el.classList.add('show');
-      setTimeout(()=> el.classList.remove('show'), 2200);
     }
 
-    /* ===== Config hành vi sau khi inject ===== */
-    const AUTO_FOCUS_GAMES = true;      // true = tự cuộn về khu Game
-    const SECOND_TOAST_DELAY = 500;     // ms: trễ trước khi hiện "Free Fire Sẵn Sàng"
-
-    function focusGamesSection() {
-      const games = document.querySelector('.games');
-      if (!games) return;
-      games.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      games.classList.add('games-focus');
-      setTimeout(()=> games.classList.remove('games-focus'), 1600);
+    function unlockFPS(value){
+      alert("FPS đã được mở khóa: " + value + " FPS");
     }
 
-    /* ===== Boost game (LED + % mượt) ===== */
-    function startOptimize(game, id){
-      runLoader({
-        title: 'Đang tối ưu ' + game + '...',
-        duration: 2400,
-        onDone: () => {
-          const fps = Math.floor(55 + Math.random()*15);
-          const ping = Math.floor(10 + Math.random()*40);
-          const fpsEl = document.getElementById(id+'-fps');
-          const pingEl = document.getElementById(id+'-ping');
-          if (fpsEl) fpsEl.textContent = fps;
-          if (pingEl) pingEl.textContent = ping + 'ms';
-
-          const popup = document.getElementById("popup");
-          const closeBtn = document.getElementById("closeBtn");
-          closeBtn && (closeBtn.style.display='none');
-          setTimeout(()=> popup && popup.classList.remove('show'), 300);
-          showToastMessage('Hoàn Thành');
-        }
-      });
-    }
-
-    /* ===== Inject file (LED + % mượt) + 2 toast + auto focus Games ===== */
-    function ak_injectFile(id){
-      const f = ak_files.find(x=>x.id===id);
-      runLoader({
-        title: f ? ('Đang inject ' + f.name + '...') : 'Đang inject...',
-        duration: 2000,
-        onDone: () => {
-          const popup = document.getElementById("popup");
-          const closeBtn = document.getElementById("closeBtn");
-          closeBtn && (closeBtn.style.display='none');
-          setTimeout(()=> popup && popup.classList.remove('show'), 300);
-
-          // Toast 1: Hoàn Thành
-          showToastMessage('Hoàn Thành');
-
-          // Toast 2: Free Fire Sẵn Sàng + tự cuộn Games
-          setTimeout(() => {
-            showToastMessage('Free Fire Sẵn Sàng');
-            if (AUTO_FOCUS_GAMES) focusGamesSection();
-          }, SECOND_TOAST_DELAY);
-        }
-      });
-    }
+    function ak_exportFiles(){ alert("Xuất file JSON..."); }
+    function ak_handleAddFiles(e){ alert("Đã chọn file: " + e.target.files.length); }
+    function startOptimize(game){ alert("Tối ưu game: " + game); }
   </script>
 </body>
 </html>
