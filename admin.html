@@ -4,6 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>OBITO ADMIN</title>
+  <script>
+  // kiểm tra mật khẩu ngay khi mở trang
+  const password = "admin@@"; // 🔑 đổi mật khẩu tại đây
+  let input = prompt("Nhập mật khẩu Admin:");
+  if(input !== password){
+    alert("Sai mật khẩu! Bạn không có quyền truy cập.");
+    window.location.href = "index.html"; // quay về panel chính
+  }
+  </script>
   <style>
     body {
       margin:0;
@@ -98,7 +107,6 @@ function confirmOrder(){
     appendMsg(`✅ Đơn hàng <b>${orderId}</b> đã được xác nhận.<br>🔑 Key: <b>${key}</b>`);
   },500);
 
-  // reset input
   document.getElementById("orderId").value = "";
   document.getElementById("key").value = "";
 }
