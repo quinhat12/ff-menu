@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>OBITO ADMIN</title>
+  <style>
+    body {
+      margin:0;
+      font-family: Arial, sans-serif;
+      background:#000;
+      color:#fff;
+      display:flex;
+      flex-direction:column;
+      height:100vh;
+    }
+    .chatbox {
+      flex:1;
+      padding:15px;
+      overflow-y:auto;
+      background:#111;
+    }
+    .msg {
+      margin:10px 0;
+      max-width:70%;
+      padding:10px 15px;
+      border-radius:12px;
+      clear:both;
+    }
+    .bot {
+      background:#222;
+      float:left;
+    }
+    .admin {
+      background:#00ffcc;
+      color:#000;
+      float:right;
+    }
+    .panel {
+      padding:12px;
+      background:#111;
+      border-top:1px solid #333;
+    }
+    input {
+      width:100%;
+      padding:10px;
+      margin:5px 0;
+      border-radius:8px;
+      border:none;
+      outline:none;
+    }
+    button {
+      width:100%;
+      background:#00ffcc;
+      color:#000;
+      font-weight:bold;
+      border:none;
+      border-radius:8px;
+      padding:12px;
+      cursor:pointer;
+    }
+    button:hover {background:#00ffaa;}
+  </style>
+</head>
+<body>
+  <div class="chatbox" id="chat">
+    <div class="msg bot">👋 Xin chào Admin, hãy nhập Order ID và Key để xác nhận cho khách.</div>
+  </div>
+
+  <div class="panel">
+    <input type="text" id="orderId" placeholder="Nhập Order ID (VD: ORD-12345)">
+    <input type="text" id="key" placeholder="Nhập Key cấp cho khách">
+    <button onclick="confirmOrder()">Xác nhận</button>
+  </div>
+
+<script>
+const chat = document.getElementById("chat");
+
+function appendMsg(text, sender="bot"){
+  let div = document.createElement("div");
+  div.className = "msg " + sender;
+  div.innerHTML = text;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function confirmOrder(){
+  const orderId = document.getElementById("orderId").value.trim();
+  const key = document.getElementById("key").value.trim();
+
+  if(!orderId || !key){
+    alert("Vui lòng nhập đầy đủ Order ID và Key!");
+    return;
+  }
+
+  appendMsg(`Admin xác nhận Order: ${orderId}`,"admin");
+  setTimeout(()=>{
+    appendMsg(`✅ Đơn hàng <b>${orderId}</b> đã được xác nhận.<br>🔑 Key: <b>${key}</b>`);
+  },500);
+
+  // reset input
+  document.getElementById("orderId").value = "";
+  document.getElementById("key").value = "";
+}
+</script>
+</body>
+</html>
