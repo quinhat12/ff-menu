@@ -10,124 +10,158 @@ body {
   background:#000;
   color:#fff;
 }
+
+/* Header */
 .header {
+  background:#0b1e0f;
   padding:15px;
-  background:linear-gradient(90deg,#0f0,#0a0);
   display:flex;
   align-items:center;
+  box-shadow:0 2px 10px rgba(0,255,0,0.2);
 }
 .header img {
-  width:50px; height:50px; border-radius:12px;
-  margin-right:10px; box-shadow:0 0 12px #0f0;
+  width:50px; height:50px; border-radius:15px;
+  margin-right:10px;
 }
-.header .title {
-  font-size:18px; font-weight:bold;
-}
-.header .subtitle {
-  font-size:13px; color:#aaa;
-}
+.header .info { display:flex; flex-direction:column; }
+.header .title { font-weight:bold; font-size:18px; }
+.header .subtitle { font-size:13px; color:#aaa; }
+
+/* Card */
 .card {
+  background:#111;
   margin:15px;
   padding:15px;
   border-radius:15px;
-  background:rgba(20,20,20,0.85);
-  box-shadow:0 0 12px rgba(0,255,0,0.2);
+  box-shadow:0 0 15px rgba(0,255,0,0.1);
 }
 .card h3 {
-  margin-bottom:10px;
+  margin:0 0 15px 0;
+  font-size:16px;
   color:#0f0;
 }
+
+/* Item */
 .item {
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:10px 0;
-  border-bottom:1px solid rgba(255,255,255,0.1);
+  padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,0.05);
 }
 .item:last-child { border-bottom:none; }
-.item .left {
-  display:flex; align-items:center;
-}
-.icon {
-  width:28px; height:28px;
-  border-radius:8px;
-  background:#111;
-  display:flex; align-items:center; justify-content:center;
-  margin-right:10px;
-  font-size:13px; font-weight:bold;
-  box-shadow:0 0 6px #0f0;
-}
-.name { font-weight:bold; }
-.desc { font-size:12px; color:#aaa; }
+.left { display:flex; align-items:center; gap:10px; }
+.left span { font-weight:600; }
+.desc { font-size:12px; color:#999; }
 
 /* Toggle switch */
 .switch {
   position:relative;
   display:inline-block;
-  width:40px; height:20px;
+  width:45px;
+  height:24px;
 }
-.switch input { display:none; }
+.switch input {display:none;}
 .slider {
-  position:absolute; cursor:pointer;
-  top:0; left:0; right:0; bottom:0;
-  background:#555; border-radius:20px;
-  transition:0.4s;
+  position:absolute;
+  cursor:pointer;
+  top:0; left:0;
+  right:0; bottom:0;
+  background:#444;
+  transition:.3s;
+  border-radius:34px;
 }
 .slider:before {
-  position:absolute; content:"";
-  height:14px; width:14px;
+  position:absolute;
+  content:"";
+  height:18px; width:18px;
   left:3px; bottom:3px;
-  background:white; border-radius:50%;
-  transition:0.4s;
+  background:white;
+  transition:.3s;
+  border-radius:50%;
 }
 input:checked + .slider {
   background:#0f0;
-  box-shadow:0 0 10px #0f0;
 }
 input:checked + .slider:before {
-  transform:translateX(20px);
+  transform:translateX(21px);
 }
 </style>
 </head>
 <body>
 
+<!-- Header -->
 <div class="header">
-  <img src="logo.png" alt="logo">
-  <div>
-    <div class="title">OBITO PANEL</div>
-    <div class="subtitle">Nhanh • An toàn • Ổn định</div>
+  <img src="Logo.jpg" alt="Logo">
+  <div class="info">
+    <span class="title">OBITO PANEL</span>
+    <span class="subtitle">Nhanh • An toàn • Ổn định</span>
   </div>
 </div>
 
+<!-- Card 1 -->
 <div class="card">
   <h3>Optimizer</h3>
+
   <div class="item">
-    <div class="left"><div class="icon">IG</div>
-      <div><div class="name">Optimizer</div><div class="desc">Bật tối ưu hóa hệ thống</div></div>
-    </div>
-    <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+    <div class="left"><span>Optimizer</span></div>
+    <label class="switch">
+      <input type="checkbox">
+      <span class="slider"></span>
+    </label>
   </div>
+
   <div class="item">
-    <div class="left"><div class="icon">⚡</div>
-      <div><div class="name">Sensitivity Boost</div><div class="desc">Tăng độ nhạy mượt</div></div>
-    </div>
-    <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+    <div class="left"><span>Sensitivity Boost</span></div>
+    <label class="switch">
+      <input type="checkbox">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="item">
+    <div class="left"><span>Touch Screen</span></div>
+    <label class="switch">
+      <input type="checkbox">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="item">
+    <div class="left"><span>UI Sounds</span></div>
+    <label class="switch">
+      <input type="checkbox">
+      <span class="slider"></span>
+    </label>
   </div>
 </div>
 
+<!-- Card 2 -->
 <div class="card">
   <h3>Combat Macros</h3>
+
   <div class="item">
-    <div class="left"><div class="icon">AL</div>
-      <div><div class="name">AimLock</div><div class="desc">Auto-aim assist</div></div>
-    </div>
-    <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+    <div class="left"><span>AimLock</span></div>
+    <label class="switch">
+      <input type="checkbox" checked>
+      <span class="slider"></span>
+    </label>
   </div>
+
   <div class="item">
-    <div class="left"><div class="icon">RC</div>
-      <div><div class="name">Smooth view sys</div><div class="desc">Range smooth view</div></div>
-    </div>
-    <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+    <div class="left"><span>Smooth View Sys</span></div>
+    <label class="switch">
+      <input type="checkbox">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="item">
+    <div class="left"><span>Head Scope</span></div>
+    <label class="switch">
+      <input type="checkbox">
+      <span class="slider"></span>
+    </label>
   </div>
 </div>
 
