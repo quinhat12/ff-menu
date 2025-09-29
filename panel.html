@@ -12,127 +12,148 @@
       color: #fff;
       overflow-x: hidden;
     }
+
     /* Hiệu ứng hạt rơi */
     canvas {
       position: fixed;
       top: 0;
       left: 0;
-      z-index: 0;
+      z-index: -1;
     }
+
     /* Header */
     .header {
-      position: relative;
-      z-index: 2;
-      padding: 15px;
-      background: linear-gradient(90deg,#001a00,#003300);
       display: flex;
       align-items: center;
-      border-bottom: 1px solid #0f0;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.85);
+      border-bottom: 1px solid rgba(0, 255, 0, 0.2);
     }
-    .logo {
-      width: 50px;
-      height: 50px;
-      border-radius: 10px;
+    .header img {
+      width: 45px;
+      height: 45px;
+      border-radius: 12px;
       margin-right: 10px;
-      border: 2px solid #0f0;
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
     }
     .header-text {
-      flex-grow: 1;
+      flex: 1;
     }
     .header-text h1 {
-      margin: 0;
       font-size: 18px;
-      color: #0f0;
+      margin: 0;
+      font-weight: bold;
     }
     .header-text p {
-      margin: 0;
       font-size: 12px;
-      color: #bbb;
+      margin: 0;
+      color: #aaa;
     }
-    /* Card group */
-    .card {
-      position: relative;
-      z-index: 2;
+
+    /* Block group */
+    .section {
       margin: 15px;
-      padding: 15px;
+      background: rgba(20, 20, 20, 0.9);
       border-radius: 12px;
-      background: rgba(20,20,20,0.9);
-      box-shadow: 0 0 10px rgba(0,255,0,0.3);
+      padding: 10px;
+      box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
     }
-    .card h2 {
-      font-size: 16px;
-      margin: 0 0 10px 0;
-      color: #0f0;
+    .section h2 {
+      font-size: 14px;
+      margin: 5px 10px;
+      color: #00ff99;
     }
+
+    /* Item trong group */
     .item {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid #222;
+      justify-content: space-between;
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
     .item:last-child {
       border-bottom: none;
     }
-    .item-name {
-      font-size: 14px;
+    .item-left {
+      display: flex;
+      align-items: center;
     }
-    /* Switch */
+    .icon {
+      width: 35px;
+      height: 35px;
+      border-radius: 8px;
+      background: rgba(0, 255, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: bold;
+      color: #0f0;
+      margin-right: 10px;
+    }
+    .text h3 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .text p {
+      margin: 0;
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    /* Switch iOS */
     .switch {
       position: relative;
-      width: 45px;
-      height: 24px;
+      display: inline-block;
+      width: 40px;
+      height: 22px;
     }
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+    .switch input { display: none; }
     .slider {
       position: absolute;
       cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #444;
-      transition: .4s;
-      border-radius: 24px;
+      top: 0; left: 0;
+      right: 0; bottom: 0;
+      background: #444;
+      transition: .3s;
+      border-radius: 34px;
     }
     .slider:before {
       position: absolute;
       content: "";
-      height: 18px;
-      width: 18px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: .4s;
+      height: 16px; width: 16px;
+      left: 3px; bottom: 3px;
+      background: white;
+      transition: .3s;
       border-radius: 50%;
     }
     input:checked + .slider {
-      background-color: #0f0;
+      background: #00ff66;
     }
     input:checked + .slider:before {
-      transform: translateX(21px);
+      transform: translateX(18px);
     }
-    /* Menu dưới */
-    .bottom-nav {
+
+    /* Thanh menu dưới */
+    .tab-bar {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
       background: rgba(20,20,20,0.95);
       display: flex;
       justify-content: space-around;
       padding: 10px 0;
-      border-top: 1px solid #0f0;
-      z-index: 2;
+      border-top: 1px solid rgba(0, 255, 0, 0.2);
     }
-    .bottom-nav a {
-      color: #0f0;
-      text-decoration: none;
+    .tab {
+      color: #aaa;
       font-size: 14px;
+      text-decoration: none;
+    }
+    .tab.active {
+      color: #00ff99;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -141,95 +162,163 @@
 
   <!-- Header -->
   <div class="header">
-    <img src="Logo.png" class="logo" alt="Logo">
+    <img src="Logo.jpg" alt="Logo">
     <div class="header-text">
       <h1>OBITO PANEL</h1>
       <p>Nhanh • An toàn • Ổn định</p>
     </div>
   </div>
 
-  <!-- Card Optimizer -->
-  <div class="card">
+  <!-- Optimizer -->
+  <div class="section">
     <h2>Optimizer</h2>
-    <div class="item"><span class="item-name">Optimizer</span>
-      <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+    <div class="item">
+      <div class="item-left">
+        <div class="icon">IG</div>
+        <div class="text">
+          <h3>Optimizer</h3>
+          <p>Bật tối ưu hóa hệ thống</p>
+        </div>
+      </div>
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider"></span>
+      </label>
     </div>
-    <div class="item"><span class="item-name">Sensitivity Boost</span>
-      <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+
+    <div class="item">
+      <div class="item-left">
+        <div class="icon">⚡</div>
+        <div class="text">
+          <h3>Sensitivity Boost</h3>
+          <p>Tăng độ nhạy mượt</p>
+        </div>
+      </div>
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider"></span>
+      </label>
     </div>
-    <div class="item"><span class="item-name">Touch Screen</span>
-      <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+
+    <div class="item">
+      <div class="item-left">
+        <div class="icon">TS</div>
+        <div class="text">
+          <h3>Touch Screen</h3>
+          <p>Cải thiện cảm ứng</p>
+        </div>
+      </div>
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider"></span>
+      </label>
     </div>
-    <div class="item"><span class="item-name">UI Sounds</span>
-      <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+
+    <div class="item">
+      <div class="item-left">
+        <div class="icon">🔊</div>
+        <div class="text">
+          <h3>UI Sounds</h3>
+          <p>Tắt/bật âm thanh</p>
+        </div>
+      </div>
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider"></span>
+      </label>
     </div>
   </div>
 
-  <!-- Card Combat Macros -->
-  <div class="card">
+  <!-- Combat Macros -->
+  <div class="section">
     <h2>Combat Macros</h2>
-    <div class="item"><span class="item-name">AimLock</span>
-      <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+    <div class="item">
+      <div class="item-left">
+        <div class="icon">AL</div>
+        <div class="text">
+          <h3>AimLock</h3>
+          <p>Auto-aim assist</p>
+        </div>
+      </div>
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider"></span>
+      </label>
     </div>
-    <div class="item"><span class="item-name">Smooth View Sys</span>
-      <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+
+    <div class="item">
+      <div class="item-left">
+        <div class="icon">RC</div>
+        <div class="text">
+          <h3>Smooth View Sys</h3>
+          <p>Range smooth view</p>
+        </div>
+      </div>
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider"></span>
+      </label>
     </div>
-    <div class="item"><span class="item-name">Head Scope</span>
-      <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+
+    <div class="item">
+      <div class="item-left">
+        <div class="icon">QS</div>
+        <div class="text">
+          <h3>Head Scope</h3>
+          <p>Faster scope head</p>
+        </div>
+      </div>
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider"></span>
+      </label>
     </div>
   </div>
 
-  <!-- Menu dưới -->
-  <div class="bottom-nav">
-    <a href="index.html">Panel</a>
-    <a href="cpu.html">CPU</a>
+  <!-- Tab menu -->
+  <div class="tab-bar">
+    <a href="index.html" class="tab active">Panel</a>
+    <a href="cpu.html" class="tab">CPU</a>
   </div>
 
+  <!-- JS hiệu ứng hạt rơi -->
   <script>
-    // Hiệu ứng hạt rơi
     const canvas = document.getElementById("particles");
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+
     const particles = [];
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 3 + 1;
-        this.speedY = Math.random() * 1 + 0.2;
-      }
-      update() {
-        this.y += this.speedY;
-        if (this.y > canvas.height) {
-          this.y = 0;
-          this.x = Math.random() * canvas.width;
-        }
-      }
-      draw() {
-        ctx.fillStyle = "#0f0";
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
+    for (let i = 0; i < 100; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2,
+        d: Math.random() + 1
+      });
     }
 
-    function initParticles() {
-      for (let i = 0; i < 100; i++) {
-        particles.push(new Particle());
-      }
-    }
-
-    function animateParticles() {
+    function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => { p.update(); p.draw(); });
-      requestAnimationFrame(animateParticles);
+      ctx.fillStyle = "#0f0";
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2, true);
+        ctx.fill();
+      });
+      update();
     }
 
-    initParticles();
-    animateParticles();
+    function update() {
+      particles.forEach(p => {
+        p.y += p.d;
+        if (p.y > canvas.height) {
+          p.y = 0; p.x = Math.random() * canvas.width;
+        }
+      });
+    }
 
+    setInterval(draw, 30);
     window.addEventListener("resize", () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
