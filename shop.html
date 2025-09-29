@@ -3,97 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>OBITO SHOP</title>
+  <title>OBITO SHOP CHAT</title>
   <style>
     body {
       margin:0;
       font-family: Arial, sans-serif;
       background:#000;
       color:#fff;
+      display:flex;
+      flex-direction:column;
+      height:100vh;
     }
-    .container {padding:20px;margin-bottom:70px;}
-    h2 {text-align:center;color:#00ffcc;margin-bottom:20px;}
-    .card {
-      background:rgba(20,20,20,0.9);
-      border:1px solid rgba(0,255,204,0.4);
-      border-radius:15px;
-      padding:20px;
-      margin-bottom:20px;
-      box-shadow:0 0 15px rgba(0,255,204,0.2);
+    .chatbox {
+      flex:1;
+      padding:15px;
+      overflow-y:auto;
+      background:#111;
     }
-    .price {font-size:16px;margin:6px 0;color:#ddd;}
-    .btn {
-      display:inline-block;
-      padding:10px 18px;
+    .msg {
+      margin:10px 0;
+      max-width:70%;
+      padding:10px 15px;
+      border-radius:12px;
+      clear:both;
+    }
+    .bot {
+      background:#222;
+      float:left;
+    }
+    .user {
       background:#00ffcc;
       color:#000;
-      border-radius:8px;
-      font-weight:bold;
-      margin-top:10px;
-      text-decoration:none;
-      cursor:pointer;
+      float:right;
     }
-    .btn:hover {background:#00ffaa;}
-    .order {
-      margin-top:15px;
+    .actions {
       padding:10px;
       background:#111;
+      border-top:1px solid #333;
+      text-align:center;
+    }
+    button {
+      background:#00ffcc;
+      color:#000;
+      font-weight:bold;
+      border:none;
       border-radius:8px;
-      border:1px solid #333;
+      padding:10px 14px;
+      margin:4px;
+      cursor:pointer;
     }
-    .tab-bar {
-      position:fixed;bottom:0;left:0;right:0;
-      background:#111;display:flex;justify-content:space-around;
-      padding:10px 0;border-top:1px solid #222;
+    button:hover {background:#00ffaa;}
+    img.qr {
+      width:180px;
+      display:block;
+      margin:10px auto;
+      border-radius:12px;
+      box-shadow:0 0 15px rgba(0,255,204,0.4);
     }
-    .tab-bar a {color:#888;text-decoration:none;font-size:14px;}
-    .tab-bar a.active {color:#00ffcc;font-weight:bold;}
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>🛒 Shop - Mua Key</h2>
-
-    <div class="card">
-      <h3>Bảng Giá</h3>
-      <p class="price">1 Ngày → 10.000 VNĐ</p>
-      <p class="price">7 Ngày → 50.000 VNĐ</p>
-      <p class="price">30 Ngày → 150.000 VNĐ</p>
-      <p class="price">Vĩnh viễn → 250.000 VNĐ</p>
-
-      <h3>QR Thanh Toán</h3>
-      <!-- Ảnh QR duy nhất -->
-      <img src="QR_BANK.png" alt="QR" style="width:220px;display:block;margin:auto">
-
-      <p style="text-align:center;margin-top:10px">👉 Quét mã và chuyển đúng số tiền tương ứng</p>
-      <div style="text-align:center">
-        <button id="paidBtn" class="btn">Tôi đã chuyển tiền</button>
-      </div>
-    </div>
-
-    <!-- Orders -->
-    <div id="orders"></div>
+  <div class="chatbox" id="chat">
+    <div class="msg bot">Xin chào 👋, bạn muốn mua key gói nào?</div>
   </div>
-
-  <!-- Tab bar -->
-  <div class="tab-bar">
-    <a href="index.html">Panel</a>
-    <a href="cpu.html">CPU</a>
-    <a href="shop.html" class="active">Shop</a>
+  <div class="actions">
+    <button onclick="choosePackage('1 Ngày - 10K')">1 Ngày</button>
+    <button onclick="choosePackage('7 Ngày - 50K')">7 Ngày</button>
+    <button onclick="choosePackage('30 Ngày - 150K')">30 Ngày</button>
+    <button onclick="choosePackage('Vĩnh viễn - 250K')">Vĩnh viễn</button>
   </div>
 
 <script>
-let ordersDiv = document.getElementById('orders');
-document.getElementById('paidBtn').addEventListener('click', ()=>{
+const chat = document.getElementById("chat");
+
+function appendMsg(text, sender="bot"){
+  let div = document.createElement("div");
+  div.className = "msg " + sender;
+  div.innerHTML = text;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function choosePackage(pkg){
+  appendMsg(pkg,"user");
+  setTimeout(()=>{
+    appendMsg(`Bạn đã chọn gói: <b>${pkg}</b>. Vui lòng quét mã QR để thanh toán:`);
+    appendMsg(`<img src="QR_BANK.png" alt="QR" class="qr">`);
+    appendMsg(`<button onclick="confirmPayment()">Tôi đã chuyển tiền</button>`);
+  },500);
+}
+
+function confirmPayment(){
   let orderId = "ORD-" + Math.floor(Math.random()*100000);
-  ordersDiv.innerHTML += `
-    <div class="order">
-      <div><b>Order:</b> ${orderId}</div>
-      <div><b>Status:</b> Chờ admin xác nhận...</div>
-    </div>
-  `;
-  alert("Đơn hàng đã được tạo, vui lòng chờ admin xác nhận key!");
-});
+  appendMsg("Tôi đã chuyển tiền ✅","user");
+  setTimeout(()=>{
+    appendMsg(`Đơn hàng <b>${orderId}</b> đã tạo, vui lòng chờ admin xác nhận key 🔑`);
+  },500);
+}
 </script>
 </body>
 </html>
