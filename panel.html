@@ -1,194 +1,135 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Obito Panel</title>
-  <style>
-    :root {
-      --main-color: #0ff;
-      --bg-dark: #111;
-      --panel-bg: rgba(20,20,20,0.85);
-    }
-    body {
-      margin:0;
-      font-family: 'Segoe UI', sans-serif;
-      background: var(--bg-dark);
-      color:#fff;
-      display:flex;
-    }
-    /* Sidebar */
-    .sidebar {
-      width:220px;
-      background:linear-gradient(180deg,#000,#111);
-      box-shadow:0 0 15px rgba(0,255,255,0.3);
-      padding:20px 10px;
-      position:fixed;
-      top:0; bottom:0; left:0;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-    }
-    .sidebar h2 {
-      font-size:20px;
-      margin-bottom:20px;
-      text-shadow:0 0 12px var(--main-color);
-    }
-    .user-box {
-      text-align:center;
-      margin-bottom:20px;
-    }
-    .user-box img {
-      width:60px; height:60px;
-      border-radius:50%;
-      box-shadow:0 0 12px var(--main-color);
-    }
-    .user-box .name { margin-top:8px; font-size:14px; }
-    .menu {
-      flex:1;
-      width:100%;
-    }
-    .menu button {
-      display:block;
-      width:90%;
-      margin:8px auto;
-      padding:12px;
-      border:none;
-      border-radius:8px;
-      background:#222;
-      color:#fff;
-      font-weight:bold;
-      cursor:pointer;
-      text-align:left;
-      transition:0.3s;
-    }
-    .menu button.active, .menu button:hover {
-      background:var(--main-color);
-      box-shadow:0 0 15px var(--main-color);
-      color:#000;
-    }
-    /* Main Content */
-    .main {
-      margin-left:220px;
-      padding:20px;
-      flex:1;
-      min-height:100vh;
-    }
-    .header {
-      font-size:22px;
-      margin-bottom:20px;
-      text-shadow:0 0 15px var(--main-color);
-    }
-    .module {
-      display:none;
-      animation: fadeIn 0.5s ease;
-    }
-    .module.active { display:block; }
-    @keyframes fadeIn {
-      from { opacity:0; transform:translateY(10px); }
-      to { opacity:1; transform:translateY(0); }
-    }
-    /* Buttons */
-    .btn-led {
-      display:block;
-      margin:12px auto;
-      padding:14px 20px;
-      border:none;
-      border-radius:12px;
-      font-weight:bold;
-      cursor:pointer;
-      transition:0.3s;
-      color:#fff;
-      background:linear-gradient(135deg,#0f0,#090);
-      box-shadow:0 0 12px #0f0, inset 0 0 8px #060;
-    }
-    .btn-led:hover {
-      transform:scale(1.05);
-      box-shadow:0 0 18px #0f0, inset 0 0 12px #060;
-    }
-    .btn-red { background:linear-gradient(135deg,#f00,#900); box-shadow:0 0 12px #f00, inset 0 0 8px #600; }
-    .btn-blue { background:linear-gradient(135deg,#00f,#009); box-shadow:0 0 12px #00f, inset 0 0 8px #006; }
-    .btn-purple { background:linear-gradient(135deg,#c0f,#609); box-shadow:0 0 12px #c0f, inset 0 0 8px #309; }
+<meta charset="UTF-8">
+<title>Obito Panel</title>
+<style>
+body {
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background:#000;
+  color:#fff;
+}
+.header {
+  padding:15px;
+  background:linear-gradient(90deg,#0f0,#0a0);
+  display:flex;
+  align-items:center;
+}
+.header img {
+  width:50px; height:50px; border-radius:12px;
+  margin-right:10px; box-shadow:0 0 12px #0f0;
+}
+.header .title {
+  font-size:18px; font-weight:bold;
+}
+.header .subtitle {
+  font-size:13px; color:#aaa;
+}
+.card {
+  margin:15px;
+  padding:15px;
+  border-radius:15px;
+  background:rgba(20,20,20,0.85);
+  box-shadow:0 0 12px rgba(0,255,0,0.2);
+}
+.card h3 {
+  margin-bottom:10px;
+  color:#0f0;
+}
+.item {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.item:last-child { border-bottom:none; }
+.item .left {
+  display:flex; align-items:center;
+}
+.icon {
+  width:28px; height:28px;
+  border-radius:8px;
+  background:#111;
+  display:flex; align-items:center; justify-content:center;
+  margin-right:10px;
+  font-size:13px; font-weight:bold;
+  box-shadow:0 0 6px #0f0;
+}
+.name { font-weight:bold; }
+.desc { font-size:12px; color:#aaa; }
 
-    /* Notifications */
-    .notify {
-      position:fixed;
-      top:20px; right:20px;
-      background:var(--panel-bg);
-      padding:12px 20px;
-      border-radius:10px;
-      box-shadow:0 0 15px var(--main-color);
-      display:none;
-    }
-  </style>
+/* Toggle switch */
+.switch {
+  position:relative;
+  display:inline-block;
+  width:40px; height:20px;
+}
+.switch input { display:none; }
+.slider {
+  position:absolute; cursor:pointer;
+  top:0; left:0; right:0; bottom:0;
+  background:#555; border-radius:20px;
+  transition:0.4s;
+}
+.slider:before {
+  position:absolute; content:"";
+  height:14px; width:14px;
+  left:3px; bottom:3px;
+  background:white; border-radius:50%;
+  transition:0.4s;
+}
+input:checked + .slider {
+  background:#0f0;
+  box-shadow:0 0 10px #0f0;
+}
+input:checked + .slider:before {
+  transform:translateX(20px);
+}
+</style>
 </head>
 <body>
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <h2>Obito Panel</h2>
-    <div class="user-box">
-      <img src="logo.png" alt="Avatar">
-      <div class="name">Admin</div>
-    </div>
-    <div class="menu">
-      <button onclick="openModule('dashboard', this)" class="active">Dashboard</button>
-      <button onclick="openModule('cpu', this)">CPU</button>
-      <button onclick="openModule('shop', this)">Shop</button>
-      <button onclick="openModule('settings', this)">Cài đặt</button>
-      <button onclick="openModule('about', this)">Thông tin</button>
-    </div>
+
+<div class="header">
+  <img src="logo.png" alt="logo">
+  <div>
+    <div class="title">OBITO PANEL</div>
+    <div class="subtitle">Nhanh • An toàn • Ổn định</div>
   </div>
+</div>
 
-  <!-- Main -->
-  <div class="main">
-    <div id="dashboard" class="module active">
-      <div class="header">Dashboard</div>
-      <button class="btn-led">Kiểm tra Key</button>
+<div class="card">
+  <h3>Optimizer</h3>
+  <div class="item">
+    <div class="left"><div class="icon">IG</div>
+      <div><div class="name">Optimizer</div><div class="desc">Bật tối ưu hóa hệ thống</div></div>
     </div>
-    <div id="cpu" class="module">
-      <div class="header">CPU Panel</div>
-      <button class="btn-led btn-red">Tối ưu GPU</button>
-      <button class="btn-led btn-blue">Giảm Ping</button>
-    </div>
-    <div id="shop" class="module">
-      <div class="header">Shop Key</div>
-      <button class="btn-led btn-blue">1 Ngày - 10k</button>
-      <button class="btn-led btn-purple">7 Ngày - 50k</button>
-      <button class="btn-led btn-red">30 Ngày - 150k</button>
-      <button class="btn-led">Vĩnh viễn - 250k</button>
-    </div>
-    <div id="settings" class="module">
-      <div class="header">Cài đặt</div>
-      <button class="btn-led btn-blue" onclick="toggleTheme()">Đổi Theme</button>
-    </div>
-    <div id="about" class="module">
-      <div class="header">Thông tin</div>
-      <p>Obito Panel - Giao diện Gaming</p>
-    </div>
+    <label class="switch"><input type="checkbox"><span class="slider"></span></label>
   </div>
+  <div class="item">
+    <div class="left"><div class="icon">⚡</div>
+      <div><div class="name">Sensitivity Boost</div><div class="desc">Tăng độ nhạy mượt</div></div>
+    </div>
+    <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+  </div>
+</div>
 
-  <!-- Notification -->
-  <div id="notify" class="notify"></div>
+<div class="card">
+  <h3>Combat Macros</h3>
+  <div class="item">
+    <div class="left"><div class="icon">AL</div>
+      <div><div class="name">AimLock</div><div class="desc">Auto-aim assist</div></div>
+    </div>
+    <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+  </div>
+  <div class="item">
+    <div class="left"><div class="icon">RC</div>
+      <div><div class="name">Smooth view sys</div><div class="desc">Range smooth view</div></div>
+    </div>
+    <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+  </div>
+</div>
 
-  <script>
-    function openModule(id, btn){
-      document.querySelectorAll('.module').forEach(m=>m.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-    }
-    function toggleTheme(){
-      const root=document.documentElement;
-      const cur=getComputedStyle(root).getPropertyValue('--main-color').trim();
-      if(cur==='#0ff'){ root.style.setProperty('--main-color','#f0f'); showNotify("Theme Tím"); }
-      else if(cur==='#f0f'){ root.style.setProperty('--main-color','#0f0'); showNotify("Theme Xanh lá"); }
-      else { root.style.setProperty('--main-color','#0ff'); showNotify("Theme Xanh dương"); }
-    }
-    function showNotify(msg){
-      const box=document.getElementById('notify');
-      box.textContent=msg;
-      box.style.display='block';
-      setTimeout(()=>box.style.display='none',2000);
-    }
-  </script>
 </body>
 </html>
