@@ -8,7 +8,7 @@
 body {
   margin:0;
   font-family: "Segoe UI", sans-serif;
-  background: #000;
+  background:#000;
   color:#fff;
 }
 canvas { position:fixed; inset:0; z-index:-1; }
@@ -69,12 +69,33 @@ input:checked + .slider:before { transform:translateX(18px); }
 /* Tab bar */
 .tab-bar {
   position:fixed; bottom:0; left:0; right:0;
-  background:rgba(25,25,25,0.95);
+  background:rgba(25,25,25,0.85);
+  backdrop-filter:blur(10px);
   display:flex; justify-content:space-around;
   padding:10px 0; border-top:1px solid rgba(0,255,204,0.3);
+  box-shadow:0 -4px 20px rgba(0,255,204,0.15);
+  position:relative;
 }
-.tab { color:#aaa; font-size:14px; text-decoration:none; }
-.tab.active { color:#00ffcc; font-weight:bold; text-shadow:0 0 6px rgba(0,255,204,0.7);}
+.tab {
+  color:#aaa; font-size:14px;
+  text-decoration:none; padding:6px 16px;
+  border-radius:10px; transition:all .3s ease;
+  position:relative; z-index:2;
+}
+.tab.active {
+  color:#00ffcc; font-weight:bold;
+  text-shadow:0 0 8px rgba(0,255,204,0.8);
+}
+.tab:hover { color:#00ffcc; }
+
+/* underline highlight */
+.underline {
+  position:absolute;
+  bottom:4px; height:3px;
+  width:60px; background:linear-gradient(90deg,#00ffcc,#00aaff);
+  border-radius:2px; transition:all .3s ease;
+  z-index:1;
+}
 </style>
 </head>
 <body>
@@ -115,13 +136,35 @@ input:checked + .slider:before { transform:translateX(18px); }
 <div class="tab-bar">
   <a href="index.html" class="tab active">Panel</a>
   <a href="cpu.html" class="tab">CPU</a>
+  <a href="shop.html" class="tab">Shop</a>
+  <div class="underline"></div>
 </div>
 
 <script>
+/* particles background */
 const c=document.getElementById("particles"),ctx=c.getContext("2d");
 function resize(){c.width=innerWidth;c.height=innerHeight;} resize(); addEventListener("resize",resize);
 const p=[];for(let i=0;i<100;i++){p.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*2+1,d:Math.random()+0.5});}
 function draw(){ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle="#00ffcc";p.forEach(o=>{ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,2*Math.PI);ctx.fill();o.y+=o.d;if(o.y>c.height){o.y=0;o.x=Math.random()*c.width;}});}setInterval(draw,30);
+
+/* underline animation */
+const tabs = document.querySelectorAll('.tab-bar .tab');
+const underline = document.querySelector('.underline');
+function moveUnderline(activeTab) {
+  const rect = activeTab.getBoundingClientRect();
+  const parentRect = activeTab.parentElement.getBoundingClientRect();
+  underline.style.width = rect.width + "px";
+  underline.style.left = (rect.left - parentRect.left) + "px";
+}
+tabs.forEach(tab => {
+  tab.addEventListener('click', e => {
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    moveUnderline(tab);
+  });
+});
+const active = document.querySelector('.tab-bar .tab.active');
+if(active) moveUnderline(active);
 </script>
 </body>
 </html>
