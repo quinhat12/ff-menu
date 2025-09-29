@@ -1,289 +1,194 @@
-E<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OBITO IOS TEAM - Panel</title>
+  <meta charset="UTF-8">
+  <title>Nhism Panel LED</title>
   <style>
+    :root {
+      --main-color: #0ff;
+      --bg-dark: #111;
+      --panel-bg: rgba(20,20,20,0.85);
+    }
     body {
-      margin: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: black;
-      color: white;
-      overflow-x: hidden;
+      margin:0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-dark);
+      color:#fff;
+      display:flex;
     }
-
-    /* Canvas nền particles */
-    #matrix {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: -1;
-      background: #001a00;
+    /* Sidebar */
+    .sidebar {
+      width:220px;
+      background:linear-gradient(180deg,#000,#111);
+      box-shadow:0 0 15px rgba(0,255,255,0.3);
+      padding:20px 10px;
+      position:fixed;
+      top:0; bottom:0; left:0;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
     }
-
-    .container {
-      max-width: 500px;
-      margin: 20px auto;
-      padding: 20px;
-      position: relative;
-      z-index: 1;
+    .sidebar h2 {
+      font-size:20px;
+      margin-bottom:20px;
+      text-shadow:0 0 12px var(--main-color);
     }
-
-    /* HEADER */
+    .user-box {
+      text-align:center;
+      margin-bottom:20px;
+    }
+    .user-box img {
+      width:60px; height:60px;
+      border-radius:50%;
+      box-shadow:0 0 12px var(--main-color);
+    }
+    .user-box .name { margin-top:8px; font-size:14px; }
+    .menu {
+      flex:1;
+      width:100%;
+    }
+    .menu button {
+      display:block;
+      width:90%;
+      margin:8px auto;
+      padding:12px;
+      border:none;
+      border-radius:8px;
+      background:#222;
+      color:#fff;
+      font-weight:bold;
+      cursor:pointer;
+      text-align:left;
+      transition:0.3s;
+    }
+    .menu button.active, .menu button:hover {
+      background:var(--main-color);
+      box-shadow:0 0 15px var(--main-color);
+      color:#000;
+    }
+    /* Main Content */
+    .main {
+      margin-left:220px;
+      padding:20px;
+      flex:1;
+      min-height:100vh;
+    }
     .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      font-size:22px;
+      margin-bottom:20px;
+      text-shadow:0 0 15px var(--main-color);
     }
+    .module {
+      display:none;
+      animation: fadeIn 0.5s ease;
+    }
+    .module.active { display:block; }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(10px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+    /* Buttons LED */
+    .btn-led {
+      display:block;
+      margin:12px auto;
+      padding:14px 20px;
+      border:none;
+      border-radius:12px;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.3s;
+      color:#fff;
+      background:linear-gradient(135deg,#0f0,#090);
+      box-shadow:0 0 12px #0f0, inset 0 0 8px #060;
+    }
+    .btn-led:hover {
+      transform:scale(1.05);
+      box-shadow:0 0 18px #0f0, inset 0 0 12px #060;
+    }
+    .btn-red { background:linear-gradient(135deg,#f00,#900); box-shadow:0 0 12px #f00, inset 0 0 8px #600; }
+    .btn-blue { background:linear-gradient(135deg,#00f,#009); box-shadow:0 0 12px #00f, inset 0 0 8px #006; }
+    .btn-purple { background:linear-gradient(135deg,#c0f,#609); box-shadow:0 0 12px #c0f, inset 0 0 8px #309; }
 
-    .logo-box { display: flex; align-items: center; }
-    .logo-box img {
-      width: 60px; height: 60px; border-radius: 15px; margin-right: 10px;
+    /* Notifications */
+    .notify {
+      position:fixed;
+      top:20px; right:20px;
+      background:var(--panel-bg);
+      padding:12px 20px;
+      border-radius:10px;
+      box-shadow:0 0 15px var(--main-color);
+      display:none;
     }
-    .team-info h1 { font-size: 18px; margin: 0; }
-    .team-info p { margin: 0; font-size: 12px; color: #aaa; }
-    .badge {
-      background: #00ff66; color: black; font-weight: bold;
-      padding: 4px 8px; border-radius: 20px; font-size: 12px;
-    }
-    .vip-status {
-      margin: 10px 0; font-size: 12px; background: rgba(0,255,100,0.1);
-      padding: 5px 10px; border-radius: 10px; display: inline-block;
-    }
-    .lang-btn {
-      border: none; background: #0a0; color: white; border-radius: 50%;
-      width: 35px; height: 35px; cursor: pointer; font-weight: bold;
-    }
-
-    /* CARD */
-    .card {
-      background: rgba(0, 30, 0, 0.85);
-      border-radius: 15px;
-      padding: 15px;
-      margin: 15px 0;
-      box-shadow: 0 0 15px rgba(0,255,100,0.2);
-    }
-    .card h3 {
-      margin: 0 0 10px; font-size: 16px; display: flex;
-      align-items: center; justify-content: space-between; color: #0f0;
-    }
-    .item {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-    .item:last-child { border-bottom: none; }
-    .item-left { display:flex; align-items:center; }
-    .icon {
-      width: 35px; height: 35px; border-radius: 10px; background: #111;
-      display:flex; align-items:center; justify-content:center; margin-right:10px;
-      font-size:12px; font-weight:bold; color:#0f0; box-shadow: 0 0 8px #0f0;
-    }
-    .label { font-size:14px; }
-    .desc  { font-size:11px; color:#888; }
-
-    /* TOGGLE */
-    .switch { position: relative; display: inline-block; width: 46px; height: 24px; }
-    .switch input { display:none; }
-    .slider {
-      position: absolute; cursor: pointer; top:0; left:0; right:0; bottom:0;
-      background-color:#555; transition:.3s; border-radius:24px;
-    }
-    .slider:before {
-      position:absolute; content:""; height:18px; width:18px;
-      left:3px; bottom:3px; background-color:white; transition:.3s; border-radius:50%;
-    }
-    input:checked + .slider { background-color:#00ff66; }
-    input:checked + .slider:before { transform: translateX(22px); }
-
-    /* FOOTER */
-    .footer { margin-top:20px; }
-    .footer-top {
-      display:flex; justify-content:center; align-items:center; gap:10px; margin-bottom:15px;
-    }
-    .boost-bar {
-      flex:1; background:#004400; padding:10px; border-radius:12px;
-      font-weight:bold; text-align:center; box-shadow:0 0 10px #0f0;
-      cursor: pointer; /* làm nút bấm */
-    }
-    .admin-btn {
-      padding:8px 12px; background:#111; color:#fff; border-radius:8px;
-      border:1px solid #0f0; cursor:pointer;
-    }
-    .footer-bottom { display:flex; justify-content:center; gap:10px; }
   </style>
 </head>
 <body>
-  <canvas id="matrix"></canvas>
-
-  <div class="container">
-    <!-- Header -->
-    <div class="header">
-      <div class="logo-box">
-        <img src="Logo.jpg" alt="Logo">
-        <div class="team-info">
-          <h1>OBITO IOS TEAM <span class="badge">ULTRA</span></h1>
-          <p>Nhanh • An toàn • Ổn định</p>
-          <span class="vip-status">VIP OBITO</span>
-        </div>
-      </div>
-      <button class="lang-btn">VN</button>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Nhism Panel</h2>
+    <div class="user-box">
+      <img src="logo.png" alt="Avatar">
+      <div class="name">Admin</div>
     </div>
-
-    <!-- Optimizer -->
-    <div class="card">
-      <h3>Optimizer <span>Âm thanh: OFF</span></h3>
-      <div class="item">
-        <div class="item-left">
-          <div class="icon">IG</div>
-          <div><div class="label">Optimizer</div><div class="desc">Bật tối ưu hoá hệ thống</div></div>
-        </div>
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div>
-      <div class="item">
-        <div class="item-left">
-          <div class="icon">SS</div>
-          <div><div class="label">Sensitivity Boost</div><div class="desc">Tăng độ nhạy mượt</div></div>
-        </div>
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div>
-      <div class="item">
-        <div class="item-left">
-          <div class="icon">TS</div>
-          <div><div class="label">Touch Screen</div><div class="desc">Cải thiện cảm ứng</div></div>
-        </div>
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div>
-      <div class="item">
-        <div class="item-left">
-          <div class="icon">UI</div>
-          <div><div class="label">UI Sounds</div><div class="desc">Tắt/bật âm thanh</div></div>
-        </div>
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div>
-    </div>
-
-    <!-- Combat Macros -->
-    <div class="card">
-      <h3>Combat Macros</h3>
-      <div class="item">
-        <div class="item-left">
-          <div class="icon">AL</div>
-          <div><div class="label">AimLock</div><div class="desc">Auto-aim assist</div></div>
-        </div>
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div>
-      <div class="item">
-        <div class="item-left">
-          <div class="icon">RC</div>
-          <div><div class="label">Smooth view sys</div><div class="desc">Range smooth view</div></div>
-        </div>
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div>
-      <div class="item">
-        <div class="item-left">
-          <div class="icon">QS</div>
-          <div><div class="label">Head Scope</div><div class="desc">Faster scope head</div></div>
-        </div>
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div>
-    </div>
-
-    <!-- DPI START -->
-    <div class="card">
-      <div class="item">
-        <div class="item-left">
-          <div class="icon">DPI</div>
-          <div><div class="label">DPI START</div><div class="desc">Standard sensitivity</div></div>
-        </div>
-        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <div class="footer">
-      <div class="footer-top">
-        <div class="boost-bar" id="cpuBtn">DATA - CONFIG</div>
-        <button class="admin-btn">Admin</button>
-      </div>
-      <div class="footer-bottom">
-        <button class="admin-btn">Đăng xuất</button>
-        <button class="admin-btn">Reset</button>
-      </div>
+    <div class="menu">
+      <button onclick="openModule('dashboard', this)" class="active">Dashboard</button>
+      <button onclick="openModule('cpu', this)">CPU</button>
+      <button onclick="openModule('shop', this)">Shop</button>
+      <button onclick="openModule('settings', this)">Cài đặt</button>
+      <button onclick="openModule('about', this)">Thông tin</button>
     </div>
   </div>
 
-  <!-- Particles -->
+  <!-- Main -->
+  <div class="main">
+    <div id="dashboard" class="module active">
+      <div class="header">Dashboard</div>
+      <button class="btn-led">Kiểm tra Key</button>
+    </div>
+    <div id="cpu" class="module">
+      <div class="header">CPU Panel</div>
+      <button class="btn-led btn-red">Tối ưu GPU</button>
+      <button class="btn-led btn-blue">Giảm Ping</button>
+    </div>
+    <div id="shop" class="module">
+      <div class="header">Shop Key</div>
+      <button class="btn-led btn-blue">1 Ngày - 10k</button>
+      <button class="btn-led btn-purple">7 Ngày - 50k</button>
+      <button class="btn-led btn-red">30 Ngày - 150k</button>
+      <button class="btn-led">Vĩnh viễn - 250k</button>
+    </div>
+    <div id="settings" class="module">
+      <div class="header">Cài đặt</div>
+      <button class="btn-led btn-blue" onclick="toggleTheme()">Đổi Theme LED</button>
+    </div>
+    <div id="about" class="module">
+      <div class="header">Thông tin</div>
+      <p>Nhism Panel - LED Gaming UI</p>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div id="notify" class="notify"></div>
+
   <script>
-    document.getElementById("cpuBtn").addEventListener("click", () => {
-      window.location.href = "cpu.html";
-    });
-
-    const canvas = document.getElementById("matrix");
-    const ctx = canvas.getContext("2d");
-    function resizeCanvas(){
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    function openModule(id, btn){
+      document.querySelectorAll('.module').forEach(m=>m.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
     }
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
-
-    const particles = [];
-    const numParticles = 80;
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.radius = 2 + Math.random() * 2;
-        this.dx = (Math.random() - 0.5) * 1.5;
-        this.dy = (Math.random() - 0.5) * 1.5;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "#00ff99";
-        ctx.shadowColor = "#00ff99";
-        ctx.shadowBlur = 12;
-        ctx.fill();
-        ctx.closePath();
-      }
-      update() {
-        this.x += this.dx; this.y += this.dy;
-        if (this.x < 0 || this.x > canvas.width) this.dx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.dy *= -1;
-        this.draw();
-      }
+    function toggleTheme(){
+      const root=document.documentElement;
+      const cur=getComputedStyle(root).getPropertyValue('--main-color').trim();
+      if(cur==='#0ff'){ root.style.setProperty('--main-color','#f0f'); showNotify("Theme LED Tím"); }
+      else if(cur==='#f0f'){ root.style.setProperty('--main-color','#0f0'); showNotify("Theme LED Xanh lá"); }
+      else { root.style.setProperty('--main-color','#0ff'); showNotify("Theme LED Xanh dương"); }
     }
-    function connect() {
-      for (let a = 0; a < particles.length; a++) {
-        for (let b = a; b < particles.length; b++) {
-          const dx = particles[a].x - particles[b].x;
-          const dy = particles[a].y - particles[b].y;
-          const dist = Math.sqrt(dx*dx + dy*dy);
-          if (dist < 120) {
-            ctx.beginPath();
-            ctx.strokeStyle = "rgba(0,255,153,0.16)";
-            ctx.lineWidth = 1;
-            ctx.moveTo(particles[a].x, particles[a].y);
-            ctx.lineTo(particles[b].x, particles[b].y);
-            ctx.stroke();
-            ctx.closePath();
-          }
-        }
-      }
+    function showNotify(msg){
+      const box=document.getElementById('notify');
+      box.textContent=msg;
+      box.style.display='block';
+      setTimeout(()=>box.style.display='none',2000);
     }
-    function initParticles() {
-      particles.length = 0;
-      for (let i=0;i<numParticles;i++) particles.push(new Particle());
-    }
-    function animate() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      particles.forEach(p => p.update());
-      connect();
-      requestAnimationFrame(animate);
-    }
-    initParticles();
-    animate();
   </script>
 </body>
 </html>
