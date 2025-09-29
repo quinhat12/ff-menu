@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Nhism Panel LED</title>
+  <title>Obito Panel</title>
   <style>
     :root {
       --main-color: #0ff;
@@ -87,7 +87,7 @@
       from { opacity:0; transform:translateY(10px); }
       to { opacity:1; transform:translateY(0); }
     }
-    /* Buttons LED */
+    /* Buttons */
     .btn-led {
       display:block;
       margin:12px auto;
@@ -124,7 +124,7 @@
 <body>
   <!-- Sidebar -->
   <div class="sidebar">
-    <h2>Nhism Panel</h2>
+    <h2>Obito Panel</h2>
     <div class="user-box">
       <img src="logo.png" alt="Avatar">
       <div class="name">Admin</div>
@@ -158,11 +158,11 @@
     </div>
     <div id="settings" class="module">
       <div class="header">Cài đặt</div>
-      <button class="btn-led btn-blue" onclick="toggleTheme()">Đổi Theme LED</button>
+      <button class="btn-led btn-blue" onclick="toggleTheme()">Đổi Theme</button>
     </div>
     <div id="about" class="module">
       <div class="header">Thông tin</div>
-      <p>Nhism Panel - LED Gaming UI</p>
+      <p>Obito Panel - Giao diện Gaming</p>
     </div>
   </div>
 
@@ -179,9 +179,9 @@
     function toggleTheme(){
       const root=document.documentElement;
       const cur=getComputedStyle(root).getPropertyValue('--main-color').trim();
-      if(cur==='#0ff'){ root.style.setProperty('--main-color','#f0f'); showNotify("Theme LED Tím"); }
-      else if(cur==='#f0f'){ root.style.setProperty('--main-color','#0f0'); showNotify("Theme LED Xanh lá"); }
-      else { root.style.setProperty('--main-color','#0ff'); showNotify("Theme LED Xanh dương"); }
+      if(cur==='#0ff'){ root.style.setProperty('--main-color','#f0f'); showNotify("Theme Tím"); }
+      else if(cur==='#f0f'){ root.style.setProperty('--main-color','#0f0'); showNotify("Theme Xanh lá"); }
+      else { root.style.setProperty('--main-color','#0ff'); showNotify("Theme Xanh dương"); }
     }
     function showNotify(msg){
       const box=document.getElementById('notify');
