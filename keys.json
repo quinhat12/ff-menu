@@ -1,14 +1,12 @@
 {
-  "keys": [
-    { "key": "OBITO-A1B-X9Z", "expires": "2050-10-07" },
-    { "key": "ad", "expires": "2090-10-07" },
-    { "key": "OBITO-K2N-V8J", "expires": "2025-10-07" },
-    { "key": "OBITO-Z4T-H6P", "expires": "2025-10-07" },
-    { "key": "OBITO-R9M-Y3C", "expires": "2025-10-07" },
-    { "key": "OBITO-W5F-Q7B", "expires": "2025-10-07" },
-    { "key": "OBITO-H8D-L2X", "expires": "2025-10-07" },
-    { "key": "OBITO-P3S-G4N", "expires": "2025-10-07" },
-    { "key": "OBITO-J6K-T1V", "expires": "2025-10-07" },
-    { "key": "OBITO-E0A-U9Q", "expires": "2025-10-07" }
-  ]
+  "OBITO-A1B-X9Z": { "expires": "2050-10-07" },
+  "ad": { "expires": "2050-10-07" },
+  "OBITO-K2N-V8J": { "expires": "2025-10-07" },
+  "OBITO-Z4T-H6P": { "expires": "2025-10-07" },
+  "OBITO-R9M-Y3C": { "expires": "2025-10-07" },
+  "OBITO-W5F-Q7B": { "expires": "2025-10-07" },
+  "OBITO-H8D-L2X": { "expires": "2025-10-07" },
+  "OBITO-P3S-G4N": { "expires": "2025-10-07" },
+  "OBITO-J6K-T1V": { "expires": "2025-10-07" },
+  "OBITO-E0A-U9Q": { "expires": "2025-10-07" }
 }
